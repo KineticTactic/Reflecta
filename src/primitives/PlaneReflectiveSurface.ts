@@ -1,16 +1,14 @@
 import PlaneSurface from "./PlaneSurface";
 import Vector from "../lib/Vector";
+import { reflect } from "../lib/math";
 
-export default class ReflectiveSurface extends PlaneSurface {
+export default class PlaneReflectiveSurface extends PlaneSurface {
     constructor(v1: Vector, v2: Vector) {
         super(v1, v2);
     }
 
     handle(_intersection: Vector, dir: Vector) {
-        // Calculate reflection vector
-        // r = d - (2(d.n)/|n|^2)n, where d is vector of incoming ray, n is normal vector
-        let r = Vector.sub(dir, this.normal.copy().mult((2 * Vector.dot(dir, this.normal)) / this.normal.magSq()));
-        return r;
+        return reflect(dir, this.normal);
     }
 
     render(ctx: CanvasRenderingContext2D) {

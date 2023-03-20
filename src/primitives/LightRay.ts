@@ -28,10 +28,11 @@ export default class LightRay {
 
             // Loop over all surfaces to check intersections
             for (let i = 0; i < surfaces.length; i++) {
-                if (i === lastIntersectionIndex && !surfaces[i].canIntersectTwice) continue; // If the current surface is the last surface that the ray intersected with, continue to the next surface (to prevent the ray from intersecting with the same surface twice
-                // Check if the current surface intersects with the ray
-                // console.log(currentDir);
+                // If the current surface is the last surface that the ray intersected with, continue to the next surface (to prevent the ray from intersecting with the same surface twice
+                // UNLESS, it is a curved surface, in which case it can intersect with the same surface twice
+                if (i === lastIntersectionIndex && !surfaces[i].canIntersectTwice) continue;
 
+                // Check if the current surface intersects with the ray
                 let intersection = surfaces[i].intersects(currentPoint.copy(), currentDir.copy());
 
                 // If there is no intersection, continue to the next surface
@@ -62,7 +63,6 @@ export default class LightRay {
                 currentDir = r.copy();
 
                 // Update the last intersection
-                // lastIntersectionIndex = surfaces[closestIntersectionIndex].canIntersectTwice ? null : closestIntersectionIndex;
                 lastIntersectionIndex = closestIntersectionIndex;
             } else {
                 // console.log(k);

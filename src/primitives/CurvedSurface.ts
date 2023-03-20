@@ -1,9 +1,8 @@
 import { closestPointOnRay } from "../lib/intersections";
 import Vector from "../lib/Vector";
-import { point } from "../util/debug";
 import Surface from "./Surface";
 
-export default class CurvedSurface extends Surface {
+export default abstract class CurvedSurface extends Surface {
     center: Vector;
     radius: number;
     facing: Vector;
@@ -30,31 +29,38 @@ export default class CurvedSurface extends Surface {
             return null;
         }
 
+        // We now know that the closest point is inside the circle
+
         // This is the distance we have to move along the ray on either side of the closest point to get the intersection points with the circle
         let k = Math.sqrt(this.radius * this.radius - closestPointDistSq);
 
+        // Check if the origin is outside the circle
+        // If it is, then there MAY be 2 intersections, one forward along the ray and another backward
         if (Vector.sub(origin, closestPoint).magSq() > k * k) {
-            // BACKWARD INTERSECTION EXISTS
-            // Obviously, it will be closer to the origin than the forward intersection
+            // Calculate backward intersection
+            // If exists, it will be closer to the origin than the forward intersection
 
             let intersection = Vector.sub(closestPoint, dir.copy().normalize().mult(k));
 
             let centerToIntersectionVector = Vector.sub(intersection, this.center);
             let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
 
+            // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
             if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
                 // The intersection LIES WITHIN THE ARC
                 // point(intersection);
                 return intersection;
             }
         }
-        // ONLY FORWARD Intersection exists
+
+        // Check for forward intersection now
 
         let intersection = Vector.add(closestPoint, dir.copy().normalize().mult(k));
 
         let centerToIntersectionVector = Vector.sub(intersection, this.center);
         let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
 
+        // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
         if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
             // The intersection LIES WITHIN THE ARC
             // point(intersection);
@@ -62,39 +68,12 @@ export default class CurvedSurface extends Surface {
             return intersection;
         }
 
-        // // TWO intersections exist
-        // // Because the origin is OUTSIDE the circle
-
-        // let intersection1 = Vector.add(closestPoint, dir.copy().normalize().mult(k));
-        // let intersection2 = Vector.sub(closestPoint, dir.copy().normalize().mult(k));
-
-        // let centerToIntersection1Vector = Vector.sub(intersection1, this.center);
-        // let centerToIntersection2Vector = Vector.sub(intersection2, this.center);
-
-        // let angleBetweenFacingAndIntersection1 = Math.abs(Vector.angleBetween(centerToIntersection1Vector, this.facing));
-        // let angleBetweenFacingAndIntersection2 = Math.abs(Vector.angleBetween(centerToIntersection2Vector, this.facing));
-
-        // if (angleBetweenFacingAndIntersection1 <= this.span / 2) {
-        //     // First intersection LIES WITHIN THE ARC
-        //     point(intersection1);
-        // }
-
-        // if (angleBetweenFacingAndIntersection2 <= this.span / 2) {
-        //     // Second intersection LIES WITHIN THE ARC
-
-        //     point(intersection2);
-        // }
-
         return null;
     }
 
-    handle(origin: Vector, dir: Vector): Vector {
-        return dir.copy();
-    }
+    abstract handle(_origin: Vector, dir: Vector): Vector;
 
     render(ctx: CanvasRenderingContext2D) {
-        // this.facing.rotate(0.01);
-
         let angleStart = this.facing.heading() - this.span / 2;
         let angleEnd = this.facing.heading() + this.span / 2;
 

@@ -2,7 +2,7 @@ import Vector from "../lib/Vector";
 import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
 import Surface from "./Surface";
 
-export default class PlaneSurface extends Surface {
+export default abstract class PlaneSurface extends Surface {
     v1: Vector;
     v2: Vector;
     normal: Vector = new Vector(0, 0);
@@ -17,19 +17,7 @@ export default class PlaneSurface extends Surface {
         this.calculateNormal();
     }
 
-    handle(_intersection: Vector, _dir: Vector): Vector {
-        throw Error("Not implemented");
-    }
-
-    // updateDraggables(mousePos) {
-    //     this.draggableV1.update(mousePos, mouseDown);
-    //     this.draggableV2.update(mousePos, mouseDown);
-    //     this.v1 = this.draggableV1.pos;
-    //     this.v2 = this.draggableV2.pos;
-    //     this.normal = Vector.sub(this.v2, this.v1)
-    //         .rotate(Math.PI / 2)
-    //         .normalize();
-    // }
+    abstract handle(_intersection: Vector, _dir: Vector): Vector;
 
     // Calculate normal
     calculateNormal() {
@@ -70,9 +58,5 @@ export default class PlaneSurface extends Surface {
         ctx.moveTo(midPoint.x, midPoint.y);
         ctx.lineTo(midPoint.x + this.normal.x * 50, midPoint.y + this.normal.y * 50);
         ctx.stroke();
-
-        // Render draggable points
-        // this.draggableV1.render(ctx);
-        // this.draggableV2.render(ctx);
     }
 }

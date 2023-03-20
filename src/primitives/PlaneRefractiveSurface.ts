@@ -1,7 +1,8 @@
 import PlaneSurface from "./PlaneSurface";
 import Vector from "../lib/Vector";
+import { reflect } from "../lib/math";
 
-export default class RefractiveSurface extends PlaneSurface {
+export default class PlaneRefractiveSurface extends PlaneSurface {
     refractiveIndex: number;
     criticalAngle: number;
 
@@ -19,16 +20,18 @@ export default class RefractiveSurface extends PlaneSurface {
         let angleBetween = Math.atan2(dir.y, dir.x) - Math.atan2(this.normal.y, this.normal.x);
 
         if (angleBetween > Math.PI / 2 || angleBetween < -Math.PI / 2) {
+            // The ray is going from RARER TO DENSER
             let angleOfIncidence = Math.PI - angleBetween;
             let angleOfRefraction = Math.asin(Math.sin(angleOfIncidence) / this.refractiveIndex);
             let angleOfDeviation = angleOfIncidence - angleOfRefraction;
 
             return dir.copy().rotate(angleOfDeviation);
         } else {
+            // The ray is going from DENSER TO RARER
             let angleOfIncidence = angleBetween;
-            // console.log(angleBetween);
             if (angleOfIncidence > this.criticalAngle || angleOfIncidence < -this.criticalAngle) {
-                return Vector.sub(dir, this.normal.copy().mult((2 * Vector.dot(dir, this.normal)) / this.normal.magSq()));
+                // TOTAL INTERNAL REFLECTION!!
+                return reflect(dir, this.normal);
             }
             let angleOfRefraction = Math.asin(Math.sin(angleOfIncidence) * this.refractiveIndex);
             let angleOfDeviation = angleOfIncidence - angleOfRefraction;
@@ -36,8 +39,4 @@ export default class RefractiveSurface extends PlaneSurface {
             return dir.copy().rotate(-angleOfDeviation);
         }
     }
-
-    // render(ctx) {
-    //     super.render(ctx);
-    // }
 }

@@ -1,6 +1,6 @@
 import Vector from "../lib/Vector";
 import Entity from "./Entity";
-import RefractiveSurface from "../primitives/RefractiveSurface";
+import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import Draggable from "../util/Draggable";
 import { World } from "../World";
 
@@ -10,7 +10,7 @@ export default class Prism extends Entity {
     angle: number;
     size: number;
     refractiveIndex: number;
-    surfaces: RefractiveSurface[];
+    surfaces: PlaneRefractiveSurface[];
     posDrag: Draggable;
 
     constructor(pos: Vector) {
@@ -27,9 +27,9 @@ export default class Prism extends Entity {
         let v3 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[2].copy().mult(this.size).rotate(this.angle));
 
         this.surfaces = [
-            new RefractiveSurface(v2, v1, this.refractiveIndex),
-            new RefractiveSurface(v3, v2, this.refractiveIndex),
-            new RefractiveSurface(v1, v3, this.refractiveIndex),
+            new PlaneRefractiveSurface(v2, v1, this.refractiveIndex),
+            new PlaneRefractiveSurface(v3, v2, this.refractiveIndex),
+            new PlaneRefractiveSurface(v1, v3, this.refractiveIndex),
         ];
 
         this.recalculateVertices();
