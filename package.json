@@ -1,15 +1,19 @@
 {
-  "name": "light-playground",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "^4.9.3",
-    "vite": "^4.2.0"
-  }
+    "name": "light-playground",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "homepage": "https://kinetictactic.github.io/light-playground/",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "gh-pages": "^5.0.0",
+        "typescript": "^4.9.3",
+        "vite": "^4.2.0"
+    }
 }
