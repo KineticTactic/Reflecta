@@ -1,4 +1,4 @@
-import Entity from "../primitives/Entity";
+import Entity from "./Entity";
 import Vector from "../lib/Vector";
 import LightRay from "../primitives/LightRay";
 import { World } from "../World";
@@ -12,7 +12,7 @@ export default class LightBeam extends Entity {
         super(pos);
 
         this.size = 100;
-        this.numRays = 10;
+        this.numRays = 50;
 
         this.lightRays = [];
         for (let i = -this.size / 2; i <= this.size / 2; i += this.size / this.numRays) {
@@ -24,6 +24,10 @@ export default class LightBeam extends Entity {
         for (let l of this.lightRays) {
             world.addLightRay(l);
         }
+    }
+
+    handleClick(_mousePos: Vector): boolean {
+        return false;
     }
 
     render(ctx: CanvasRenderingContext2D) {

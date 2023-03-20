@@ -47,7 +47,7 @@ export default class LightRay {
             }
 
             // If there is a closest intersection point, update the current point and direction
-            if (closestIntersection && closestIntersectionIndex) {
+            if (closestIntersection && closestIntersectionIndex !== null) {
                 // Add the closest intersection point to the path
                 this.path.push(closestIntersection);
                 // Update the current point and direction
@@ -75,13 +75,13 @@ export default class LightRay {
             ctx.lineTo(p.x, p.y);
         }
         // ctx.lineTo(this.origin.x + this.dir.x * 100, this.origin.y + this.dir.y * 100);
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
 
         ctx.stroke();
 
         // for (let i = 0; i < this.path.length; i++) {
         //     ctx.beginPath();
-        //     ctx.arc(this.path[i].x, this.path[i].y, 2, 0, Math.PI * 2);
+        //     ctx.arc(this.path[i].x, this.path[i].y, 5, 0, Math.PI * 2);
         //     ctx.fillStyle = "rgba(255, 255, 255, " + (1 - i / this.path.length) + ")";
         //     ctx.fill();
         // }

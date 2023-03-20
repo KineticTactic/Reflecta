@@ -16,4 +16,12 @@ function lineRayIntersection(v1: Vector, v2: Vector, rayOrigin: Vector, rayDir: 
     return null;
 }
 
-export { lineRayIntersection };
+function linePointIntersection(v1: Vector, v2: Vector, point: Vector, margin: number = 0.1): boolean {
+    let pointToV1 = Vector.sub(v1, point).mag();
+    let pointToV2 = Vector.sub(v2, point).mag();
+    let v1ToV2 = Vector.sub(v2, v1).mag();
+
+    return Math.abs(pointToV1 + pointToV2 - v1ToV2) < margin;
+}
+
+export { lineRayIntersection, linePointIntersection };

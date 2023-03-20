@@ -1,5 +1,5 @@
 import Vector from "../lib/Vector";
-import { lineRayIntersection } from "../lib/intersections";
+import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
 
 export default class PlaneSurface {
     v1: Vector;
@@ -35,9 +35,19 @@ export default class PlaneSurface {
             .normalize();
     }
 
+    setVertices(v1: Vector, v2: Vector) {
+        this.v1 = v1.copy();
+        this.v2 = v2.copy();
+        this.calculateNormal();
+    }
+
     intersects(rayOrigin: Vector, rayDir: Vector) {
         let intersection = lineRayIntersection(this.v1.copy(), this.v2.copy(), rayOrigin.copy(), rayDir.copy());
         return intersection;
+    }
+
+    intersectsPoint(point: Vector, margin: number = 0.1): boolean {
+        return linePointIntersection(this.v1.copy(), this.v2.copy(), point.copy(), margin);
     }
 
     // Render the surface

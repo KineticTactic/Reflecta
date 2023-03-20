@@ -1,4 +1,5 @@
-import Entity from "./primitives/Entity";
+import Vector from "./lib/Vector";
+import Entity from "./entities/Entity";
 import LightRay from "./primitives/LightRay";
 import PlaneSurface from "./primitives/PlaneSurface";
 
@@ -23,6 +24,12 @@ export class World {
     update() {
         for (let l of this.lightRays) {
             l.trace(this.surfaces);
+        }
+    }
+
+    handleClick(mousePos: Vector) {
+        for (let e of this.entities) {
+            e.handleClick(mousePos);
         }
     }
 

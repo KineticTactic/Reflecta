@@ -12,8 +12,13 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const w = new World();
-w.addEntity(new Prism(new Vector(600, 300)));
+const p = new Prism(new Vector(600, 300));
+w.addEntity(p);
 w.addEntity(new LightBeam(new Vector(300, 300)));
+
+window.addEventListener("click", (e) => {
+    w.handleClick(new Vector(e.clientX, e.clientY));
+});
 
 function draw() {
     requestAnimationFrame(draw);
@@ -25,6 +30,8 @@ function draw() {
     // console.log("");
 
     // w.updateDraggables(mousePos, mouseDown);
+
+    p.rotate(0.001);
 
     w.update();
     w.render(ctx);
