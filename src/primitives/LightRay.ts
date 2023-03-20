@@ -1,5 +1,5 @@
 import Vector from "../lib/Vector";
-import PlaneSurface from "./PlaneSurface";
+import Surface from "./Surface";
 
 export default class LightRay {
     origin: Vector;
@@ -13,7 +13,7 @@ export default class LightRay {
         this.path = [this.origin];
     }
 
-    trace(surfaces: PlaneSurface[]) {
+    trace(surfaces: Surface[]) {
         // Reset its path
         this.path = [this.origin];
 
@@ -28,8 +28,11 @@ export default class LightRay {
 
             // Loop over all surfaces to check intersections
             for (let i = 0; i < surfaces.length; i++) {
+                if (i === lastIntersectionIndex && !surfaces[i].canIntersectTwice) continue; // If the current surface is the last surface that the ray intersected with, continue to the next surface (to prevent the ray from intersecting with the same surface twice
                 // Check if the current surface intersects with the ray
-                let intersection = surfaces[i].intersects(currentPoint, currentDir);
+                // console.log(currentDir);
+
+                let intersection = surfaces[i].intersects(currentPoint.copy(), currentDir.copy());
 
                 // If there is no intersection, continue to the next surface
                 if (!intersection) continue;
@@ -39,7 +42,8 @@ export default class LightRay {
                 let intersectionDistance = Vector.sub(intersection, currentPoint).magSq();
 
                 // If the intersection point is closer than the closest intersection point, update the closest intersection point
-                if (intersectionDistance < closestIntersectionDistance && i !== lastIntersectionIndex) {
+                if (intersectionDistance < closestIntersectionDistance) {
+                    //&& i !== lastIntersectionIndex) {
                     closestIntersection = intersection;
                     closestIntersectionDistance = intersectionDistance;
                     closestIntersectionIndex = i;
@@ -54,16 +58,19 @@ export default class LightRay {
                 currentPoint = closestIntersection;
 
                 // surface.handle returns the new direction of the ray after it has been reflected or refracted
-                let r = surfaces[closestIntersectionIndex].handle(closestIntersection, currentDir);
+                let r = surfaces[closestIntersectionIndex].handle(closestIntersection.copy(), currentDir.copy());
                 currentDir = r.copy();
 
                 // Update the last intersection
+                // lastIntersectionIndex = surfaces[closestIntersectionIndex].canIntersectTwice ? null : closestIntersectionIndex;
                 lastIntersectionIndex = closestIntersectionIndex;
             } else {
                 // console.log(k);
                 break;
             }
         }
+        // console.log(this.path);
+
         // Add the last point to the path
         this.path.push(currentPoint.copy().add(currentDir.mult(2000)));
     }
@@ -75,7 +82,8 @@ export default class LightRay {
             ctx.lineTo(p.x, p.y);
         }
         // ctx.lineTo(this.origin.x + this.dir.x * 100, this.origin.y + this.dir.y * 100);
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+        ctx.lineWidth = 1;
 
         ctx.stroke();
 

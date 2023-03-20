@@ -24,4 +24,10 @@ function linePointIntersection(v1: Vector, v2: Vector, point: Vector, margin: nu
     return Math.abs(pointToV1 + pointToV2 - v1ToV2) < margin;
 }
 
-export { lineRayIntersection, linePointIntersection };
+function closestPointOnRay(rayOrigin: Vector, rayDir: Vector, point: Vector): Vector {
+    let v = Vector.sub(point, rayOrigin);
+    let t = Vector.dot(v, rayDir) / rayDir.magSq();
+    return Vector.add(rayOrigin, rayDir.mult(Math.max(t, 0)));
+}
+
+export { lineRayIntersection, linePointIntersection, closestPointOnRay };

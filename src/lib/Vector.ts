@@ -186,6 +186,15 @@ export default class Vector {
         return this;
     }
 
+    // angleBetween(a: Vector): number {
+    //     return Math.atan2(a.y, a.x) - Math.atan2(this.y, this.x);
+    // }
+
+    static angleBetween(a: Vector, b: Vector): number {
+        // return Math.atan2(b.y, b.x) - Math.atan2(a.y, a.x);
+        return Math.atan2(a.x * b.y - a.y * b.x, a.x * b.x + a.y * b.y);
+    }
+
     copy(): Vector {
         return new Vector(this.x, this.y);
     }

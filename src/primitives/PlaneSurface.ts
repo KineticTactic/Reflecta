@@ -1,12 +1,15 @@
 import Vector from "../lib/Vector";
 import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
+import Surface from "./Surface";
 
-export default class PlaneSurface {
+export default class PlaneSurface extends Surface {
     v1: Vector;
     v2: Vector;
     normal: Vector = new Vector(0, 0);
+    canIntersectTwice = false;
 
     constructor(v1: Vector, v2: Vector) {
+        super();
         // Start and end point vectors
         this.v1 = v1;
         this.v2 = v2;
@@ -41,7 +44,7 @@ export default class PlaneSurface {
         this.calculateNormal();
     }
 
-    intersects(rayOrigin: Vector, rayDir: Vector) {
+    intersects(rayOrigin: Vector, rayDir: Vector): Vector | null {
         let intersection = lineRayIntersection(this.v1.copy(), this.v2.copy(), rayOrigin.copy(), rayDir.copy());
         return intersection;
     }

@@ -1,14 +1,14 @@
 import Vector from "./lib/Vector";
 import Entity from "./entities/Entity";
 import LightRay from "./primitives/LightRay";
-import PlaneSurface from "./primitives/PlaneSurface";
+import Surface from "./primitives/Surface";
 
 export class World {
-    surfaces: PlaneSurface[] = [];
+    surfaces: Surface[] = [];
     lightRays: LightRay[] = [];
     entities: Entity[] = [];
 
-    addSurface(surface: PlaneSurface) {
+    addSurface(surface: Surface) {
         this.surfaces.push(surface);
     }
 

@@ -12,7 +12,7 @@ export default class LightBeam extends Entity {
         super(pos);
 
         this.size = 100;
-        this.numRays = 50;
+        this.numRays = 1000;
 
         this.lightRays = [];
         for (let i = -this.size / 2; i <= this.size / 2; i += this.size / this.numRays) {

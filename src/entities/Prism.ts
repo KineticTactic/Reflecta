@@ -70,6 +70,6 @@ export default class Prism extends Entity {
             s.render(ctx);
         }
 
-        this.posDrag.render(ctx);
+        // this.posDrag.render(ctx);
     }
 }
