@@ -30,7 +30,7 @@ export default class LightBeam extends Entity {
         return false;
     }
 
-    render(ctx: CanvasRenderingContext2D) {
+    render(_ctx: CanvasRenderingContext2D) {
         // for (let l of this.lightRays) {
         //     l.render(ctx);
         // }
