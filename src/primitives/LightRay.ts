@@ -76,16 +76,11 @@ export default class LightRay {
     }
 
     render(ctx: CanvasRenderingContext2D) {
-        ctx.beginPath();
         ctx.moveTo(this.origin.x, this.origin.y);
         for (let p of this.path) {
             ctx.lineTo(p.x, p.y);
         }
         // ctx.lineTo(this.origin.x + this.dir.x * 100, this.origin.y + this.dir.y * 100);
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-        ctx.lineWidth = 1;
-
-        ctx.stroke();
 
         // for (let i = 0; i < this.path.length; i++) {
         //     ctx.beginPath();

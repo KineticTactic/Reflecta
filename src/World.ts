@@ -44,9 +44,14 @@ export class World {
         //     s.render(ctx);
         // }
 
+        ctx.beginPath();
         for (let l of this.lightRays) {
             l.render(ctx);
         }
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
 
         for (let e of this.entities) {
             e.render(ctx);

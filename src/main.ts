@@ -1,7 +1,8 @@
-import LightBeam from "./entities/LightBeam";
+import PointLight from "./entities/PointLight";
 import Prism from "./entities/Prism";
 import Vector from "./lib/Vector";
 import CurvedReflectiveSurface from "./primitives/CurvedReflectiveSurface";
+import CurvedRefractiveSurface from "./primitives/CurvedReflectiveSurface copy";
 import "./style.css";
 import { setContext } from "./util/debug";
 import { World } from "./World";
@@ -18,10 +19,12 @@ canvas.height = window.innerHeight;
 const w = new World();
 const p = new Prism(new Vector(200, 150));
 w.addEntity(p);
-w.addEntity(new LightBeam(new Vector(300, 300)));
+w.addEntity(new PointLight(new Vector(300, 300)));
 
 const curve = new CurvedReflectiveSurface(new Vector(700, 300), 100, new Vector(-1, 0), 3);
+const curve2 = new CurvedRefractiveSurface(new Vector(400, 500), 100, new Vector(-1, 0), 3, 2);
 w.addSurface(curve);
+w.addSurface(curve2);
 
 window.addEventListener("click", (e) => {
     w.handleClick(new Vector(e.clientX, e.clientY));
@@ -35,9 +38,11 @@ function draw() {
 
     p.rotate(-0.001);
     curve.facing.rotate(0.005);
+    curve2.facing.rotate(-0.01);
 
     w.update();
     curve.render(ctx);
+    curve2.render(ctx);
     w.render(ctx);
 }
 
