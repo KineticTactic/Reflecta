@@ -32,6 +32,18 @@ export default abstract class PlaneSurface extends Surface {
         this.calculateNormal();
     }
 
+    override translate(delta: Vector): void {
+        this.v1.add(delta);
+        this.v2.add(delta);
+        this.calculateNormal();
+    }
+
+    override rotateAboutAxis(theta: number, axis: Vector) {
+        this.v1.rotateAboutAxis(theta, axis);
+        this.v2.rotateAboutAxis(theta, axis);
+        this.calculateNormal();
+    }
+
     intersects(rayOrigin: Vector, rayDir: Vector): Vector | null {
         let intersection = lineRayIntersection(this.v1.copy(), this.v2.copy(), rayOrigin.copy(), rayDir.copy());
         return intersection;

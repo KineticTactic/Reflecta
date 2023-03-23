@@ -1,6 +1,5 @@
 import { closestPointOnLine } from "../lib/intersections";
 import Vector from "../lib/Vector";
-import { point } from "../util/debug";
 import Surface from "./Surface";
 
 export default abstract class CurvedSurface extends Surface {
@@ -45,6 +44,8 @@ export default abstract class CurvedSurface extends Surface {
             if (Math.abs(Vector.angleBetween(Vector.sub(intersection, origin), dir)) > 0.2) {
             } else {
                 let centerToIntersectionVector = Vector.sub(intersection, this.center);
+                // console.log(this.facing);
+
                 let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
 
                 // point(intersection);
@@ -88,6 +89,15 @@ export default abstract class CurvedSurface extends Surface {
         }
 
         return null;
+    }
+
+    override translate(delta: Vector): void {
+        this.center.add(delta);
+    }
+
+    override rotateAboutAxis(theta: number, axis: Vector): void {
+        this.center.rotateAboutAxis(theta, axis);
+        this.facing.rotate(theta);
     }
 
     abstract handle(_origin: Vector, dir: Vector): Vector;

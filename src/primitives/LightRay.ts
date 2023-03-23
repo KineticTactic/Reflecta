@@ -73,7 +73,7 @@ export default class LightRay {
         // console.log(this.path);
 
         // Add the last point to the path
-        this.path.push(currentPoint.copy().add(currentDir.mult(2000)));
+        this.path.push(currentPoint.copy().add(currentDir.mult(3000)));
     }
 
     render(ctx: CanvasRenderingContext2D) {

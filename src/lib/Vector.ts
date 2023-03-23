@@ -7,6 +7,8 @@ export default class Vector {
         this.y = y;
     }
 
+    static ZERO: Vector = new Vector(0, 0);
+
     add(a: Vector): Vector;
     add(a: number): Vector;
     add(a: number, b: number): Vector;
@@ -151,6 +153,11 @@ export default class Vector {
             ny = cos * this.y + sin * this.x;
         this.x = nx;
         this.y = ny;
+        return this;
+    }
+
+    rotateAboutAxis(theta: number, axis: Vector) {
+        this.sub(axis).rotate(theta).add(axis);
         return this;
     }
 
