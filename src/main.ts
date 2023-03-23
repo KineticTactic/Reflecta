@@ -1,6 +1,6 @@
 import ConcaveLens from "./entities/ConcaveLens";
 import ConvexLens from "./entities/ConvexLens";
-import LightBeam from "./entities/LightBeam";
+// import LightBeam from "./entities/LightBeam";
 import PointLight from "./entities/PointLight";
 import Prism from "./entities/Prism";
 import Vector from "./lib/Vector";

@@ -1,5 +1,4 @@
 import Vector from "../lib/Vector";
-import { point } from "../util/debug";
 import Surface from "./Surface";
 
 export default class LightRay {
