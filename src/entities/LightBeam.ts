@@ -11,8 +11,8 @@ export default class LightBeam extends Entity {
     constructor(pos: Vector) {
         super(pos);
 
-        this.size = 100;
-        this.numRays = 10000;
+        this.size = 150;
+        this.numRays = 100;
 
         this.lightRays = [];
         for (let i = -this.size / 2; i <= this.size / 2; i += this.size / this.numRays) {

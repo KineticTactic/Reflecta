@@ -5,4 +5,6 @@ export default abstract class Surface {
 
     abstract intersects(origin: Vector, dir: Vector): Vector | null;
     abstract handle(origin: Vector, dir: Vector): Vector;
+
+    abstract render(ctx: CanvasRenderingContext2D): void;
 }

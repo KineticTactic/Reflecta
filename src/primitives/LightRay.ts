@@ -1,4 +1,5 @@
 import Vector from "../lib/Vector";
+import { point } from "../util/debug";
 import Surface from "./Surface";
 
 export default class LightRay {
@@ -65,7 +66,7 @@ export default class LightRay {
                 // Update the last intersection
                 lastIntersectionIndex = closestIntersectionIndex;
             } else {
-                // console.log(k);
+                // if (k > 10) console.log(k);
                 break;
             }
         }

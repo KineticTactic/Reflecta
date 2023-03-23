@@ -18,6 +18,13 @@ export default class PointLight extends Entity {
         }
     }
 
+    setPosition(pos: Vector) {
+        this.pos = pos;
+        for (let l of this.lightRays) {
+            l.origin = pos;
+        }
+    }
+
     addToWorld(world: World) {
         for (let l of this.lightRays) {
             world.addLightRay(l);

@@ -1,5 +1,6 @@
-import { closestPointOnRay } from "../lib/intersections";
+import { closestPointOnLine } from "../lib/intersections";
 import Vector from "../lib/Vector";
+import { point } from "../util/debug";
 import Surface from "./Surface";
 
 export default abstract class CurvedSurface extends Surface {
@@ -19,7 +20,7 @@ export default abstract class CurvedSurface extends Surface {
 
     intersects(origin: Vector, dir: Vector): Vector | null {
         // Calculate the closest point on the ray to the center of the circle
-        let closestPoint = closestPointOnRay(origin.copy(), dir.copy(), this.center);
+        let closestPoint = closestPointOnLine(origin.copy(), dir.copy(), this.center);
 
         // Squared distance
         let closestPointDistSq = Vector.sub(closestPoint, this.center).magSq();
@@ -41,15 +42,19 @@ export default abstract class CurvedSurface extends Surface {
             // If exists, it will be closer to the origin than the forward intersection
 
             let intersection = Vector.sub(closestPoint, dir.copy().normalize().mult(k));
+            if (Math.abs(Vector.angleBetween(Vector.sub(intersection, origin), dir)) > 0.2) {
+            } else {
+                let centerToIntersectionVector = Vector.sub(intersection, this.center);
+                let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
 
-            let centerToIntersectionVector = Vector.sub(intersection, this.center);
-            let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
-
-            // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
-            if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
-                // The intersection LIES WITHIN THE ARC
                 // point(intersection);
-                return intersection;
+
+                // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
+                if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
+                    // The intersection LIES WITHIN THE ARC
+                    // point(intersection);
+                    return intersection;
+                }
             }
         }
 
@@ -57,15 +62,29 @@ export default abstract class CurvedSurface extends Surface {
 
         let intersection = Vector.add(closestPoint, dir.copy().normalize().mult(k));
 
-        let centerToIntersectionVector = Vector.sub(intersection, this.center);
-        let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
+        if (Math.abs(Vector.angleBetween(Vector.sub(intersection, origin), dir)) > 0.2) {
+            // console.log(Vector.angleBetween(Vector.sub(closestPoint, origin), dir));
+            // console.log(Math.abs(Vector.angleBetween(Vector.sub(closestPoint, origin), dir)));
+        } else {
+            let centerToIntersectionVector = Vector.sub(intersection, this.center);
+            let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
 
-        // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
-        if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
-            // The intersection LIES WITHIN THE ARC
-            // point(intersection);
+            // console.log(Vector.angleBetween(Vector.sub(closestPoint, origin), dir));
 
-            return intersection;
+            // point(closestPoint);
+            // point(origin);
+            // console.log();
+
+            // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
+            if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
+                // point(intersection);
+                // console.log(dir);
+
+                // The intersection LIES WITHIN THE ARC
+                // console.log(this.center);
+
+                return intersection;
+            }
         }
 
         return null;
@@ -76,6 +95,9 @@ export default abstract class CurvedSurface extends Surface {
     render(ctx: CanvasRenderingContext2D) {
         let angleStart = this.facing.heading() - this.span / 2;
         let angleEnd = this.facing.heading() + this.span / 2;
+
+        // angleStart = 0;
+        // angleEnd = Math.PI * 2;
 
         ctx.beginPath();
         ctx.strokeStyle = "white";
