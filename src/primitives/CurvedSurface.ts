@@ -1,7 +1,6 @@
 import { closestPointOnLine } from "../lib/intersections";
 import Vector from "../lib/Vector";
 import { AABB } from "../util/Bounds";
-import { point } from "../util/debug";
 import Surface from "./Surface";
 
 export default abstract class CurvedSurface extends Surface {
