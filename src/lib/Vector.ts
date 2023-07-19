@@ -8,6 +8,10 @@ export default class Vector {
     }
 
     static ZERO: Vector = new Vector(0, 0);
+    static UP: Vector = new Vector(0, -1);
+    static DOWN: Vector = new Vector(0, 1);
+    static LEFT: Vector = new Vector(-1, 0);
+    static RIGHT: Vector = new Vector(1, 0);
 
     add(a: Vector): Vector;
     add(a: number): Vector;
@@ -47,8 +51,10 @@ export default class Vector {
         return this;
     }
 
-    static mult(a: Vector, b: Vector) {
-        return new Vector(a.x * b.x, a.y * b.y);
+    static mult(a: Vector, b: number): Vector;
+    static mult(a: Vector, b: Vector | number): Vector {
+        if (b instanceof Vector) return new Vector(a.x * b.x, a.y * b.y);
+        else return new Vector(a.x * b, a.y * b);
     }
 
     sub(a: Vector): Vector;

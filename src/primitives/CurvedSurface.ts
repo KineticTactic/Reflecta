@@ -1,5 +1,7 @@
 import { closestPointOnLine } from "../lib/intersections";
 import Vector from "../lib/Vector";
+import { AABB } from "../util/Bounds";
+import { point } from "../util/debug";
 import Surface from "./Surface";
 
 export default abstract class CurvedSurface extends Surface {
@@ -98,6 +100,32 @@ export default abstract class CurvedSurface extends Surface {
     override rotateAboutAxis(theta: number, axis: Vector): void {
         this.center.rotateAboutAxis(theta, axis);
         this.facing.rotate(theta);
+    }
+
+    override calculateAABB(): AABB {
+        /* THEORY: To calculate bounding points for a circular surface, first calculate the AXIAL points 
+            (north, south, east west) on the circle. Then we check if those points actually lie within
+            the part of our surface (cause our surface is only a part of a circle). Now along with those points,
+            we also include the two end points of the surface, cause they could have min/max values of x
+            and y too. With all those points, we can calculate the AABB.
+        */
+
+        const axialVectors = [Vector.UP, Vector.DOWN, Vector.LEFT, Vector.RIGHT];
+
+        const boundingPoints = [];
+
+        for (const v of axialVectors) {
+            // Check if point lies on our surface
+            if (Math.abs(Vector.angleBetween(v, this.facing)) < this.span / 2) {
+                boundingPoints.push(Vector.add(this.center, Vector.mult(v, this.radius)));
+            }
+        }
+
+        // Add the two end points of our surface
+        boundingPoints.push(Vector.add(this.center, Vector.mult(this.facing.copy().rotate(this.span / 2), this.radius)));
+        boundingPoints.push(Vector.add(this.center, Vector.mult(this.facing.copy().rotate(-this.span / 2), this.radius)));
+
+        return AABB.fromPoints(boundingPoints);
     }
 
     abstract handle(_origin: Vector, dir: Vector): Vector;

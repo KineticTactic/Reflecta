@@ -11,8 +11,8 @@ export default class ConvexLens extends SurfaceEntity {
     constructor(pos: Vector) {
         super(pos);
 
-        this.span = 0.5;
-        this.radiusOfCurvature = 400;
+        this.span = 1;
+        this.radiusOfCurvature = 200;
         this.refractiveIndex = 1.666;
         this.angle = 0;
 
@@ -23,5 +23,7 @@ export default class ConvexLens extends SurfaceEntity {
             new CurvedRefractiveSurface(new Vector(pos.x - centerOffset, pos.y), this.radiusOfCurvature, new Vector(1, 0), this.span, this.refractiveIndex),
             new CurvedRefractiveSurface(new Vector(pos.x + centerOffset, pos.y), this.radiusOfCurvature, new Vector(-1, 0), this.span, this.refractiveIndex),
         ];
+
+        this.updateBounds();
     }
 }

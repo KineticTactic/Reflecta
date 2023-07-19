@@ -1,5 +1,6 @@
 import ConcaveLens from "./entities/ConcaveLens";
 import ConvexLens from "./entities/ConvexLens";
+import GlassSphere from "./entities/GlassSphere";
 // import LightBeam from "./entities/LightBeam";
 import PointLight from "./entities/PointLight";
 import Prism from "./entities/Prism";
@@ -27,6 +28,9 @@ let convex = new ConvexLens(new Vector(800, 300));
 w.addEntity(convex);
 let concave = new ConcaveLens(new Vector(500, 300));
 w.addEntity(concave);
+
+let sphere = new GlassSphere(new Vector(200, 500));
+w.addEntity(sphere);
 
 // const curve = new CurvedReflectiveSurface(new Vector(700, 300), 100, new Vector(-1, 0), 3);
 // const curve2 = new CurvedRefractiveSurface(new Vector(400, 500), 100, new Vector(-1, 0), 3, 2);

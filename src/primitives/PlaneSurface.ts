@@ -1,5 +1,6 @@
 import Vector from "../lib/Vector";
 import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
+import { AABB } from "../util/Bounds";
 import Surface from "./Surface";
 
 export default abstract class PlaneSurface extends Surface {
@@ -51,6 +52,10 @@ export default abstract class PlaneSurface extends Surface {
 
     intersectsPoint(point: Vector, margin: number = 0.1): boolean {
         return linePointIntersection(this.v1.copy(), this.v2.copy(), point.copy(), margin);
+    }
+
+    override calculateAABB(): AABB {
+        return AABB.fromPoints([this.v1, this.v2]);
     }
 
     // Render the surface

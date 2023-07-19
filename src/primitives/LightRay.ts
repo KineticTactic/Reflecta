@@ -21,7 +21,7 @@ export default class LightRay {
         let currentDir = this.dir.copy(); // Store the current direction of the ray
         let lastIntersectionIndex = null; // Store the index of the last surface that the ray intersected with
 
-        for (let k = 0; k < 500; k++) {
+        for (let k = 0; k < 50; k++) {
             let closestIntersection = null; // Store the closest intersection point after checking all surfaces
             let closestIntersectionIndex = null; // Store the index of the closest surface that the ray intersected with
             let closestIntersectionDistance = Infinity; // Store the distance between the current point and the closest intersection point

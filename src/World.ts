@@ -33,12 +33,6 @@ export class World {
         }
     }
 
-    // updateDraggables(mousePos, mouseDown) {
-    //     for (let s of this.surfaces) {
-    //         // s.updateDraggables(mousePos, mouseDown);
-    //     }
-    // }
-
     render(ctx: CanvasRenderingContext2D) {
         // for (let s of this.surfaces) {
         //     s.render(ctx);

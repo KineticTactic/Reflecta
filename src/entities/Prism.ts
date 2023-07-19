@@ -23,15 +23,7 @@ export default class Prism extends SurfaceEntity {
             new PlaneRefractiveSurface(v3, v2, this.refractiveIndex),
             new PlaneRefractiveSurface(v1, v3, this.refractiveIndex),
         ];
-    }
 
-    // handleClick(_mousePos: Vector): boolean {
-    //     for (let s of this.surfaces) {
-    //         if (s.intersectsPoint(_mousePos, 10)) {
-    //             console.log("YEE");
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
+        this.updateBounds();
+    }
 }

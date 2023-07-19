@@ -1,6 +1,6 @@
 import Vector from "../lib/Vector";
 
-let ctx: CanvasRenderingContext2D;
+export let ctx: CanvasRenderingContext2D;
 
 export function setContext(context: CanvasRenderingContext2D) {
     ctx = context;
