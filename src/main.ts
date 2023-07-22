@@ -37,12 +37,21 @@ w.addEntity(sphere);
 // w.addSurface(curve);
 // w.addSurface(curve2);
 
-window.addEventListener("click", (e) => {
-    w.handleClick(new Vector(e.clientX, e.clientY));
+window.addEventListener("mousedown", (e) => {
+    w.handleMouseDown(new Vector(e.clientX, e.clientY));
 });
 
 window.addEventListener("mousemove", (e) => {
-    l.setPosition(new Vector(e.clientX, e.clientY));
+    w.handleMouseMove(new Vector(e.clientX, e.clientY));
+    // l.setPosition(new Vector(e.clientX, e.clientY));
+});
+
+window.addEventListener("mouseup", (e) => {
+    w.handleMouseUp(new Vector(e.clientX, e.clientY));
+});
+
+window.addEventListener("wheel", (e) => {
+    w.handleMouseWheel(-e.deltaY);
 });
 
 function draw() {
@@ -51,10 +60,12 @@ function draw() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // p.translate(new Vector(0.5, 0));
+
     // l.rotate(0.02);
-    p.rotate(-0.001);
-    convex.rotate(-0.005);
-    concave.rotate(0.005);
+    // p.rotate(-0.001);
+    // convex.rotate(-0.005);
+    // concave.rotate(0.005);
     // curve.facing.rotate(0.005);
     // curve2.facing.rotate(-0.01);
 

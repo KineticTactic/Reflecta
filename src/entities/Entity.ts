@@ -7,6 +7,8 @@ export default abstract class Entity {
     rot: number;
     bounds: AABB;
 
+    displayBounds: boolean = false;
+
     constructor(pos: Vector) {
         this.pos = pos;
         this.rot = 0;
@@ -22,6 +24,7 @@ export default abstract class Entity {
 
     translate(delta: Vector): void {
         this.pos.add(delta);
+
         this.updateTransforms(delta, 0);
         this.updateBounds();
     }
@@ -37,7 +40,8 @@ export default abstract class Entity {
 
     abstract addToWorld(_world: World): void;
 
-    abstract handleClick(_mousePos: Vector): boolean;
-
-    abstract render(_ctx: CanvasRenderingContext2D): void;
+    render(ctx: CanvasRenderingContext2D, isSelected: boolean): void {
+        if (this.displayBounds) this.bounds.render(ctx);
+        if (isSelected) this.bounds.render(ctx, "#8424b9", 2);
+    }
 }

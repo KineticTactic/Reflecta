@@ -16,7 +16,7 @@ export default abstract class SurfaceEntity extends Entity {
     override updateTransforms(deltaPos: Vector, deltaRot: number): void {
         for (let s of this.surfaces) {
             s.translate(deltaPos);
-            s.rotateAboutAxis(deltaRot, this.pos);
+            s.rotateAboutAxis(deltaRot, this.pos.copy());
         }
     }
 
@@ -38,14 +38,11 @@ export default abstract class SurfaceEntity extends Entity {
         }
     }
 
-    override handleClick(_mousePos: Vector): boolean {
-        return false;
-    }
-
-    override render(ctx: CanvasRenderingContext2D) {
+    override render(ctx: CanvasRenderingContext2D, isSelected: boolean) {
         for (let s of this.surfaces) {
             s.render(ctx);
         }
-        this.bounds.render(ctx);
+
+        super.render(ctx, isSelected);
     }
 }

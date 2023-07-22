@@ -11,9 +11,28 @@ export class AABB {
         this.end = end;
     }
 
-    render(ctx: CanvasRenderingContext2D) {
-        ctx.strokeStyle = "#8424b9";
-        ctx.lineWidth = 1;
+    has(p: Vector): boolean {
+        if (p.x < this.start.x || p.x > this.end.x) return false;
+        if (p.y < this.start.y || p.y > this.end.y) return false;
+        return true;
+    }
+
+    setMinSize(size: number) {
+        if (Math.abs(this.start.x - this.end.x) < size) {
+            let diff = size - Math.abs(this.start.x - this.end.x);
+            this.start.x -= diff / 2;
+            this.end.x += diff / 2;
+        }
+        if (Math.abs(this.start.y - this.end.y) < size) {
+            let diff = size - Math.abs(this.start.y - this.end.y);
+            this.start.y -= diff / 2;
+            this.end.y += diff / 2;
+        }
+    }
+
+    render(ctx: CanvasRenderingContext2D, color: string = "#8424b9", lineWidth: number = 1) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
         ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
     }
 

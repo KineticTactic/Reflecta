@@ -12,7 +12,7 @@ export default class GlassSphere extends SurfaceEntity {
         this.radius = 100;
         this.refractiveIndex = 1.666;
 
-        this.surfaces = [new CurvedRefractiveSurface(pos, this.radius, new Vector(1, 0), Math.PI * 2, this.refractiveIndex)];
+        this.surfaces = [new CurvedRefractiveSurface(pos.copy(), this.radius, new Vector(1, 0), Math.PI * 2, this.refractiveIndex)];
 
         this.updateBounds();
     }

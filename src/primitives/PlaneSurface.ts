@@ -67,13 +67,15 @@ export default abstract class PlaneSurface extends Surface {
         ctx.lineTo(this.v2.x, this.v2.y);
         ctx.stroke();
 
+        // console.log(this.v1.x);
+
         // Render normal
-        const midPoint = Vector.add(this.v1, this.v2).mult(0.5);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(midPoint.x, midPoint.y);
-        ctx.lineTo(midPoint.x + this.normal.x * 50, midPoint.y + this.normal.y * 50);
-        ctx.stroke();
+        // const midPoint = Vector.add(this.v1, this.v2).mult(0.5);
+        // ctx.strokeStyle = "red";
+        // ctx.lineWidth = 1;
+        // ctx.beginPath();
+        // ctx.moveTo(midPoint.x, midPoint.y);
+        // ctx.lineTo(midPoint.x + this.normal.x * 50, midPoint.y + this.normal.y * 50);
+        // ctx.stroke();
     }
 }

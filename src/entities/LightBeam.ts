@@ -2,6 +2,7 @@ import Entity from "./Entity";
 import Vector from "../lib/Vector";
 import LightRay from "../primitives/LightRay";
 import { World } from "../World";
+import { AABB } from "../util/Bounds";
 
 export default class LightBeam extends Entity {
     size: number;
@@ -20,6 +21,8 @@ export default class LightBeam extends Entity {
         for (let i = -this.size / 2; i <= this.size / 2; i += this.size / this.numRays) {
             this.lightRays.push(new LightRay(Vector.add(this.pos, new Vector(0, i)), this.dir));
         }
+
+        this.updateBounds();
     }
 
     addToWorld(world: World) {
@@ -29,7 +32,7 @@ export default class LightBeam extends Entity {
     }
 
     override updateTransforms(deltaPos: Vector, deltaRot: number): void {
-        this.pos.add(deltaPos);
+        // this.pos.add(deltaPos);
         this.dir.rotate(deltaRot);
 
         for (let l of this.lightRays) {
@@ -39,13 +42,10 @@ export default class LightBeam extends Entity {
         }
     }
 
-    handleClick(_mousePos: Vector): boolean {
-        return false;
-    }
-
-    render(_ctx: CanvasRenderingContext2D) {
-        // for (let l of this.lightRays) {
-        //     l.render(ctx);
-        // }
+    override updateBounds() {
+        const min = this.lightRays[0].origin.copy();
+        const max = this.lightRays[this.lightRays.length - 1].origin.copy();
+        this.bounds = AABB.fromPoints([min, max]);
+        this.bounds.setMinSize(20);
     }
 }

@@ -19,9 +19,9 @@ export default class Prism extends SurfaceEntity {
         let v3 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[2].copy().mult(this.size).rotate(this.rot));
 
         this.surfaces = [
-            new PlaneRefractiveSurface(v2, v1, this.refractiveIndex),
-            new PlaneRefractiveSurface(v3, v2, this.refractiveIndex),
-            new PlaneRefractiveSurface(v1, v3, this.refractiveIndex),
+            new PlaneRefractiveSurface(v2.copy(), v1.copy(), this.refractiveIndex),
+            new PlaneRefractiveSurface(v3.copy(), v2.copy(), this.refractiveIndex),
+            new PlaneRefractiveSurface(v1.copy(), v3.copy(), this.refractiveIndex),
         ];
 
         this.updateBounds();
