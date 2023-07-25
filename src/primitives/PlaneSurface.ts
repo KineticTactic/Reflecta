@@ -1,6 +1,6 @@
 import Vector from "../lib/Vector";
 import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
-import { AABB } from "../util/Bounds";
+import AABB from "../util/Bounds";
 import Surface from "./Surface";
 
 export default abstract class PlaneSurface extends Surface {
@@ -59,8 +59,8 @@ export default abstract class PlaneSurface extends Surface {
     }
 
     // Render the surface
-    render(ctx: CanvasRenderingContext2D) {
-        ctx.strokeStyle = "white";
+    override render(ctx: CanvasRenderingContext2D, color: string = "#ffffff") {
+        ctx.strokeStyle = color;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(this.v1.x, this.v1.y);

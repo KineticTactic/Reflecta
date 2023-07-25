@@ -1,6 +1,6 @@
 import { closestPointOnLine } from "../lib/intersections";
 import Vector from "../lib/Vector";
-import { AABB } from "../util/Bounds";
+import AABB from "../util/Bounds";
 import Surface from "./Surface";
 
 export default abstract class CurvedSurface extends Surface {
@@ -109,7 +109,7 @@ export default abstract class CurvedSurface extends Surface {
             and y too. With all those points, we can calculate the AABB.
         */
 
-        const axialVectors = [Vector.UP, Vector.DOWN, Vector.LEFT, Vector.RIGHT];
+        const axialVectors = [Vector.up(), Vector.down(), Vector.left(), Vector.right()];
 
         const boundingPoints = [];
 
@@ -129,7 +129,7 @@ export default abstract class CurvedSurface extends Surface {
 
     abstract handle(_origin: Vector, dir: Vector): Vector;
 
-    render(ctx: CanvasRenderingContext2D) {
+    render(ctx: CanvasRenderingContext2D, color: string = "#ffffff") {
         let angleStart = this.facing.heading() - this.span / 2;
         let angleEnd = this.facing.heading() + this.span / 2;
 
@@ -137,7 +137,7 @@ export default abstract class CurvedSurface extends Surface {
         // angleEnd = Math.PI * 2;
 
         ctx.beginPath();
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = color;
         ctx.lineWidth = 2;
         ctx.arc(this.center.x, this.center.y, this.radius, angleStart, angleEnd);
         ctx.stroke();

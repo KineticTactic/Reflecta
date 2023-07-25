@@ -7,11 +7,11 @@ export default class Vector {
         this.y = y;
     }
 
-    static ZERO: Vector = new Vector(0, 0);
-    static UP: Vector = new Vector(0, -1);
-    static DOWN: Vector = new Vector(0, 1);
-    static LEFT: Vector = new Vector(-1, 0);
-    static RIGHT: Vector = new Vector(1, 0);
+    static zero = () => new Vector(0, 0);
+    static up = () => new Vector(0, -1);
+    static down = () => new Vector(0, 1);
+    static left = () => new Vector(-1, 0);
+    static right = () => new Vector(1, 0);
 
     add(a: Vector): Vector;
     add(a: number): Vector;

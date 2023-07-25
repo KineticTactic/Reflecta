@@ -2,6 +2,7 @@ import ConcaveLens from "./entities/ConcaveLens";
 import ConvexLens from "./entities/ConvexLens";
 import GlassSphere from "./entities/GlassSphere";
 // import LightBeam from "./entities/LightBeam";
+// import LightBeam from "./entities/LightBeam";
 import PointLight from "./entities/PointLight";
 import Prism from "./entities/Prism";
 import Vector from "./lib/Vector";
@@ -37,20 +38,20 @@ w.addEntity(sphere);
 // w.addSurface(curve);
 // w.addSurface(curve2);
 
-window.addEventListener("mousedown", (e) => {
+canvas.addEventListener("mousedown", (e) => {
     w.handleMouseDown(new Vector(e.clientX, e.clientY));
 });
 
-window.addEventListener("mousemove", (e) => {
+canvas.addEventListener("mousemove", (e) => {
     w.handleMouseMove(new Vector(e.clientX, e.clientY));
     // l.setPosition(new Vector(e.clientX, e.clientY));
 });
 
-window.addEventListener("mouseup", (e) => {
+canvas.addEventListener("mouseup", (e) => {
     w.handleMouseUp(new Vector(e.clientX, e.clientY));
 });
 
-window.addEventListener("wheel", (e) => {
+canvas.addEventListener("wheel", (e) => {
     w.handleMouseWheel(-e.deltaY);
 });
 

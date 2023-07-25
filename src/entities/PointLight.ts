@@ -1,30 +1,32 @@
 import Entity from "./Entity";
 import Vector from "../lib/Vector";
 import LightRay from "../primitives/LightRay";
-import { World } from "../World";
-import { AABB } from "../util/Bounds";
+import AABB from "../util/Bounds";
+import { AttributeType } from "../ui/Attribute";
 
 export default class PointLight extends Entity {
     numRays: number;
-    lightRays: LightRay[];
 
     constructor(pos: Vector) {
-        super(pos);
-
+        super(pos, "Point Light");
         this.numRays = 1000;
 
+        this.init();
+
+        // Attributes
+        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000 });
+    }
+
+    init() {
         this.lightRays = [];
         for (let i = 0; i < this.numRays; i++) {
             this.lightRays.push(new LightRay(this.pos, new Vector(1, 0).rotate(((Math.PI * 2) / this.numRays) * i)));
         }
-
         this.updateBounds();
     }
 
     override updateTransforms(_deltaPos: Vector, _deltaRot: number): void {
-        for (let l of this.lightRays) {
-            l.origin = this.pos;
-        }
+        for (let l of this.lightRays) l.origin = this.pos;
     }
 
     override updateBounds(): void {
@@ -32,9 +34,14 @@ export default class PointLight extends Entity {
         this.bounds.setMinSize(50);
     }
 
-    addToWorld(world: World) {
-        for (let l of this.lightRays) {
-            world.addLightRay(l);
+    override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
+        super.updateAttribute(attribute, value);
+
+        switch (attribute) {
+            case "numRays":
+                this.numRays = value as number;
+                this.init();
+                break;
         }
     }
 }

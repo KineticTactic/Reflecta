@@ -2,35 +2,41 @@ import Vector from "./lib/Vector";
 import Entity from "./entities/Entity";
 import LightRay from "./primitives/LightRay";
 import Surface from "./primitives/Surface";
+import UI from "./ui/UI";
 
 export class World {
     surfaces: Surface[] = [];
     lightRays: LightRay[] = [];
     entities: Entity[] = [];
 
-    worldOffset = Vector.ZERO;
+    worldOffset = Vector.zero();
     worldScale = 1;
 
     selectedEntityIndex: number = -1;
 
     isMouseDown = false;
-    lastMousePos: Vector = Vector.ZERO;
+    lastMousePos: Vector = Vector.zero();
     isSelectedEntityBeingDragged = false;
 
-    addSurface(surface: Surface) {
-        this.surfaces.push(surface);
-    }
+    ui: UI = new UI();
 
-    addLightRay(lightRay: LightRay) {
-        this.lightRays.push(lightRay);
-    }
+    // addSurface(surface: Surface) {
+    //     // this.surfaces.push(surface);
+    // }
+
+    // addLightRay(lightRay: LightRay) {
+    //     // this.lightRays.push(lightRay);
+    // }
 
     addEntity(entity: Entity) {
         this.entities.push(entity);
-        entity.addToWorld(this);
+        // entity.addToWorld(this);
     }
 
     update() {
+        this.surfaces = this.entities.map((e) => e.surfaces).flat();
+        this.lightRays = this.entities.map((e) => e.lightRays).flat();
+
         for (let l of this.lightRays) {
             l.trace(this.surfaces);
         }
@@ -49,6 +55,9 @@ export class World {
 
                 this.selectedEntityIndex = i;
                 this.isSelectedEntityBeingDragged = true;
+
+                this.ui.selectEntity(this.entities[i]);
+
                 break;
             }
         }

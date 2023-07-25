@@ -1,8 +1,6 @@
 import Vector from "../lib/Vector";
 
-export class Bounds {}
-
-export class AABB {
+export default class AABB {
     start: Vector;
     end: Vector;
 

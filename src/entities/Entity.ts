@@ -1,24 +1,49 @@
 import Vector from "../lib/Vector";
-import { AABB } from "../util/Bounds";
-import { World } from "../World";
+import LightRay from "../primitives/LightRay";
+import Surface from "../primitives/Surface";
+import { Attribute, AttributeType } from "../ui/Attribute";
+import AABB from "../util/Bounds";
 
 export default abstract class Entity {
     pos: Vector;
     rot: number;
     bounds: AABB;
-
+    name: string;
+    color: string = "#ffffff";
     displayBounds: boolean = false;
 
-    constructor(pos: Vector) {
+    attributes: Attribute[];
+
+    surfaces: Surface[] = [];
+    lightRays: LightRay[] = [];
+
+    constructor(pos: Vector, name: string) {
         this.pos = pos;
         this.rot = 0;
+        this.name = name;
 
-        this.bounds = new AABB(Vector.ZERO, Vector.ZERO);
+        this.bounds = new AABB(Vector.zero(), Vector.zero());
+
+        // Attributes
+        this.attributes = [
+            { name: "color", type: AttributeType.Color },
+            { name: "displayBounds", type: AttributeType.Boolean },
+            { name: "pos", type: AttributeType.Vector },
+            { name: "rot", type: AttributeType.Number },
+        ];
     }
 
     setPosition(p: Vector) {
         const deltaPos = Vector.sub(p, this.pos);
+        this.pos = p;
         this.updateTransforms(deltaPos, 0);
+        this.updateBounds();
+    }
+
+    setRotation(r: number) {
+        const deltaRot = r - this.rot;
+        this.rot = r;
+        this.updateTransforms(Vector.zero(), deltaRot);
         this.updateBounds();
     }
 
@@ -31,14 +56,33 @@ export default abstract class Entity {
 
     rotate(theta: number): void {
         this.rot += theta;
-        this.updateTransforms(Vector.ZERO, theta);
+        this.updateTransforms(Vector.zero(), theta);
         this.updateBounds();
     }
 
     updateTransforms(_deltaPos: Vector, _deltaRot: number): void {}
     updateBounds(): void {}
 
-    abstract addToWorld(_world: World): void;
+    // abstract addToWorld(_world: World): void;
+
+    updateAttribute(attribute: string, value: string | Vector | number | boolean): void {
+        console.log("updating attribute", attribute, value);
+
+        switch (attribute) {
+            case "pos":
+                this.setPosition(value as Vector);
+                break;
+            case "rot":
+                this.setRotation(value as number);
+                break;
+            case "color":
+                this.color = value as string;
+                break;
+            case "displayBounds":
+                this.displayBounds = value as boolean;
+                break;
+        }
+    }
 
     render(ctx: CanvasRenderingContext2D, isSelected: boolean): void {
         if (this.displayBounds) this.bounds.render(ctx);
