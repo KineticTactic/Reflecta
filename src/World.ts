@@ -104,7 +104,7 @@ export class World {
 
         // Clamp world scale
         // TODO: Investigate rendering bug that happens on zooming in too much
-        this.worldScale = Math.max(Math.min(this.worldScale, 1), 0.1);
+        // this.worldScale = Math.max(Math.min(this.worldScale, 1), 0.1);
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -116,9 +116,15 @@ export class World {
         // Render light rays
         ctx.beginPath();
         for (let lightRay of this.lightRays) lightRay.render(ctx);
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        const brightness = 50;
+        ctx.strokeStyle = `rgba(${brightness}, ${brightness}, ${brightness}, 1)`;
         ctx.lineWidth = 1;
+        // ctx.shadowBlur = 100;
+        ctx.globalCompositeOperation = "lighter";
+        // ctx.globalAlpha = 1;
+        ctx.lineCap = "butt";
         ctx.stroke();
+        ctx.closePath();
 
         // Render entities
         for (let i = 0; i < this.entities.length; i++) {

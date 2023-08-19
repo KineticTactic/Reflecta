@@ -2,6 +2,8 @@ import ConcaveLens from "./entities/ConcaveLens";
 import ConvexLens from "./entities/ConvexLens";
 import GlassSphere from "./entities/GlassSphere";
 // import LightBeam from "./entities/LightBeam";
+// import LightRayEntity from "./entities/LightRayEntity";
+// import LightBeam from "./entities/LightBeam";
 // import LightBeam from "./entities/LightBeam";
 import PointLight from "./entities/PointLight";
 import Prism from "./entities/Prism";
@@ -23,6 +25,7 @@ const w = new World();
 const p = new Prism(new Vector(200, 150));
 w.addEntity(p);
 const l = new PointLight(new Vector(700, 400));
+// const l = new LightRayEntity(new Vector(700, 400));
 // const l = new LightBeam(new Vector(300, 300));
 w.addEntity(l);
 let convex = new ConvexLens(new Vector(800, 300));
@@ -54,6 +57,9 @@ canvas.addEventListener("mouseup", (e) => {
 canvas.addEventListener("wheel", (e) => {
     w.handleMouseWheel(-e.deltaY);
 });
+
+w.selectedEntityIndex = 1;
+w.ui.selectEntity(w.entities[1]);
 
 function draw() {
     requestAnimationFrame(draw);

@@ -17,6 +17,7 @@ export default class GlassSphere extends SurfaceEntity {
 
         // Attributes
         this.attributes.push({ name: "radius", type: AttributeType.Number, min: 0, max: 1000 });
+        this.attributes.push({ name: "refractiveIndex", type: AttributeType.Number, min: 0.1, max: 10 });
     }
 
     init() {
@@ -29,6 +30,10 @@ export default class GlassSphere extends SurfaceEntity {
             case "radius":
                 this.radius = value as number;
                 this.init();
+                break;
+            case "refractiveIndex":
+                this.refractiveIndex = value as number;
+                (this.surfaces[0] as CurvedRefractiveSurface).refractiveIndex = this.refractiveIndex;
                 break;
         }
     }

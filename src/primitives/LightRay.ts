@@ -80,6 +80,7 @@ export default class LightRay {
         for (let p of this.path) {
             ctx.lineTo(p.x, p.y);
         }
+        // ctx.stroke();
         // ctx.lineTo(this.origin.x + this.dir.x * 100, this.origin.y + this.dir.y * 100);
 
         // for (let i = 0; i < this.path.length; i++) {

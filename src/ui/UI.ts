@@ -1,18 +1,27 @@
+import ConcaveLens from "../entities/ConcaveLens";
+import ConvexLens from "../entities/ConvexLens";
 import Entity from "../entities/Entity";
 import Vector from "../lib/Vector";
 import { Attribute, AttributeType } from "./Attribute";
 
+const entities = [ConcaveLens, ConvexLens];
+
 export default class UI {
-    baseElement: HTMLElement;
+    entityAddDiv: HTMLElement;
+    entityAttributesDiv: HTMLElement;
     selectedEntity: Entity | null = null;
 
     constructor() {
-        this.baseElement = document.getElementById("sidebar")!;
+        console.log(entities);
+
+        this.entityAddDiv = document.getElementById("entity-creation")!;
+
+        this.entityAttributesDiv = document.getElementById("entity-attributes")!;
     }
 
     selectEntity(entity: Entity): void {
         this.selectedEntity = entity;
-        this.baseElement.innerHTML = entity.name + "<br/>";
+        this.entityAttributesDiv.innerHTML = entity.name + "<br/>";
         this.createEntityAttributesDOM(entity);
     }
 
@@ -21,7 +30,7 @@ export default class UI {
 
         for (const attr of entity.attributes) {
             const domElement = this.createAttributeDOM(entity, attr);
-            this.baseElement.appendChild(domElement);
+            this.entityAttributesDiv.appendChild(domElement);
         }
     }
 
@@ -29,6 +38,7 @@ export default class UI {
         console.log(this.selectEntity);
 
         const div = document.createElement("div");
+        div.className = "attribute";
 
         const label = document.createElement("label");
         label.innerText = attr.name;
@@ -44,13 +54,21 @@ export default class UI {
                 xInputElement.type = "number";
                 xInputElement.value = vector.x.toString();
 
+                const xInputContainerElement = document.createElement("div");
+                xInputContainerElement.className = "input-container vector-x";
+                xInputContainerElement.appendChild(xInputElement);
+
                 let yInputElement: HTMLInputElement;
                 yInputElement = document.createElement("input");
                 yInputElement.type = "number";
                 yInputElement.value = vector.y.toString();
 
-                div.appendChild(xInputElement);
-                div.appendChild(yInputElement);
+                const yInputContainerElement = document.createElement("div");
+                yInputContainerElement.className = "input-container vector-y";
+                yInputContainerElement.appendChild(yInputElement);
+
+                div.appendChild(xInputContainerElement);
+                div.appendChild(yInputContainerElement);
 
                 xInputElement.addEventListener("input", (e) => {
                     const vectorValue = new Vector(parseFloat((e.target as HTMLInputElement).value), parseFloat(yInputElement.value));
@@ -69,7 +87,11 @@ export default class UI {
                 checkboxElement.type = "checkbox";
                 checkboxElement.checked = entity[attr.name as keyof Entity] as boolean;
 
-                div.appendChild(checkboxElement);
+                const checkboxContainerElement = document.createElement("div");
+                checkboxContainerElement.className = "input-container";
+                checkboxContainerElement.appendChild(checkboxElement);
+
+                div.appendChild(checkboxContainerElement);
 
                 checkboxElement.addEventListener("input", (e) => {
                     entity.updateAttribute(attr.name, (e.target as HTMLInputElement).checked);
@@ -80,7 +102,12 @@ export default class UI {
                 const inputElement = document.createElement("input");
                 inputElement.type = attr.type;
                 inputElement.value = entity[attr.name as keyof Entity].toString();
-                div.appendChild(inputElement);
+
+                const inputContainerElement = document.createElement("div");
+                inputContainerElement.className = "input-container";
+                inputContainerElement.appendChild(inputElement);
+
+                div.appendChild(inputContainerElement);
 
                 inputElement.addEventListener("input", (e) => {
                     entity.updateAttribute(attr.name, (e.target as HTMLInputElement).value);
@@ -88,17 +115,6 @@ export default class UI {
 
                 break;
         }
-
-        // inputElement.addEventListener("input", (e) => {
-        //     // type createEnumType<T> = { [K in keyof T]: K };
-        //     // type FlagsObject = createEnumType<typeof Entity>;
-        //     // type FlagsKeys = keyof FlagsObject;
-        //     // const keys = Object.keys(Entity) as FlagsKeys[];
-
-        //     // const keys = Object.keys(Entity) as keyof Entity;
-        //     // (entity as Record<typeof attr.name, any>)[attr.name as keyof Entity] = (e.target as HTMLInputElement).value;
-        //     entity.updateAttribute(attr.name, (e.target as HTMLInputElement).value);
-        // });
 
         return div;
     }
