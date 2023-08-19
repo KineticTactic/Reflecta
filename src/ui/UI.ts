@@ -1,22 +1,32 @@
-import ConcaveLens from "../entities/ConcaveLens";
-import ConvexLens from "../entities/ConvexLens";
+import World from "../World";
 import Entity from "../entities/Entity";
 import Vector from "../lib/Vector";
 import { Attribute, AttributeType } from "./Attribute";
 
-const entities = [ConcaveLens, ConvexLens];
+import entities from "../entities/entityList";
 
 export default class UI {
     entityAddDiv: HTMLElement;
     entityAttributesDiv: HTMLElement;
     selectedEntity: Entity | null = null;
+    world: World;
 
-    constructor() {
-        console.log(entities);
+    constructor(world: World) {
+        this.world = world;
 
         this.entityAddDiv = document.getElementById("entity-creation")!;
 
         this.entityAttributesDiv = document.getElementById("entity-attributes")!;
+
+        for (const entity of entities) {
+            const button = document.createElement("button");
+            button.innerText = entity.name;
+            button.addEventListener("click", () => {
+                // this.createEntity(entity);
+                world.addEntity(new entity(new Vector(0, 0)));
+            });
+            this.entityAddDiv.appendChild(button);
+        }
     }
 
     selectEntity(entity: Entity): void {

@@ -4,7 +4,7 @@ import LightRay from "./primitives/LightRay";
 import Surface from "./primitives/Surface";
 import UI from "./ui/UI";
 
-export class World {
+export default class World {
     surfaces: Surface[] = [];
     lightRays: LightRay[] = [];
     entities: Entity[] = [];
@@ -18,7 +18,7 @@ export class World {
     lastMousePos: Vector = Vector.zero();
     isSelectedEntityBeingDragged = false;
 
-    ui: UI = new UI();
+    ui: UI = new UI(this);
 
     // addSurface(surface: Surface) {
     //     // this.surfaces.push(surface);
@@ -116,9 +116,9 @@ export class World {
         // Render light rays
         ctx.beginPath();
         for (let lightRay of this.lightRays) lightRay.render(ctx);
-        const brightness = 50;
+        const brightness = 150;
         ctx.strokeStyle = `rgba(${brightness}, ${brightness}, ${brightness}, 1)`;
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 0.2;
         // ctx.shadowBlur = 100;
         ctx.globalCompositeOperation = "lighter";
         // ctx.globalAlpha = 1;

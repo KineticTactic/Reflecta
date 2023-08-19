@@ -10,7 +10,7 @@ import Prism from "./entities/Prism";
 import Vector from "./lib/Vector";
 import "./style.css";
 import { setContext } from "./util/debug";
-import { World } from "./World";
+import World from "./World";
 
 const canvas = document.getElementById("display") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -47,7 +47,6 @@ canvas.addEventListener("mousedown", (e) => {
 
 canvas.addEventListener("mousemove", (e) => {
     w.handleMouseMove(new Vector(e.clientX, e.clientY));
-    // l.setPosition(new Vector(e.clientX, e.clientY));
 });
 
 canvas.addEventListener("mouseup", (e) => {
