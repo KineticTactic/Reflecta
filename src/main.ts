@@ -57,8 +57,8 @@ canvas.addEventListener("wheel", (e) => {
     w.handleMouseWheel(-e.deltaY);
 });
 
-w.selectedEntityIndex = 1;
-w.ui.selectEntity(w.entities[1]);
+// w.selectedEntityIndex = 1;
+// w.ui.selectEntity(w.entities[1]);
 
 function draw() {
     requestAnimationFrame(draw);

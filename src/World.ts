@@ -33,6 +33,12 @@ export default class World {
         // entity.addToWorld(this);
     }
 
+    removeEntity(entity: Entity) {
+        const index = this.entities.indexOf(entity);
+        if (index > -1) this.entities.splice(index, 1);
+        this.selectedEntityIndex = -1;
+    }
+
     update() {
         this.surfaces = this.entities.map((e) => e.surfaces).flat();
         this.lightRays = this.entities.map((e) => e.lightRays).flat();

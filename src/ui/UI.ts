@@ -30,12 +30,29 @@ export default class UI {
     }
 
     selectEntity(entity: Entity): void {
+        console.log("Yes");
+        console.trace();
+
         this.selectedEntity = entity;
         this.entityAttributesDiv.innerHTML = entity.name + "<br/>";
+
         this.createEntityAttributesDOM(entity);
     }
 
+    deselectEntity() {
+        this.selectedEntity = null;
+        this.entityAttributesDiv.innerHTML = "";
+    }
+
     createEntityAttributesDOM(entity: Entity) {
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.addEventListener("click", () => {
+            this.world.removeEntity(this.selectedEntity!);
+            this.deselectEntity();
+        });
+        this.entityAttributesDiv.appendChild(deleteButton);
+
         console.log(entity.attributes);
 
         for (const attr of entity.attributes) {

@@ -48,6 +48,7 @@ export default class ConvexLens extends SurfaceEntity {
     }
 
     override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
+        super.updateAttribute(attribute, value);
         switch (attribute) {
             case "span":
                 this.span = value as number;
