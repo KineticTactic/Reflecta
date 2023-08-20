@@ -1,8 +1,8 @@
-import Vector from "./lib/Vector";
-import Entity from "./entities/Entity";
-import LightRay from "./primitives/LightRay";
-import Surface from "./primitives/Surface";
-import UI from "./ui/UI";
+import Vector from "../lib/Vector";
+import Entity from "./Entity";
+import LightRay from "../primitives/LightRay";
+import Surface from "../primitives/Surface";
+import UI from "../ui/UI";
 
 export default class World {
     surfaces: Surface[] = [];

@@ -2,10 +2,17 @@ import Vector from "../lib/Vector";
 import SurfaceEntity from "./SurfaceEntity";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
+import EntityData from "../core/EntityData";
 
 export default class GlassSphere extends SurfaceEntity {
     radius: number;
     refractiveIndex: number;
+
+    static entityData: EntityData = {
+        name: "Glass Sphere",
+        desc: "A glass sphere.",
+        constructorFunc: GlassSphere,
+    };
 
     constructor(pos: Vector) {
         super(pos, "Glass Sphere");

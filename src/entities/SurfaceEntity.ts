@@ -1,7 +1,7 @@
 import Vector from "../lib/Vector";
 // import Surface from "../primitives/Surface";
 import AABB from "../util/Bounds";
-import Entity from "./Entity";
+import Entity from "../core/Entity";
 
 export default abstract class SurfaceEntity extends Entity {
     constructor(pos: Vector, name: string) {

@@ -2,11 +2,18 @@ import Vector from "../lib/Vector";
 import SurfaceEntity from "./SurfaceEntity";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
+import EntityData from "../core/EntityData";
 
 export default class ConvexLens extends SurfaceEntity {
     span: number;
     radiusOfCurvature: number;
     refractiveIndex: number;
+
+    static entityData: EntityData = {
+        name: "Convex Lens",
+        desc: "A convex lens.",
+        constructorFunc: ConvexLens,
+    };
 
     constructor(pos: Vector) {
         super(pos, "Convex Lens");

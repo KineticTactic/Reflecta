@@ -1,5 +1,5 @@
-import World from "../World";
-import Entity from "../entities/Entity";
+import World from "../core/World";
+import Entity from "../core/Entity";
 import Vector from "../lib/Vector";
 import { Attribute, AttributeType } from "./Attribute";
 
@@ -22,8 +22,7 @@ export default class UI {
             const button = document.createElement("button");
             button.innerText = entity.name;
             button.addEventListener("click", () => {
-                // this.createEntity(entity);
-                world.addEntity(new entity(new Vector(0, 0)));
+                world.addEntity(new entity.constructorFunc(new Vector(0, 0)));
             });
             this.entityAddDiv.appendChild(button);
         }

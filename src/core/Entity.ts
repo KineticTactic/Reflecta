@@ -3,6 +3,7 @@ import LightRay from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import { Attribute, AttributeType } from "../ui/Attribute";
 import AABB from "../util/Bounds";
+import EntityData from "./EntityData";
 
 export default abstract class Entity {
     pos: Vector;
@@ -16,6 +17,8 @@ export default abstract class Entity {
 
     surfaces: Surface[] = [];
     lightRays: LightRay[] = [];
+
+    static entityData: EntityData;
 
     constructor(pos: Vector, name: string) {
         this.pos = pos;

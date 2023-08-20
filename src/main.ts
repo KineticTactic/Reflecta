@@ -10,7 +10,7 @@ import Prism from "./entities/Prism";
 import Vector from "./lib/Vector";
 import "./style.css";
 import { setContext } from "./util/debug";
-import World from "./World";
+import World from "./core/World";
 
 const canvas = document.getElementById("display") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;

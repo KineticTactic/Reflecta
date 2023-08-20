@@ -2,6 +2,7 @@ import Vector from "../lib/Vector";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
+import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 
 export default class ConcaveLens extends SurfaceEntity {
@@ -9,6 +10,12 @@ export default class ConcaveLens extends SurfaceEntity {
     radiusOfCurvature: number;
     thickness: number;
     refractiveIndex: number;
+
+    static entityData: EntityData = {
+        name: "Concave Lens",
+        desc: "A concave lens.",
+        constructorFunc: ConcaveLens,
+    };
 
     constructor(pos: Vector) {
         super(pos, "Concave Lens");

@@ -1,6 +1,7 @@
 import Vector from "../lib/Vector";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
+import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 
 const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
@@ -8,6 +9,12 @@ const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector
 export default class Prism extends SurfaceEntity {
     size: number;
     refractiveIndex: number;
+
+    static entityData: EntityData = {
+        name: "Prism",
+        desc: "A prism.",
+        constructorFunc: Prism,
+    };
 
     constructor(pos: Vector) {
         super(pos, "Prism");

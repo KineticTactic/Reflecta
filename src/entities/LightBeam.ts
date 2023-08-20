@@ -1,12 +1,19 @@
-import Entity from "./Entity";
+import Entity from "../core/Entity";
 import Vector from "../lib/Vector";
 import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
 import { AttributeType } from "../ui/Attribute";
+import EntityData from "../core/EntityData";
 
 export default class LightBeam extends Entity {
     size: number;
     numRays: number;
+
+    static entityData: EntityData = {
+        name: "Light Beam",
+        desc: "A light beam.",
+        constructorFunc: LightBeam,
+    };
 
     constructor(pos: Vector) {
         super(pos, "Light Beam");
