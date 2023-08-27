@@ -5,6 +5,7 @@ import LightBeam from "./LightBeam";
 import LightRayEntity from "./LightRayEntity";
 import PointLight from "./PointLight";
 import Prism from "./Prism";
+import SphericalMirror from "./SphericalMirror";
 
 const entityList = [
     ConcaveLens.entityData,
@@ -14,6 +15,7 @@ const entityList = [
     LightRayEntity.entityData,
     PointLight.entityData,
     Prism.entityData,
+    SphericalMirror.entityData,
 ];
 
 export default entityList;
