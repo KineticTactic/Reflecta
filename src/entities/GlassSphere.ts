@@ -33,6 +33,7 @@ export default class GlassSphere extends SurfaceEntity {
     }
 
     override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
+        super.updateAttribute(attribute, value);
         switch (attribute) {
             case "radius":
                 this.radius = value as number;

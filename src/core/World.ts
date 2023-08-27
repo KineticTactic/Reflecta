@@ -17,6 +17,7 @@ export default class World {
     isMouseDown = false;
     lastMousePos: Vector = Vector.zero();
     isSelectedEntityBeingDragged = false;
+    buttonDown: number = -1;
 
     ui: UI = new UI(this);
 
@@ -48,7 +49,7 @@ export default class World {
         }
     }
 
-    handleMouseDown(mousePos: Vector) {
+    handleMouseDown(mousePos: Vector, button: MouseEvent["button"]) {
         const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
 
         ///TODO: Objects on top of one another cant be selected, only the topmost one is selected
@@ -69,40 +70,55 @@ export default class World {
         }
 
         this.isMouseDown = true;
+        this.buttonDown = button;
     }
 
     handleMouseMove(mousePos: Vector) {
-        const deltaMousePos = Vector.sub(mousePos, this.lastMousePos);
-        const worldDeltaMousePos = deltaMousePos.copy().div(this.worldScale);
-        this.lastMousePos = mousePos;
-
         if (this.isMouseDown) {
-            if (this.isSelectedEntityBeingDragged) {
-                this.entities[this.selectedEntityIndex].translate(worldDeltaMousePos);
-                return;
-            }
-
-            if (this.selectedEntityIndex === -1) {
-                this.worldOffset.add(deltaMousePos);
-                return;
+            this.handleDrag(mousePos);
+        } else {
+            // Calculate mouse position in world space
+            const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
+            // Check if mouse is hovering over an entity to draw AABBs
+            for (let e of this.entities) {
+                e.displayBounds = e.bounds.has(worldMousePos);
             }
         }
+        this.lastMousePos = mousePos.copy();
+    }
 
-        // let worldMousePos = Vector.sub(mousePos, this.worldOffset);
+    handleDrag(mousePos: Vector) {
+        const deltaMousePos = Vector.sub(mousePos, this.lastMousePos);
+
+        // If no entity is selected then we are dragging the world space
+        if (this.selectedEntityIndex === -1) {
+            this.worldOffset.add(deltaMousePos);
+            return;
+        }
+
+        // At this point some entity is selected
+
         const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
+        const lastWorldMousePos = Vector.sub(this.lastMousePos, this.worldOffset).div(this.worldScale);
+        const worldDeltaMousePos = deltaMousePos.copy().div(this.worldScale);
 
-        for (let e of this.entities) {
-            if (e.bounds.has(worldMousePos)) {
-                e.displayBounds = true;
-                continue;
-            }
-            e.displayBounds = false;
+        if (this.buttonDown === 2) {
+            // Rotate with right mouse button
+            const originToLastMousePos = Vector.sub(lastWorldMousePos, this.entities[this.selectedEntityIndex].pos);
+            const originToMousePos = Vector.sub(worldMousePos, this.entities[this.selectedEntityIndex].pos);
+            const angle = Vector.angleBetween(originToLastMousePos, originToMousePos);
+            this.entities[this.selectedEntityIndex].rotate(angle);
+        } else {
+            // translate with left mouse button
+            this.entities[this.selectedEntityIndex].translate(worldDeltaMousePos);
         }
+        return;
     }
 
     handleMouseUp(_mousePos: Vector) {
         this.isMouseDown = false;
         this.isSelectedEntityBeingDragged = false;
+        this.buttonDown = -1;
     }
 
     handleMouseWheel(delta: number) {

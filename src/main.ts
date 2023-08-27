@@ -42,7 +42,7 @@ w.addEntity(sphere);
 // w.addSurface(curve2);
 
 canvas.addEventListener("mousedown", (e) => {
-    w.handleMouseDown(new Vector(e.clientX, e.clientY));
+    w.handleMouseDown(new Vector(e.clientX, e.clientY), e.button);
 });
 
 canvas.addEventListener("mousemove", (e) => {

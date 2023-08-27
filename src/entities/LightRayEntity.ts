@@ -38,8 +38,4 @@ export default class LightRayEntity extends Entity {
         this.bounds = AABB.fromPoints([min, max]);
         this.bounds.setMinSize(20);
     }
-
-    override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
-        super.updateAttribute(attribute, value);
-    }
 }
