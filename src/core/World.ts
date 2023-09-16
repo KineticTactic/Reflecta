@@ -122,7 +122,16 @@ export default class World {
     }
 
     handleMouseWheel(delta: number) {
-        this.worldScale += delta / 1000;
+        let scaleFactor = 0.8;
+        scaleFactor = delta > 0 ? 1 / scaleFactor : scaleFactor;
+
+        this.worldScale *= scaleFactor;
+
+        const dx = (this.lastMousePos.x - this.worldOffset.x) * (1 - scaleFactor);
+        const dy = (this.lastMousePos.y - this.worldOffset.y) * (1 - scaleFactor);
+
+        this.worldOffset.x += dx;
+        this.worldOffset.y += dy;
 
         // Clamp world scale
         // TODO: Investigate rendering bug that happens on zooming in too much
