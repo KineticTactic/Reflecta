@@ -41,7 +41,6 @@ export default abstract class Entity {
         this.pos = p.copy();
         this.updateTransforms(deltaPos, 0);
         this.updateBounds();
-        console.log(deltaPos);
     }
 
     setRotation(r: number) {
@@ -53,6 +52,7 @@ export default abstract class Entity {
 
     translate(delta: Vector): void {
         this.pos.add(delta);
+        console.log(delta);
 
         this.updateTransforms(delta, 0);
         this.updateBounds();
@@ -73,10 +73,10 @@ export default abstract class Entity {
         console.log("updating attribute", attribute, value);
 
         switch (attribute) {
-            case "pos":
+            case "position":
                 this.setPosition(value as Vector);
                 break;
-            case "rot":
+            case "rotation":
                 this.setRotation(value as number);
                 break;
             case "color":
