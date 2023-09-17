@@ -13,4 +13,5 @@ export interface Attribute {
     min?: number;
     max?: number;
     step?: number;
+    value: any;
 }

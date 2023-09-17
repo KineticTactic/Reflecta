@@ -25,8 +25,8 @@ export default class Prism extends SurfaceEntity {
         this.init();
 
         // Attributes
-        this.attributes.push({ name: "size", type: AttributeType.Number, min: 0, max: 1000 });
-        this.attributes.push({ name: "refractiveIndex", type: AttributeType.Number, min: 0.1, max: 10 });
+        this.attributes.push({ name: "size", type: AttributeType.Number, min: 0, max: 1000, value: this.size });
+        this.attributes.push({ name: "refractiveIndex", type: AttributeType.Number, min: 0.1, max: 10, value: this.refractiveIndex });
     }
 
     init() {

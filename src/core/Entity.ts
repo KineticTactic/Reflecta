@@ -29,18 +29,19 @@ export default abstract class Entity {
 
         // Attributes
         this.attributes = [
-            { name: "color", type: AttributeType.Color },
-            { name: "displayBounds", type: AttributeType.Boolean },
-            { name: "pos", type: AttributeType.Vector },
-            { name: "rot", type: AttributeType.Number },
+            { name: "color", type: AttributeType.Color, value: this.color },
+            { name: "displayBounds", type: AttributeType.Boolean, value: this.displayBounds },
+            { name: "position", type: AttributeType.Vector, value: this.pos.copy() },
+            { name: "rotation", type: AttributeType.Number, value: this.rot },
         ];
     }
 
     setPosition(p: Vector) {
         const deltaPos = Vector.sub(p, this.pos);
-        this.pos = p;
+        this.pos = p.copy();
         this.updateTransforms(deltaPos, 0);
         this.updateBounds();
+        console.log(deltaPos);
     }
 
     setRotation(r: number) {

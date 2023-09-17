@@ -23,8 +23,8 @@ export default class SphericalMirror extends SurfaceEntity {
         this.init();
 
         // Attributes
-        this.attributes.push({ name: "span", type: AttributeType.Number, min: 0, max: 1000 });
-        this.attributes.push({ name: "radiusOfCurvature", type: AttributeType.Number, min: 0, max: 1000 });
+        this.attributes.push({ name: "span", type: AttributeType.Number, min: 0, max: 1000, value: this.span });
+        this.attributes.push({ name: "radiusOfCurvature", type: AttributeType.Number, min: 0, max: 1000, value: this.radiusOfCurvature });
     }
 
     init() {

@@ -24,8 +24,8 @@ export default class LightBeam extends Entity {
         this.init();
 
         // Attributes
-        this.attributes.push({ name: "size", type: AttributeType.Number, min: 0, max: 10000 });
-        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000 });
+        this.attributes.push({ name: "size", type: AttributeType.Number, min: 0, max: 10000, value: this.size });
+        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000, value: this.numRays });
     }
 
     init() {

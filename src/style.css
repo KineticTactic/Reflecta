@@ -1,4 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Victor+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+
+:root {
+    --tp-base-background-color: hsla(0, 0%, 10%, 0.80);
+    --tp-base-shadow-color: hsla(0, 0%, 0%, 0.2);
+    --tp-button-background-color: hsla(0, 0%, 80%, 1.00);
+    --tp-button-background-color-active: hsla(0, 0%, 100%, 1.00);
+    --tp-button-background-color-focus: hsla(0, 0%, 95%, 1.00);
+    --tp-button-background-color-hover: hsla(0, 0%, 85%, 1.00);
+    --tp-button-foreground-color: hsla(0, 0%, 0%, 0.80);
+    --tp-container-background-color: hsla(0, 0%, 0%, 0.30);
+    --tp-container-background-color-active: hsla(0, 0%, 0%, 0.60);
+    --tp-container-background-color-focus: hsla(0, 0%, 0%, 0.50);
+    --tp-container-background-color-hover: hsla(0, 0%, 0%, 0.40);
+    --tp-container-foreground-color: hsla(0, 0%, 100%, 0.50);
+    --tp-groove-foreground-color: hsla(0, 0%, 0%, 0.20);
+    --tp-input-background-color: hsla(0, 0%, 0%, 0.30);
+    --tp-input-background-color-active: hsla(0, 0%, 0%, 0.60);
+    --tp-input-background-color-focus: hsla(0, 0%, 0%, 0.50);
+    --tp-input-background-color-hover: hsla(0, 0%, 0%, 0.40);
+    --tp-input-foreground-color: hsla(0, 0%, 100%, 0.50);
+    --tp-label-foreground-color: hsla(0, 0%, 100%, 0.50);
+    --tp-monitor-background-color: hsla(0, 0%, 0%, 0.30);
+    --tp-monitor-foreground-color: hsla(0, 0%, 100%, 0.30);
+}
+
+#tweakpane-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    margin: 1rem;
+}
+
+.tp-rotv {
+    --bs-ff: "Inconsolata" !important;
+    font-size: 0.9rem !important;
+}
 
 html,
 body {

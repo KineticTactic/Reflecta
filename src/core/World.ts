@@ -56,6 +56,7 @@ export default class World {
 
         // const previouslySelected = this.selectedEntityIndex;
         this.selectedEntityIndex = -1;
+        this.ui.deselectEntity();
         for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i].bounds.has(worldMousePos)) {
                 console.log("Selected entity:", this.entities[i]);

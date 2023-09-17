@@ -21,7 +21,7 @@ export default class PointLight extends Entity {
         this.init();
 
         // Attributes
-        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000 });
+        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000, value: this.numRays });
     }
 
     init() {

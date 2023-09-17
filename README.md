@@ -44,3 +44,9 @@ The first time I started building this, I scrapped together some code to make a 
 After taking a break and returning to the project, I realized I didn't understand half of the code I had written. _sigh._
 
 So this is the third time I'm rewriting this :D But I really like codebase this time, and the way I've designed it using Classes and Inheritance. I've also used TypeScript for better type checking.
+
+## External Dependencies
+
+-   Tweakpane [https://cocopon.github.io/tweakpane/](https://cocopon.github.io/tweakpane/)
+
+-   Tweakpane Essentials [https://github.com/tweakpane/plugin-essentials](https://github.com/tweakpane/plugin-essentials)

@@ -28,10 +28,10 @@ export default class ConcaveLens extends SurfaceEntity {
         this.init();
 
         // Attributes
-        this.attributes.push({ name: "span", type: AttributeType.Number, min: 0, max: 1000 });
-        this.attributes.push({ name: "radiusOfCurvature", type: AttributeType.Number, min: 0, max: 1000 });
-        this.attributes.push({ name: "thickness", type: AttributeType.Number, min: 0, max: 1000 });
-        this.attributes.push({ name: "refractiveIndex", type: AttributeType.Number, min: 0.1, max: 10 });
+        this.attributes.push({ name: "span", type: AttributeType.Number, min: 0, max: 1000, value: this.span });
+        this.attributes.push({ name: "radiusOfCurvature", type: AttributeType.Number, min: 0, max: 1000, value: this.radiusOfCurvature });
+        this.attributes.push({ name: "thickness", type: AttributeType.Number, min: 0, max: 1000, value: this.thickness });
+        this.attributes.push({ name: "refractiveIndex", type: AttributeType.Number, min: 0.1, max: 10, value: this.refractiveIndex });
     }
 
     init() {
