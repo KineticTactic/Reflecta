@@ -1,6 +1,8 @@
 import Vector from "../lib/Vector";
 import Surface from "./Surface";
 
+const MAX_BOUNCE_LIMIT = 50;
+
 export default class LightRay {
     origin: Vector;
     dir: Vector;
@@ -21,7 +23,7 @@ export default class LightRay {
         let currentDir = this.dir.copy(); // Store the current direction of the ray
         let lastIntersectionIndex = null; // Store the index of the last surface that the ray intersected with
 
-        for (let k = 0; k < 50; k++) {
+        for (let k = 0; k < MAX_BOUNCE_LIMIT; k++) {
             let closestIntersection = null; // Store the closest intersection point after checking all surfaces
             let closestIntersectionIndex = null; // Store the index of the closest surface that the ray intersected with
             let closestIntersectionDistance = Infinity; // Store the distance between the current point and the closest intersection point
@@ -65,14 +67,15 @@ export default class LightRay {
                 // Update the last intersection
                 lastIntersectionIndex = closestIntersectionIndex;
             } else {
-                // if (k > 10) console.log(k);
+                // Since there is no intersection, exit out of the loop
                 break;
             }
         }
-        // console.log(this.path);
 
         // Add the last point to the path
         this.path.push(currentPoint.copy().add(currentDir.mult(3000)));
+
+        return this.path.length - 2;
     }
 
     render(ctx: CanvasRenderingContext2D) {

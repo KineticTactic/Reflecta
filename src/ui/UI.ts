@@ -39,9 +39,19 @@ export default class UI {
             world.addEntity(new entities[ev.index[1] * 2 + ev.index[0]].constructorFunc(new Vector(0, 0)));
         });
 
-        addEntityFolder.addBlade({
-            view: "separator",
+        const statsFolder = this.pane.addFolder({
+            title: "Stats",
+            expanded: false,
         });
+        statsFolder.addBinding(world.stats, "entities", { readonly: true });
+        statsFolder.addBinding(world.stats, "lightRays", { readonly: true, label: "light rays" });
+        statsFolder.addBinding(world.stats, "surfaces", { readonly: true });
+        statsFolder.addBinding(world.stats, "totalLightBounces", { readonly: true, label: "total bounces" });
+        statsFolder.addBinding(world.stats, "maxLightBounces", { readonly: true, label: "max bounces" });
+        statsFolder.addBinding(world.stats, "lightTraceTime", { readonly: true, label: "trace time(ms)" });
+        statsFolder.addBinding(world.stats, "lightTraceTime", { readonly: true, label: " ", view: "graph" });
+        statsFolder.addBinding(world.stats, "renderTime", { readonly: true, label: "render time(ms)" });
+        statsFolder.addBinding(world.stats, "renderTime", { readonly: true, label: " ", view: "graph" });
     }
 
     selectEntity(entity: Entity): void {

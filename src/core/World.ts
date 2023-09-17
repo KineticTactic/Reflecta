@@ -19,19 +19,20 @@ export default class World {
     isSelectedEntityBeingDragged = false;
     buttonDown: number = -1;
 
+    stats = {
+        entities: 0,
+        lightRays: 0,
+        surfaces: 0,
+        totalLightBounces: 0,
+        maxLightBounces: 0,
+        lightTraceTime: 0,
+        renderTime: 0,
+    };
+
     ui: UI = new UI(this);
-
-    // addSurface(surface: Surface) {
-    //     // this.surfaces.push(surface);
-    // }
-
-    // addLightRay(lightRay: LightRay) {
-    //     // this.lightRays.push(lightRay);
-    // }
 
     addEntity(entity: Entity) {
         this.entities.push(entity);
-        // entity.addToWorld(this);
     }
 
     removeEntity(entity: Entity) {
@@ -44,9 +45,28 @@ export default class World {
         this.surfaces = this.entities.map((e) => e.surfaces).flat();
         this.lightRays = this.entities.map((e) => e.lightRays).flat();
 
+        let totalLightBounces = 0;
+        let maxLightBounces = 0;
+
+        const timerStart = performance.now();
+
         for (let l of this.lightRays) {
-            l.trace(this.surfaces);
+            const lightBounces = l.trace(this.surfaces);
+
+            if (lightBounces > maxLightBounces) maxLightBounces = lightBounces;
+            totalLightBounces += lightBounces;
         }
+
+        const timerEnd = performance.now();
+        const lightTraceTime = timerEnd - timerStart;
+
+        // Update stats
+        this.stats.entities = this.entities.length;
+        this.stats.lightRays = this.lightRays.length;
+        this.stats.surfaces = this.surfaces.length;
+        this.stats.totalLightBounces = totalLightBounces;
+        this.stats.maxLightBounces = maxLightBounces;
+        this.stats.lightTraceTime = lightTraceTime;
     }
 
     handleMouseDown(mousePos: Vector, button: MouseEvent["button"]) {
@@ -140,6 +160,8 @@ export default class World {
     }
 
     render(ctx: CanvasRenderingContext2D) {
+        const timerStart = performance.now();
+
         // Canvas transformations
         ctx.save();
         ctx.translate(this.worldOffset.x, this.worldOffset.y);
@@ -165,5 +187,8 @@ export default class World {
 
         // Restore default canvas transformations
         ctx.restore();
+
+        const timerEnd = performance.now();
+        this.stats.renderTime = timerEnd - timerStart;
     }
 }
