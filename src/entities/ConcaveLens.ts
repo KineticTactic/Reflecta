@@ -81,7 +81,7 @@ export default class ConcaveLens extends SurfaceEntity {
             case "refractiveIndex":
                 this.refractiveIndex = value as number;
                 this.surfaces.forEach((surface) => {
-                    (surface as PlaneRefractiveSurface).refractiveIndex = this.refractiveIndex;
+                    (surface as PlaneRefractiveSurface).setRefractiveIndex(this.refractiveIndex);
                 });
                 break;
         }

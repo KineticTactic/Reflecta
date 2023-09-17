@@ -11,6 +11,7 @@ import Vector from "./lib/Vector";
 import "./style.css";
 import { setContext } from "./util/debug";
 import World from "./core/World";
+import GlassSlab from "./entities/GlassSlab";
 
 const canvas = document.getElementById("display") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -35,6 +36,9 @@ w.addEntity(concave);
 
 let sphere = new GlassSphere(new Vector(200, 500));
 w.addEntity(sphere);
+
+let slab = new GlassSlab(new Vector(1000, 500));
+w.addEntity(slab);
 
 // const curve = new CurvedReflectiveSurface(new Vector(700, 300), 100, new Vector(-1, 0), 3);
 // const curve2 = new CurvedRefractiveSurface(new Vector(400, 500), 100, new Vector(-1, 0), 3, 2);

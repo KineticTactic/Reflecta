@@ -21,4 +21,9 @@ export default class CurvedRefractiveSurface extends CurvedSurface {
 
         return refract(dir, normal, this.refractiveIndex, this.criticalAngle);
     }
+
+    setRefractiveIndex(ri: number) {
+        this.refractiveIndex = ri;
+        this.criticalAngle = Math.asin(1 / this.refractiveIndex);
+    }
 }

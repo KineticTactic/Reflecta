@@ -41,7 +41,7 @@ export default class GlassSphere extends SurfaceEntity {
                 break;
             case "refractiveIndex":
                 this.refractiveIndex = value as number;
-                (this.surfaces[0] as CurvedRefractiveSurface).refractiveIndex = this.refractiveIndex;
+                (this.surfaces[0] as CurvedRefractiveSurface).setRefractiveIndex(this.refractiveIndex);
                 break;
         }
     }

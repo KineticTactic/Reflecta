@@ -1,5 +1,6 @@
 import ConcaveLens from "./ConcaveLens";
 import ConvexLens from "./ConvexLens";
+import GlassSlab from "./GlassSlab";
 import GlassSphere from "./GlassSphere";
 import LightBeam from "./LightBeam";
 import LightRayEntity from "./LightRayEntity";
@@ -11,6 +12,7 @@ const entityList = [
     ConcaveLens.entityData,
     ConvexLens.entityData,
     GlassSphere.entityData,
+    GlassSlab.entityData,
     LightBeam.entityData,
     LightRayEntity.entityData,
     PointLight.entityData,

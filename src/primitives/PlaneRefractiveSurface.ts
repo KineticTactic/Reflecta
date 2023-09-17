@@ -16,4 +16,9 @@ export default class PlaneRefractiveSurface extends PlaneSurface {
     handle(_intersection: Vector, dir: Vector) {
         return refract(dir, this.normal, this.refractiveIndex, this.criticalAngle);
     }
+
+    setRefractiveIndex(ri: number) {
+        this.refractiveIndex = ri;
+        this.criticalAngle = Math.asin(1 / this.refractiveIndex);
+    }
 }

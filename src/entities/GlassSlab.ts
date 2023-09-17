@@ -4,22 +4,20 @@ import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 
-const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
-
-export default class Prism extends SurfaceEntity {
-    size: number;
+export default class GlassSlab extends SurfaceEntity {
+    size: Vector;
     refractiveIndex: number;
 
     static entityData: EntityData = {
-        name: "Prism",
-        desc: "A prism.",
-        constructorFunc: Prism,
+        name: "Glass Slab",
+        desc: "A glass slab.",
+        constructorFunc: GlassSlab,
     };
 
     constructor(pos: Vector) {
-        super(pos, "Prism");
+        super(pos, "Glass Slab");
 
-        this.size = 200;
+        this.size = new Vector(200, 100);
         this.refractiveIndex = 1.5;
 
         this.init();
@@ -30,14 +28,18 @@ export default class Prism extends SurfaceEntity {
     }
 
     init() {
-        let v1 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[0].copy().mult(this.size).rotate(this.rot));
-        let v2 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[1].copy().mult(this.size).rotate(this.rot));
-        let v3 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[2].copy().mult(this.size).rotate(this.rot));
+        const halfSize = this.size.copy().mult(0.5);
+
+        const v1 = Vector.add(this.pos, new Vector(-halfSize.x, -halfSize.y));
+        const v2 = Vector.add(this.pos, new Vector(halfSize.x, -halfSize.y));
+        const v3 = Vector.add(this.pos, new Vector(halfSize.x, halfSize.y));
+        const v4 = Vector.add(this.pos, new Vector(-halfSize.x, halfSize.y));
 
         this.surfaces = [
             new PlaneRefractiveSurface(v2.copy(), v1.copy(), this.refractiveIndex),
             new PlaneRefractiveSurface(v3.copy(), v2.copy(), this.refractiveIndex),
-            new PlaneRefractiveSurface(v1.copy(), v3.copy(), this.refractiveIndex),
+            new PlaneRefractiveSurface(v4.copy(), v3.copy(), this.refractiveIndex),
+            new PlaneRefractiveSurface(v1.copy(), v4.copy(), this.refractiveIndex),
         ];
 
         this.updateBounds();
@@ -48,7 +50,7 @@ export default class Prism extends SurfaceEntity {
 
         switch (attribute) {
             case "size":
-                this.size = value as number;
+                this.size = value as Vector;
                 this.init();
                 break;
             case "refractiveIndex":
