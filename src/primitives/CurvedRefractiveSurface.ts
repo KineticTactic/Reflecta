@@ -1,4 +1,4 @@
-import { refract } from "../lib/math";
+import { calculateRefractiveIndexForWavelength, refract } from "../lib/math";
 import Vector from "../lib/Vector";
 import CurvedSurface from "./CurvedSurface";
 
@@ -15,11 +15,13 @@ export default class CurvedRefractiveSurface extends CurvedSurface {
         this.normal = normal;
     }
 
-    handle(intersection: Vector, dir: Vector) {
+    handle(intersection: Vector, dir: Vector, wavelength: number) {
         // Calculate normal vector by (intersection point - center)
         let normal = Vector.sub(intersection, this.center).normalize().mult(this.normal);
 
-        return refract(dir, normal, this.refractiveIndex, this.criticalAngle);
+        const ri = calculateRefractiveIndexForWavelength(wavelength, 570, this.refractiveIndex);
+
+        return refract(dir, normal, ri, this.criticalAngle);
     }
 
     setRefractiveIndex(ri: number) {

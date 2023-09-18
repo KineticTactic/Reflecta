@@ -43,6 +43,7 @@ export default class UI {
             title: "Stats",
             expanded: false,
         });
+        statsFolder.addBinding(world.stats, "frameTime", { readonly: true, label: "frame time" });
         statsFolder.addBinding(world.stats, "entities", { readonly: true });
         statsFolder.addBinding(world.stats, "lightRays", { readonly: true, label: "light rays" });
         statsFolder.addBinding(world.stats, "surfaces", { readonly: true });

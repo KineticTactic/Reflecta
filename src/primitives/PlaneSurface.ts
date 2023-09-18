@@ -18,7 +18,7 @@ export default abstract class PlaneSurface extends Surface {
         this.calculateNormal();
     }
 
-    abstract handle(_intersection: Vector, _dir: Vector): Vector;
+    abstract handle(_intersection: Vector, _dir: Vector, _wavelength: number): Vector;
 
     // Calculate normal
     calculateNormal() {

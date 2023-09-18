@@ -20,6 +20,7 @@ export default class World {
     buttonDown: number = -1;
 
     stats = {
+        frameTime: 0,
         entities: 0,
         lightRays: 0,
         surfaces: 0,
@@ -41,7 +42,7 @@ export default class World {
         this.selectedEntityIndex = -1;
     }
 
-    update() {
+    update(delta: number) {
         this.surfaces = this.entities.map((e) => e.surfaces).flat();
         this.lightRays = this.entities.map((e) => e.lightRays).flat();
 
@@ -61,6 +62,7 @@ export default class World {
         const lightTraceTime = timerEnd - timerStart;
 
         // Update stats
+        this.stats.frameTime = delta;
         this.stats.entities = this.entities.length;
         this.stats.lightRays = this.lightRays.length;
         this.stats.surfaces = this.surfaces.length;
@@ -167,17 +169,17 @@ export default class World {
         ctx.translate(this.worldOffset.x, this.worldOffset.y);
         ctx.scale(this.worldScale, this.worldScale);
 
+        ctx.lineWidth = 2;
+        ctx.globalCompositeOperation = "lighter";
         // Render light rays
         ctx.beginPath();
         for (let lightRay of this.lightRays) lightRay.render(ctx);
         const brightness = 150;
         ctx.strokeStyle = `rgba(${brightness}, ${brightness}, ${brightness}, 1)`;
-        ctx.lineWidth = 0.2;
         // ctx.shadowBlur = 100;
-        ctx.globalCompositeOperation = "lighter";
         // ctx.globalAlpha = 1;
-        ctx.lineCap = "butt";
-        ctx.stroke();
+        // ctx.lineCap = "butt";
+        // ctx.stroke();
         ctx.closePath();
 
         // Render entities

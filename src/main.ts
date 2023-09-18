@@ -5,13 +5,15 @@ import GlassSphere from "./entities/GlassSphere";
 // import LightRayEntity from "./entities/LightRayEntity";
 // import LightBeam from "./entities/LightBeam";
 // import LightBeam from "./entities/LightBeam";
-import PointLight from "./entities/PointLight";
+// import PointLight from "./entities/PointLight";
 import Prism from "./entities/Prism";
 import Vector from "./lib/Vector";
 import "./style.css";
 import { setContext } from "./util/debug";
 import World from "./core/World";
 import GlassSlab from "./entities/GlassSlab";
+import Laser from "./entities/Laser";
+// import Color from "./lib/Color";
 
 const canvas = document.getElementById("display") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -23,15 +25,17 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const w = new World();
-const p = new Prism(new Vector(200, 150));
+const p = new Prism(new Vector(500, 300));
 w.addEntity(p);
-const l = new PointLight(new Vector(700, 400));
+// const l = new PointLight(new Vector(700, 400));
 // const l = new LightRayEntity(new Vector(700, 400));
 // const l = new LightBeam(new Vector(300, 300));
+const l = new Laser(new Vector(300, 300));
+l.rotate(-0.2);
 w.addEntity(l);
 let convex = new ConvexLens(new Vector(800, 300));
 w.addEntity(convex);
-let concave = new ConcaveLens(new Vector(500, 300));
+let concave = new ConcaveLens(new Vector(200, 150));
 w.addEntity(concave);
 
 let sphere = new GlassSphere(new Vector(200, 500));
@@ -63,6 +67,7 @@ canvas.addEventListener("wheel", (e) => {
 
 // w.selectedEntityIndex = 1;
 // w.ui.selectEntity(w.entities[1]);
+let prevFrameTime = performance.now();
 
 function draw() {
     requestAnimationFrame(draw);
@@ -79,10 +84,23 @@ function draw() {
     // curve.facing.rotate(0.005);
     // curve2.facing.rotate(-0.01);
 
-    w.update();
+    const currentTime = performance.now();
+    const delta = currentTime - prevFrameTime;
+    prevFrameTime = currentTime;
+
+    w.update(delta);
     // curve.render(ctx);
     // curve2.render(ctx);
     w.render(ctx);
+
+    // draw a spectrum for testing
+    // for (let i = 380; i <= 830; i++) {
+    //     ctx.beginPath();
+    //     ctx.moveTo(i, 0);
+    //     ctx.lineTo(i, 100);
+    //     ctx.strokeStyle = Color.wavelengthToHex(i);
+    //     ctx.stroke();
+    // }
 }
 
 draw();

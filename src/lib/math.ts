@@ -40,3 +40,28 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
         return incident.copy().rotate(-angleOfDeviation);
     }
 }
+
+export function calculateRefractiveIndexForWavelength(wavelength: number, standardWavelength: number, refractiveIndex: number) {
+    /*      mu2 / mu1 = lambda1 / lambda2
+        =>  mu2 = (lambda1/lambda2) * mu1
+
+        Since we are dealing with pixels, the dispersion becomes too much, so to reduce it I've introduced a factor
+
+        if (lambda1 / lambda2) is say 1.2, subtracting 1 gives 0.2, multiplying with the factor reduces it to say 0.05,
+        then adding 1 to it again gives 1.05, essentially reducing the extent to which the refractive index is altered
+    */
+
+    const dispersionFactor = 0.1;
+    const wavelengthRatio = standardWavelength / wavelength;
+    const reducedWavelengthRatio = (wavelengthRatio - 1) * dispersionFactor + 1;
+    const ri = reducedWavelengthRatio * refractiveIndex;
+    return ri;
+}
+
+export function interpolate(x: number, x1: number, x2: number, y1: number, y2: number): number {
+    return y1 + (x - x1) * ((y2 - y1) / (x2 - x1));
+}
+
+export function clamp(x: number, min: number, max: number): number {
+    return Math.min(Math.max(x, min), max);
+}

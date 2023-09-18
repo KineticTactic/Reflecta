@@ -127,7 +127,7 @@ export default abstract class CurvedSurface extends Surface {
         return AABB.fromPoints(boundingPoints);
     }
 
-    abstract handle(_origin: Vector, dir: Vector): Vector;
+    abstract handle(_origin: Vector, dir: Vector, _wavelength: number): Vector;
 
     render(ctx: CanvasRenderingContext2D, color: string = "#ffffff") {
         let angleStart = this.facing.heading() - this.span / 2;

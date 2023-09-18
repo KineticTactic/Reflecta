@@ -1,6 +1,6 @@
 import PlaneSurface from "./PlaneSurface";
 import Vector from "../lib/Vector";
-import { refract } from "../lib/math";
+import { calculateRefractiveIndexForWavelength, refract } from "../lib/math";
 
 export default class PlaneRefractiveSurface extends PlaneSurface {
     refractiveIndex: number;
@@ -13,8 +13,10 @@ export default class PlaneRefractiveSurface extends PlaneSurface {
         this.criticalAngle = Math.asin(1 / this.refractiveIndex);
     }
 
-    handle(_intersection: Vector, dir: Vector) {
-        return refract(dir, this.normal, this.refractiveIndex, this.criticalAngle);
+    handle(_intersection: Vector, dir: Vector, wavelength: number) {
+        const ri = calculateRefractiveIndexForWavelength(wavelength, 570, this.refractiveIndex);
+
+        return refract(dir, this.normal, ri, this.criticalAngle);
     }
 
     setRefractiveIndex(ri: number) {

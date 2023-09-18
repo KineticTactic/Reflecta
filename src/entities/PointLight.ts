@@ -7,6 +7,7 @@ import EntityData from "../core/EntityData";
 
 export default class PointLight extends Entity {
     numRays: number;
+    wavelength: number;
 
     static entityData: EntityData = {
         name: "Point Light",
@@ -17,11 +18,13 @@ export default class PointLight extends Entity {
     constructor(pos: Vector) {
         super(pos, "Point Light");
         this.numRays = 1000;
+        this.wavelength = 500;
 
         this.init();
 
         // Attributes
         this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000, value: this.numRays });
+        this.attributes.push({ name: "wavelength", type: AttributeType.Number, min: 360, max: 830, value: this.wavelength });
     }
 
     init() {
@@ -48,6 +51,10 @@ export default class PointLight extends Entity {
             case "numRays":
                 this.numRays = value as number;
                 this.init();
+                break;
+            case "wavelength":
+                this.wavelength = value as number;
+                for (const ray of this.lightRays) ray.setWavelength(this.wavelength);
                 break;
         }
     }

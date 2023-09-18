@@ -7,7 +7,7 @@ export default class PlaneReflectiveSurface extends PlaneSurface {
         super(v1, v2);
     }
 
-    handle(_intersection: Vector, dir: Vector) {
+    handle(_intersection: Vector, dir: Vector, _wavelength: number) {
         return reflect(dir, this.normal);
     }
 

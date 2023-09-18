@@ -1,3 +1,4 @@
+import Color from "../lib/Color";
 import Vector from "../lib/Vector";
 import Surface from "./Surface";
 
@@ -7,15 +8,30 @@ export default class LightRay {
     origin: Vector;
     dir: Vector;
     path: Vector[];
+    wavelength: number = 500;
+    color: string = "";
 
-    constructor(origin: Vector, dir: Vector) {
+    constructor(origin: Vector, dir: Vector, wavelength = 550) {
         this.origin = origin;
         this.dir = dir.copy();
 
         this.path = [this.origin];
+
+        // console.log(Color.wavelengthToRGB(this.wavelength));
+
+        this.setWavelength(wavelength);
+    }
+
+    setWavelength(wavelength: number) {
+        this.wavelength = wavelength;
+
+        let c = Color.wavelengthToRGB(this.wavelength);
+        this.color = `rgba(${c.r}, ${c.g}, ${c.b}, 0.5)`;
     }
 
     trace(surfaces: Surface[]) {
+        // this.wavelength++;
+        // this.color = Color.wavelengthToHex(this.wavelength);
         // Reset its path
         this.path = [this.origin];
 
@@ -61,7 +77,7 @@ export default class LightRay {
                 currentPoint = closestIntersection;
 
                 // surface.handle returns the new direction of the ray after it has been reflected or refracted
-                let r = surfaces[closestIntersectionIndex].handle(closestIntersection.copy(), currentDir.copy());
+                let r = surfaces[closestIntersectionIndex].handle(closestIntersection.copy(), currentDir.copy(), this.wavelength);
                 currentDir = r.copy();
 
                 // Update the last intersection
@@ -80,10 +96,13 @@ export default class LightRay {
 
     render(ctx: CanvasRenderingContext2D) {
         ctx.moveTo(this.origin.x, this.origin.y);
+        ctx.beginPath();
         for (let p of this.path) {
             ctx.lineTo(p.x, p.y);
         }
-        // ctx.stroke();
+        ctx.strokeStyle = this.color;
+        ctx.stroke();
+
         // ctx.lineTo(this.origin.x + this.dir.x * 100, this.origin.y + this.dir.y * 100);
 
         // for (let i = 0; i < this.path.length; i++) {
