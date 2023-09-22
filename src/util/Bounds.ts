@@ -1,4 +1,6 @@
-import Vector from "../lib/Vector";
+import Renderer from "../graphics/Renderer";
+import Color from "../lib/Color";
+import Vector, { V } from "../lib/Vector";
 
 export default class AABB {
     start: Vector;
@@ -28,10 +30,10 @@ export default class AABB {
         }
     }
 
-    render(ctx: CanvasRenderingContext2D, color: string = "#8424b9", lineWidth: number = 1) {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
+    render(renderer: Renderer, color: Color, lineWidth: number = 1) {
+        ///TODO: Change this to rect
+        renderer.path([this.start, V(this.end.x, this.start.y), this.end, V(this.start.x, this.end.y), this.start], lineWidth, color);
+        // ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
     }
 
     static fromPoints(points: Vector[]): AABB {

@@ -2,6 +2,7 @@ import Vector from "../lib/Vector";
 // import Surface from "../primitives/Surface";
 import AABB from "../util/Bounds";
 import Entity from "../core/Entity";
+import Renderer from "../graphics/Renderer";
 
 export default abstract class SurfaceEntity extends Entity {
     constructor(pos: Vector, name: string) {
@@ -27,9 +28,9 @@ export default abstract class SurfaceEntity extends Entity {
         this.bounds = AABB.fromAABBs(aabbs);
     }
 
-    override render(ctx: CanvasRenderingContext2D, isSelected: boolean) {
-        for (let s of this.surfaces) s.render(ctx, this.color);
+    override render(renderer: Renderer, isSelected: boolean) {
+        for (let s of this.surfaces) s.render(renderer, this.color);
 
-        super.render(ctx, isSelected);
+        super.render(renderer, isSelected);
     }
 }

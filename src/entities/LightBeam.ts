@@ -31,7 +31,14 @@ export default class LightBeam extends Entity {
     init() {
         this.lightRays = [];
         for (let i = -this.size / 2; i <= this.size / 2; i += this.size / this.numRays) {
-            this.lightRays.push(new LightRay(Vector.add(this.pos, new Vector(0, i).rotate(this.rot)), Vector.right().rotate(this.rot)));
+            this.lightRays.push(
+                new LightRay({
+                    origin: Vector.add(this.pos, new Vector(0, i).rotate(this.rot)),
+                    dir: Vector.right().rotate(this.rot),
+                    monochromatic: false,
+                    intensity: 50,
+                })
+            );
         }
         this.updateBounds();
     }

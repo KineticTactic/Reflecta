@@ -102,15 +102,33 @@ const CIE1964 = [
     [0.000001251141, 0.00000045181, 0.0], // 830
 ];
 
-interface RGB {
-    r: number;
-    g: number;
-    b: number;
+export function RGB(r: number, g: number, b: number) {
+    return new Color(r, g, b);
+}
+
+export function RGBA(r: number, g: number, b: number, a: number = 255) {
+    return new Color(r, g, b, a);
 }
 
 export default class Color {
-    static wavelengthToRGB(lambda: number): RGB {
-        if (lambda < 380 || lambda > 830) return { r: 0, g: 0, b: 0 };
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+
+    constructor(r: number, g: number, b: number, a: number = 255) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+    array() {
+        return [this.r, this.g, this.b, this.a];
+    }
+
+    static wavelengthToRGB(lambda: number): Color {
+        if (lambda < 380 || lambda > 830) return RGB(0, 0, 0);
 
         const index = Math.floor((lambda - 360) / 5);
 
@@ -118,11 +136,11 @@ export default class Color {
         const Y = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][1], CIE1964[index + 1][1]);
         const Z = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][2], CIE1964[index + 1][2]);
 
-        const sum = X + Y + Z;
+        // const sum = X + Y + Z;
 
-        const x = X / sum;
-        const y = Y / sum;
-        const z = Z / sum;
+        // const x = X / sum;
+        // const y = Y / sum;
+        // const z = Z / sum;
 
         /*
     		The matix values in the next step depend on location of RGB in the XYZ color space.
@@ -140,14 +158,14 @@ export default class Color {
         g = Math.floor(clamp(g * 255, 0, 255));
         b = Math.floor(clamp(b * 255, 0, 255));
 
-        return { r, g, b };
+        return RGB(r, g, b);
     }
 
     static wavelengthToHex(lambda: number) {
         return Color.rgbToHex(Color.wavelengthToRGB(lambda));
     }
 
-    static rgbToHex(color: RGB): string {
+    static rgbToHex(color: Color): string {
         return "#" + ((1 << 24) | (color.r << 16) | (color.g << 8) | color.b).toString(16).slice(1);
     }
 }

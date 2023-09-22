@@ -1,8 +1,10 @@
-import Vector from "../lib/Vector";
+import Vector, { V } from "../lib/Vector";
 import Entity from "./Entity";
 import LightRay from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
+import Renderer from "../graphics/Renderer";
+import Camera from "./Camera";
 
 export default class World {
     surfaces: Surface[] = [];
@@ -31,6 +33,13 @@ export default class World {
     };
 
     ui: UI = new UI(this);
+    renderer: Renderer;
+    camera: Camera;
+
+    constructor(renderer: Renderer) {
+        this.renderer = renderer;
+        this.camera = new Camera(this.renderer.getDisplaySize());
+    }
 
     addEntity(entity: Entity) {
         this.entities.push(entity);
@@ -72,7 +81,8 @@ export default class World {
     }
 
     handleMouseDown(mousePos: Vector, button: MouseEvent["button"]) {
-        const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
+        // const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
+        const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);
 
         ///TODO: Objects on top of one another cant be selected, only the topmost one is selected
 
@@ -101,7 +111,8 @@ export default class World {
             this.handleDrag(mousePos);
         } else {
             // Calculate mouse position in world space
-            const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
+            // const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
+            const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);
             // Check if mouse is hovering over an entity to draw AABBs
             for (let e of this.entities) {
                 e.displayBounds = e.bounds.has(worldMousePos);
@@ -111,20 +122,17 @@ export default class World {
     }
 
     handleDrag(mousePos: Vector) {
-        const deltaMousePos = Vector.sub(mousePos, this.lastMousePos);
+        const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);
+        const lastWorldMousePos = this.camera.screenSpaceToWorldSpace(this.lastMousePos);
+        const worldDeltaMousePos = Vector.sub(worldMousePos, lastWorldMousePos);
 
         // If no entity is selected then we are dragging the world space
         if (this.selectedEntityIndex === -1) {
-            this.worldOffset.add(deltaMousePos);
+            this.camera.translate(worldDeltaMousePos.mult(-1));
             return;
         }
 
         // At this point some entity is selected
-
-        const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
-        const lastWorldMousePos = Vector.sub(this.lastMousePos, this.worldOffset).div(this.worldScale);
-        const worldDeltaMousePos = deltaMousePos.copy().div(this.worldScale);
-
         if (this.buttonDown === 2) {
             // Rotate with right mouse button
             const originToLastMousePos = Vector.sub(lastWorldMousePos, this.entities[this.selectedEntityIndex].pos);
@@ -148,47 +156,39 @@ export default class World {
         let scaleFactor = 0.8;
         scaleFactor = delta > 0 ? 1 / scaleFactor : scaleFactor;
 
-        this.worldScale *= scaleFactor;
+        this.camera.setZoom(this.camera.zoom * scaleFactor);
 
-        const dx = (this.lastMousePos.x - this.worldOffset.x) * (1 - scaleFactor);
-        const dy = (this.lastMousePos.y - this.worldOffset.y) * (1 - scaleFactor);
+        const worldMousePos = this.camera.screenSpaceToWorldSpace(this.lastMousePos);
+        const dx = (worldMousePos.x - this.camera.pos.x) * (scaleFactor - 1);
+        const dy = (worldMousePos.y - this.camera.pos.y) * (scaleFactor - 1);
 
-        this.worldOffset.x += dx;
-        this.worldOffset.y += dy;
-
-        // Clamp world scale
-        // TODO: Investigate rendering bug that happens on zooming in too much
-        // this.worldScale = Math.max(Math.min(this.worldScale, 1), 0.1);
+        this.camera.translate(V(dx, dy));
     }
 
-    render(ctx: CanvasRenderingContext2D) {
+    render() {
         const timerStart = performance.now();
 
         // Canvas transformations
-        ctx.save();
-        ctx.translate(this.worldOffset.x, this.worldOffset.y);
-        ctx.scale(this.worldScale, this.worldScale);
+        // ctx.save();
+        // ctx.translate(this.worldOffset.x, this.worldOffset.y);
+        // ctx.scale(this.worldScale, this.worldScale);
 
-        ctx.lineWidth = 2;
-        ctx.globalCompositeOperation = "lighter";
+        // ctx.lineWidth = 2;
+        // ctx.globalCompositeOperation = "lighter";
         // Render light rays
-        ctx.beginPath();
-        for (let lightRay of this.lightRays) lightRay.render(ctx);
-        const brightness = 150;
-        ctx.strokeStyle = `rgba(${brightness}, ${brightness}, ${brightness}, 1)`;
-        // ctx.shadowBlur = 100;
-        // ctx.globalAlpha = 1;
-        // ctx.lineCap = "butt";
-        // ctx.stroke();
-        ctx.closePath();
+        // ctx.beginPath();
+        for (let lightRay of this.lightRays) lightRay.render(this.renderer);
+        // const brightness = 150;
+        // ctx.strokeStyle = `rgba(${brightness}, ${brightness}, ${brightness}, 1)`;
+        // ctx.closePath();
 
         // Render entities
         for (let i = 0; i < this.entities.length; i++) {
-            this.entities[i].render(ctx, this.selectedEntityIndex == i);
+            this.entities[i].render(this.renderer, this.selectedEntityIndex == i);
         }
 
         // Restore default canvas transformations
-        ctx.restore();
+        // ctx.restore();
 
         const timerEnd = performance.now();
         this.stats.renderTime = timerEnd - timerStart;

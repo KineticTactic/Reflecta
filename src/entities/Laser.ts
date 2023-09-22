@@ -18,7 +18,7 @@ export default class Laser extends Entity {
     constructor(pos: Vector) {
         super(pos, "Laser");
 
-        this.numRays = 20;
+        this.numRays = 500;
 
         this.init();
 
@@ -30,7 +30,15 @@ export default class Laser extends Entity {
         this.lightRays = [];
         for (let i = 0; i < this.numRays; i++) {
             let wavelength = interpolate(i, 0, this.numRays, 400, 700);
-            this.lightRays.push(new LightRay(Vector.add(this.pos, new Vector(0, 1).rotate(this.rot)), Vector.right().rotate(this.rot), wavelength));
+            this.lightRays.push(
+                new LightRay({
+                    origin: Vector.add(this.pos, new Vector(0, 1).rotate(this.rot)),
+                    dir: Vector.right().rotate(this.rot),
+                    monochromatic: true,
+                    wavelength: wavelength,
+                    intensity: 5,
+                })
+            );
         }
         console.log(this.lightRays[0]);
 

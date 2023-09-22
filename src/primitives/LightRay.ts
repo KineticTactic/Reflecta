@@ -1,32 +1,54 @@
-import Color from "../lib/Color";
+import Renderer from "../graphics/Renderer";
+import Color, { RGBA } from "../lib/Color";
 import Vector from "../lib/Vector";
 import Surface from "./Surface";
 
 const MAX_BOUNCE_LIMIT = 50;
 
+interface LightRayOptions {
+    origin: Vector;
+    dir: Vector;
+    wavelength?: number;
+    intensity?: number;
+    monochromatic?: boolean;
+    color?: Color;
+}
+
 export default class LightRay {
     origin: Vector;
     dir: Vector;
     path: Vector[];
+    monochromatic: boolean = true;
     wavelength: number = 500;
-    color: string = "";
+    intensity: number = 100;
+    color: Color = RGBA(1, 1, 1, 0);
 
-    constructor(origin: Vector, dir: Vector, wavelength = 550) {
-        this.origin = origin;
-        this.dir = dir.copy();
+    // constructor(origin: Vector, dir: Vector, wavelength = 550, intensity = 100) {
+    constructor(options: LightRayOptions) {
+        this.origin = options.origin;
+        this.dir = options.dir.copy();
 
+        if (options.monochromatic === true) {
+            this.monochromatic = true;
+            this.setWavelength(options.wavelength || 550);
+            this.setIntensity(options.intensity || 100);
+        } else {
+            this.monochromatic = false;
+            this.color = options.color || RGBA(255, 255, 255, options.intensity || 100);
+        }
         this.path = [this.origin];
-
-        // console.log(Color.wavelengthToRGB(this.wavelength));
-
-        this.setWavelength(wavelength);
     }
 
     setWavelength(wavelength: number) {
         this.wavelength = wavelength;
 
         let c = Color.wavelengthToRGB(this.wavelength);
-        this.color = `rgba(${c.r}, ${c.g}, ${c.b}, 0.5)`;
+        this.color = RGBA(c.r, c.g, c.b, this.intensity);
+    }
+
+    setIntensity(intensity: number) {
+        this.intensity = intensity;
+        this.color.a = intensity;
     }
 
     trace(surfaces: Surface[]) {
@@ -72,6 +94,7 @@ export default class LightRay {
             // If there is a closest intersection point, update the current point and direction
             if (closestIntersection && closestIntersectionIndex !== null) {
                 // Add the closest intersection point to the path
+
                 this.path.push(closestIntersection);
                 // Update the current point and direction
                 currentPoint = closestIntersection;
@@ -89,27 +112,21 @@ export default class LightRay {
         }
 
         // Add the last point to the path
-        this.path.push(currentPoint.copy().add(currentDir.mult(3000)));
+        this.path.push(currentPoint.copy().add(currentDir.mult(6000)));
 
         return this.path.length - 2;
     }
 
-    render(ctx: CanvasRenderingContext2D) {
-        ctx.moveTo(this.origin.x, this.origin.y);
-        ctx.beginPath();
-        for (let p of this.path) {
-            ctx.lineTo(p.x, p.y);
-        }
-        ctx.strokeStyle = this.color;
-        ctx.stroke();
-
-        // ctx.lineTo(this.origin.x + this.dir.x * 100, this.origin.y + this.dir.y * 100);
-
-        // for (let i = 0; i < this.path.length; i++) {
-        //     ctx.beginPath();
-        //     ctx.arc(this.path[i].x, this.path[i].y, 5, 0, Math.PI * 2);
-        //     ctx.fillStyle = "rgba(255, 255, 255, " + (1 - i / this.path.length) + ")";
-        //     ctx.fill();
+    render(renderer: Renderer) {
+        ///TODO: Use fixed length array for the path
+        // ctx.moveTo(this.origin.x, this.origin.y);
+        // ctx.beginPath();
+        // for (let p of this.path) {
+        //     ctx.lineTo(p.x, p.y);
         // }
+        // ctx.strokeStyle = this.color;
+        // ctx.stroke();
+        // console.log(this.path);
+        renderer.path(this.path, 3, this.color);
     }
 }

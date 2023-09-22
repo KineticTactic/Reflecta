@@ -1,3 +1,5 @@
+import Renderer from "../graphics/Renderer";
+import Color, { RGBA } from "../lib/Color";
 import Vector from "../lib/Vector";
 import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
 import AABB from "../util/Bounds";
@@ -59,13 +61,14 @@ export default abstract class PlaneSurface extends Surface {
     }
 
     // Render the surface
-    override render(ctx: CanvasRenderingContext2D, color: string = "#ffffff") {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(this.v1.x, this.v1.y);
-        ctx.lineTo(this.v2.x, this.v2.y);
-        ctx.stroke();
+    override render(renderer: Renderer, color: Color = RGBA(255, 255, 255, 1)) {
+        renderer.line(this.v1, this.v2, 1, color);
+        // ctx.strokeStyle = color;
+        // ctx.lineWidth = 2;
+        // ctx.beginPath();
+        // ctx.moveTo(this.v1.x, this.v1.y);
+        // ctx.lineTo(this.v2.x, this.v2.y);
+        // ctx.stroke();
 
         // console.log(this.v1.x);
 

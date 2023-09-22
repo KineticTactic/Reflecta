@@ -25,16 +25,24 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
         let angleOfDeviation = angleOfIncidence - angleOfRefraction;
 
         // console.log(angleBetween);
+
         return incident.copy().rotate(angleOfDeviation);
     } else {
         // The ray is going from DENSER TO RARER
 
         let angleOfIncidence = angleBetween;
-        if (angleOfIncidence > criticalAngle || angleOfIncidence < -criticalAngle) {
+
+        /// There's this weird bug where for a very small window of angle of incidence, the sin of angle of refraction becomes >= 1
+        /// Now the light ray could go parallel to the surface, but it looks weird so just reflect it when that happens
+
+        const sinAngleOfRefraction = Math.sin(angleOfIncidence) * refractiveIndex;
+
+        if (angleOfIncidence > criticalAngle || angleOfIncidence < -criticalAngle || sinAngleOfRefraction >= 1 || sinAngleOfRefraction <= -1) {
             // TOTAL INTERNAL REFLECTION!!
             return reflect(incident, normal);
         }
-        let angleOfRefraction = Math.asin(Math.sin(angleOfIncidence) * refractiveIndex);
+
+        let angleOfRefraction = Math.asin(sinAngleOfRefraction);
         let angleOfDeviation = angleOfIncidence - angleOfRefraction;
 
         return incident.copy().rotate(-angleOfDeviation);
@@ -51,7 +59,7 @@ export function calculateRefractiveIndexForWavelength(wavelength: number, standa
         then adding 1 to it again gives 1.05, essentially reducing the extent to which the refractive index is altered
     */
 
-    const dispersionFactor = 0.1;
+    const dispersionFactor = 0.3;
     const wavelengthRatio = standardWavelength / wavelength;
     const reducedWavelengthRatio = (wavelengthRatio - 1) * dispersionFactor + 1;
     const ri = reducedWavelengthRatio * refractiveIndex;

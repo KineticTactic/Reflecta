@@ -18,7 +18,14 @@ export default class LightRayEntity extends Entity {
     }
 
     init() {
-        this.lightRays = [new LightRay(Vector.add(this.pos, new Vector(0, 1).rotate(this.rot)), Vector.right().rotate(this.rot))];
+        this.lightRays = [
+            new LightRay({
+                origin: Vector.add(this.pos, new Vector(0, 1).rotate(this.rot)),
+                dir: Vector.right().rotate(this.rot),
+                monochromatic: false,
+                intensity: 255,
+            }),
+        ];
         console.log(this.lightRays[0]);
 
         this.updateBounds();

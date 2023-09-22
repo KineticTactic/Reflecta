@@ -1,3 +1,7 @@
+export function V(x: number, y: number) {
+    return new Vector(x, y);
+}
+
 export default class Vector {
     x: number;
     y: number;

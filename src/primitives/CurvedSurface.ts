@@ -1,3 +1,5 @@
+import Renderer from "../graphics/Renderer";
+import Color, { RGBA } from "../lib/Color";
 import { closestPointOnLine } from "../lib/intersections";
 import Vector from "../lib/Vector";
 import AABB from "../util/Bounds";
@@ -129,17 +131,18 @@ export default abstract class CurvedSurface extends Surface {
 
     abstract handle(_origin: Vector, dir: Vector, _wavelength: number): Vector;
 
-    render(ctx: CanvasRenderingContext2D, color: string = "#ffffff") {
+    render(renderer: Renderer, color: Color = RGBA(255, 255, 255, 255)) {
         let angleStart = this.facing.heading() - this.span / 2;
         let angleEnd = this.facing.heading() + this.span / 2;
 
         // angleStart = 0;
         // angleEnd = Math.PI * 2;
 
-        ctx.beginPath();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 2;
-        ctx.arc(this.center.x, this.center.y, this.radius, angleStart, angleEnd);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.strokeStyle = color;
+        // ctx.lineWidth = 2;
+        // ctx.arc(this.center.x, this.center.y, this.radius, angleStart, angleEnd);
+        // ctx.stroke();
+        renderer.arc(this.center, this.radius, angleStart, angleEnd, 2, color);
     }
 }
