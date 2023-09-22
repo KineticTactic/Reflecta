@@ -15,7 +15,7 @@ const renderer = new WebGL2Renderer();
 // const renderer = new CanvasRenderer();
 
 const w = new World(renderer);
-const p = new Prism(V(-1920 / 2, 0));
+const p = new Prism(V(-1520 / 2, 0));
 w.addEntity(p);
 const p2 = new Prism(V(200, -100));
 w.addEntity(p2);

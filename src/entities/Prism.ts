@@ -3,6 +3,8 @@ import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
+import Renderer from "../graphics/Renderer";
+import { RGBA } from "../lib/Color";
 
 const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
 
@@ -58,5 +60,14 @@ export default class Prism extends SurfaceEntity {
                 }
                 break;
         }
+    }
+
+    override render(renderer: Renderer, isSelected: boolean): void {
+        super.render(renderer, isSelected);
+
+        renderer.fillPath(
+            [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
+            RGBA(255, 255, 255, 20)
+        );
     }
 }

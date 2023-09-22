@@ -86,6 +86,18 @@ export default class WebGL2Renderer extends Renderer {
         this.addVertices(this.calculateSidewaysPoints(vertices[vertices.length - 1], vertices[vertices.length - 2], w), color);
     }
 
+    fillPath(vertices: Vector[], color: Color) {
+        const indicesList = [];
+        for (let i = 1; i < vertices.length - 1; i++) {
+            indicesList.push(0, i, i + 1);
+        }
+        console.log(indicesList, vertices);
+        this.addIndices(indicesList);
+        this.addVertices(vertices, color);
+
+        // console.log("Hi");
+    }
+
     arc(pos: Vector, radius: number, startAngle: number, endAngle: number, w: number, color: Color) {
         const numSegments = 20;
         const angleStep = (endAngle - startAngle) / numSegments;
