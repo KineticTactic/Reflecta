@@ -8,32 +8,45 @@ A simple and robust sandbox-type program written in JavaScript to simulate light
 
 ## Features
 
-**Light Sources**
+-   Various light Sources such as Point Lights, Light Rays, Light Beams and Lasers
 
--   Point light
--   Light Beam
--   Light Ray
+-   Various objects like Prisms, Lenses, Mirrors, etc. and update their properties in real-time.
 
-**Objects**
-
--   Prism
--   Lenses (Convex/Concave)
--   Mirrors (Plane/Spherical)
--   Any custom shapes with reflective/refractive/rough surfaces
-
-## To-Do
-
--   [x] UI for adding new objects and editing object parameters
--   [ ] More objects
--   [ ] Ray diagram markings? Principal axis and stuff
--   [x] Dispersion of rays??
--   [x] Switch to WebGL / WebGPU (i probably won't)
+-   Uses WebGL2 for rendering.
 
 ## Screenshots
 
 ![light-playground](assets/gif.gif)
-![light-playground](assets/dispersion.png)
+
+<!-- ![light-playground](assets/dispersion.png) -->
+
 ![light-playground](assets/screenshot2.png)
+
+## Running locally / Contributing
+
+To get the project up and running locally,
+
+Clone the git repository
+
+`git clone https://github.com/kinetictactic/light-playground.git`
+
+`cd light-playground`
+
+Install dependencies with pnpm (or npm / yarn)
+
+`pnpm install`
+
+Start the vite development server
+
+`pnpm run dev`
+
+## Things to add
+
+-   [x] UI for adding new objects and editing object parameters
+-   [ ] More objects
+-   [ ] Ray diagram markings? Principal axis and stuff
+-   [x] Dispersion of rays
+-   [x] Switch to WebGL
 
 ## Why did i make this?
 
@@ -43,16 +56,10 @@ I was really fascinated when I got to learn about Optics in Physics in high scho
 
 Other than that, I also like the idea of this being used for educational purposes, like in a classroom, for demonstrating the various light phenomena and image formations, interactively.
 
-### ...this is the 3rd complete rewrite of this project.
-
-The first time I started building this, I scrapped together some code to make a barely-working demo. However I soon realized the codebase was getting way too messy, so I had to scrap it completely and start from scratch. The second time was better, but still nowhere near the quality of code I would have liked it to be. It was a mess, the curved surface collision didnt work half the time, and it was hard to implement new objects.
-
-After taking a break and returning to the project, I realized I didn't understand half of the code I had written. _sigh._
-
-So this is the third time I'm rewriting this :D But I really like codebase this time, and the way I've designed it using Classes and Inheritance. I've also used TypeScript for better type checking.
-
 ## External Dependencies
 
--   Tweakpane [https://cocopon.github.io/tweakpane/](https://cocopon.github.io/tweakpane/)
+-   [twgl.js](https://twgljs.org/), a WebGL helper library.
 
--   Tweakpane Essentials [https://github.com/tweakpane/plugin-essentials](https://github.com/tweakpane/plugin-essentials)
+-   [Tweakpane](https://cocopon.github.io/tweakpane/), a data-driven UI library.
+
+-   [Tweakpane Essentials](https://github.com/tweakpane/plugin-essentials), plugin for graphs in Tweakpane.
