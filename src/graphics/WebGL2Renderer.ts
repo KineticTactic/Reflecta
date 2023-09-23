@@ -88,6 +88,8 @@ export default class WebGL2Renderer extends Renderer {
     }
 
     changeBuffer() {
+        this.buffers[this.currentBufferIndex].clear();
+        this.buffers[this.currentBufferIndex].updateBufferData(this.gl);
         if (this.buffers.length <= this.currentBufferIndex + 1) {
             this.addBuffer();
         } else {
@@ -237,7 +239,6 @@ export default class WebGL2Renderer extends Renderer {
 
     private updateBuffers() {
         this.buffers[this.currentBufferIndex].clear();
-
-        for (let i = 0; i <= this.currentBufferIndex; i++) this.buffers[i].updateBufferData(this.gl);
+        this.buffers[this.currentBufferIndex].updateBufferData(this.gl);
     }
 }

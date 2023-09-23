@@ -52,8 +52,6 @@ export default class LightRay {
     }
 
     trace(surfaces: Surface[]) {
-        // this.wavelength++;
-        // this.color = Color.wavelengthToHex(this.wavelength);
         // Reset its path
         this.path = [this.origin];
 
