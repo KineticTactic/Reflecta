@@ -8,6 +8,7 @@ import EntityData from "../core/EntityData";
 export default class LightBeam extends Entity {
     size: number;
     numRays: number;
+    intensity: number;
 
     static entityData: EntityData = {
         name: "Light Beam",
@@ -20,12 +21,14 @@ export default class LightBeam extends Entity {
 
         this.size = 150;
         this.numRays = 100;
+        this.intensity = 50;
 
         this.init();
 
         // Attributes
         this.attributes.push({ name: "size", type: AttributeType.Number, min: 0, max: 10000, value: this.size });
         this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000, value: this.numRays });
+        this.attributes.push({ name: "intensity", type: AttributeType.Number, min: 1, max: 255, value: this.intensity });
     }
 
     init() {
@@ -36,7 +39,7 @@ export default class LightBeam extends Entity {
                     origin: Vector.add(this.pos, new Vector(0, i).rotate(this.rot)),
                     dir: Vector.right().rotate(this.rot),
                     monochromatic: false,
-                    intensity: 50,
+                    intensity: this.intensity,
                 })
             );
         }
@@ -69,6 +72,12 @@ export default class LightBeam extends Entity {
             case "numRays":
                 this.numRays = value as number;
                 this.init();
+                break;
+            case "intensity":
+                this.intensity = value as number;
+                for (let l of this.lightRays) {
+                    l.setIntensity(this.intensity);
+                }
                 break;
         }
     }

@@ -24,6 +24,7 @@ export default class UI {
 
         const addEntityFolder = this.pane.addFolder({
             title: "Add Entities",
+            expanded: window.innerWidth > 800,
         });
 
         // Add all entities in a grid of buttons
@@ -70,6 +71,7 @@ export default class UI {
     createEntityAttributesFolder(entity: Entity) {
         this.attribFolder = this.pane.addFolder({
             title: entity.name,
+            expanded: window.innerWidth > 800,
         });
 
         this.attribFolder

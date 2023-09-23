@@ -23,11 +23,17 @@ A simple and robust sandbox-type program written in JavaScript to simulate light
 
 ## To-Do
 
--   [ ] UI for adding new objects and editing object parameters
+-   [x] UI for adding new objects and editing object parameters
 -   [ ] More objects
 -   [ ] Ray diagram markings? Principal axis and stuff
--   [ ] Dispersion of rays??
--   [ ] Switch to WebGL / WebGPU (i probably won't)
+-   [x] Dispersion of rays??
+-   [x] Switch to WebGL / WebGPU (i probably won't)
+
+## Screenshots
+
+![light-playground](assets/gif.gif)
+![light-playground](assets/dispersion.png)
+![light-playground](assets/screenshot2.png)
 
 ## Why did i make this?
 

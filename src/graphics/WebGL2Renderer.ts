@@ -160,7 +160,7 @@ export default class WebGL2Renderer extends Renderer {
     }
 
     arc(pos: Vector, radius: number, startAngle: number, endAngle: number, w: number, color: Color) {
-        const numSegments = 20;
+        const numSegments = 40;
         const angleStep = (endAngle - startAngle) / numSegments;
         const vertices = [];
         for (let i = 0; i <= numSegments; i++) {
