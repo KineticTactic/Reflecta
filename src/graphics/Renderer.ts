@@ -6,9 +6,13 @@ export default abstract class Renderer {
     canvas: HTMLCanvasElement;
 
     constructor() {
+        const dpi = Math.ceil(window.devicePixelRatio);
         this.canvas = document.getElementById("display") as HTMLCanvasElement;
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.canvas.width = window.innerWidth * dpi;
+        this.canvas.height = window.innerHeight * dpi;
+        this.canvas.style.width = window.innerWidth + "px";
+        this.canvas.style.height = window.innerHeight + "px";
+        // alert(this.canvas.width + " " + this.canvas.height + " " + this.canvas.style.width + " " + this.canvas.style.height);
     }
 
     line(_v1: Vector, _v2: Vector, _w: number, _color: Color): void {}

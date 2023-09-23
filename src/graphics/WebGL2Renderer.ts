@@ -191,8 +191,6 @@ export default class WebGL2Renderer extends Renderer {
             twgl.drawBufferInfo(this.gl, this.buffers[i].bufferInfo, this.gl.TRIANGLES, this.buffers[i].numIndices);
         }
 
-        console.log(this.buffers.length, this.currentBufferIndex);
-
         for (let buffer of this.buffers) {
             buffer.resetCount();
             this.currentBufferIndex = 0;
