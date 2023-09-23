@@ -54,7 +54,7 @@ export default abstract class Entity {
 
     translate(delta: Vector): void {
         this.pos.add(delta);
-        console.log(delta);
+        // console.log(delta);
 
         this.updateTransforms(delta, 0);
         this.updateBounds();

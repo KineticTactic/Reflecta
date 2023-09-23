@@ -5,6 +5,7 @@ import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
 import Renderer from "../graphics/Renderer";
 import Camera from "./Camera";
+import WebGL2Renderer from "../graphics/WebGL2Renderer";
 
 export default class World {
     surfaces: Surface[] = [];
@@ -30,6 +31,8 @@ export default class World {
         maxLightBounces: 0,
         lightTraceTime: 0,
         renderTime: 0,
+        numBuffers: 0,
+        usedBuffers: 0,
     };
 
     ui: UI = new UI(this);
@@ -192,5 +195,7 @@ export default class World {
 
         const timerEnd = performance.now();
         this.stats.renderTime = timerEnd - timerStart;
+        this.stats.usedBuffers = (this.renderer as WebGL2Renderer).currentBufferIndex + 1;
+        this.stats.numBuffers = (this.renderer as WebGL2Renderer).buffers.length;
     }
 }

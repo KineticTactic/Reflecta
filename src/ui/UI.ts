@@ -53,6 +53,8 @@ export default class UI {
         statsFolder.addBinding(world.stats, "lightTraceTime", { readonly: true, label: " ", view: "graph" });
         statsFolder.addBinding(world.stats, "renderTime", { readonly: true, label: "render time(ms)" });
         statsFolder.addBinding(world.stats, "renderTime", { readonly: true, label: " ", view: "graph" });
+        statsFolder.addBinding(world.stats, "numBuffers", { readonly: true, label: "buffer count" });
+        statsFolder.addBinding(world.stats, "usedBuffers", { readonly: true, label: "used buffers" });
     }
 
     selectEntity(entity: Entity): void {

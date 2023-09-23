@@ -9,6 +9,7 @@ import Prism from "./entities/Prism";
 // import { RGBA } from "./lib/Color";
 import { V } from "./lib/Vector";
 import "./style.css";
+// import { RGBA } from "./lib/Color";
 // import CanvasRenderer from "./graphics/CanvasRenderer";
 
 const renderer = new WebGL2Renderer();
@@ -54,7 +55,8 @@ function draw() {
 
     // Renderer.line(V(0, 0), V(0.8, 0.6), 0.1, new RGBA(120, 0, 255, 160));
     // Renderer.line(V(0, 0), V(0.8, -0.8), 0.1, new RGBA(0, 120, 200, 160));
-    // Renderer.path([V(0, 0), V(0.8, 0.8), V(0.8, 0), V(0, -0.8), V(-0.8, 0), V(-0.7, -0.5)], 0.1, new RGBA(255, 0, 0, 160));
+    // renderer.path([V(0, 0), V(100, 100), V(100, 0), V(0, -100), V(-100, 0), V(-100, -100)], 10, RGBA(255, 0, 0, 160));
+    // renderer.path([V(0, 0), V(100, 100), V(100, 0), V(0, -100), V(-100, 0), V(-100, -100)], 10, RGBA(255, 0, 0, 160));
 
     w.update(delta);
     w.render();
