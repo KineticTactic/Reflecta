@@ -31,12 +31,27 @@ renderer.canvas.addEventListener("mousedown", (e) => {
     w.handleMouseDown(V(e.clientX, e.clientY), e.button);
 });
 
+renderer.canvas.addEventListener("touchstart", (e) => {
+    w.handleMouseDown(V(e.touches[0].clientX, e.touches[0].clientY), 0);
+    e.preventDefault();
+});
+
 renderer.canvas.addEventListener("mousemove", (e) => {
     w.handleMouseMove(V(e.clientX, e.clientY));
 });
 
+renderer.canvas.addEventListener("touchmove", (e) => {
+    w.handleMouseMove(V(e.touches[0].clientX, e.touches[0].clientY));
+    e.preventDefault();
+});
+
 renderer.canvas.addEventListener("mouseup", (e) => {
     w.handleMouseUp(V(e.clientX, e.clientY));
+});
+
+renderer.canvas.addEventListener("touchend", (e) => {
+    w.handleMouseUp(V(0, 0));
+    e.preventDefault();
 });
 
 renderer.canvas.addEventListener("wheel", (e) => {

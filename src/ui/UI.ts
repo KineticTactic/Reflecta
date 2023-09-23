@@ -41,7 +41,7 @@ export default class UI {
 
         const statsFolder = this.pane.addFolder({
             title: "Stats",
-            expanded: true,
+            expanded: false,
         });
         statsFolder.addBinding(world.stats, "frameTime", { readonly: true, label: "frame time" });
         statsFolder.addBinding(world.stats, "entities", { readonly: true });

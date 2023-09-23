@@ -107,6 +107,7 @@ export default class World {
 
         this.isMouseDown = true;
         this.buttonDown = button;
+        this.lastMousePos = mousePos.copy();
     }
 
     handleMouseMove(mousePos: Vector) {
