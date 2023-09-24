@@ -4,6 +4,7 @@ import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
+import Renderer from "../graphics/Renderer";
 
 export default class ConcaveLens extends SurfaceEntity {
     span: number;
@@ -17,8 +18,8 @@ export default class ConcaveLens extends SurfaceEntity {
         constructorFunc: ConcaveLens,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Concave Lens");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Concave Lens");
 
         this.span = 0.4;
         this.radiusOfCurvature = 500;
@@ -85,5 +86,21 @@ export default class ConcaveLens extends SurfaceEntity {
                 });
                 break;
         }
+    }
+
+    override render(renderer: Renderer, isSelected: boolean): void {
+        super.render(renderer, isSelected, true);
+
+        // renderer.path(
+        //     [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
+        //     2,
+        //     RGBA(255, 255, 255, 255),
+        //     true
+        // );
+
+        // renderer.fillPath(
+        //     [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
+        //     RGBA(255, 255, 255, 20)
+        // );
     }
 }

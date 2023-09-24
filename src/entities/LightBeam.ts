@@ -16,8 +16,8 @@ export default class LightBeam extends Entity {
         constructorFunc: LightBeam,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Light Beam");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Light Beam");
 
         this.size = 150;
         this.numRays = 100;

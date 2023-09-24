@@ -1,4 +1,4 @@
-import Camera from "../core/Camera";
+import Camera from "./Camera";
 import Color, { RGBA } from "../lib/Color";
 import Vector, { V } from "../lib/Vector";
 import Renderer from "./Renderer";

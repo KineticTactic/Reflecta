@@ -3,8 +3,6 @@ import Color, { RGBA } from "../lib/Color";
 import Vector from "../lib/Vector";
 import Surface from "./Surface";
 
-const MAX_BOUNCE_LIMIT = 50;
-
 interface LightRayOptions {
     origin: Vector;
     dir: Vector;
@@ -22,6 +20,9 @@ export default class LightRay {
     wavelength: number = 500;
     intensity: number = 100;
     color: Color = RGBA(1, 1, 1, 0);
+
+    static maxBounceLimit = 50;
+    static lightRayRenderWidth = 3;
 
     // constructor(origin: Vector, dir: Vector, wavelength = 550, intensity = 100) {
     constructor(options: LightRayOptions) {
@@ -52,14 +53,13 @@ export default class LightRay {
     }
 
     trace(surfaces: Surface[]) {
-        // Reset its path
         this.path = [this.origin];
 
         let currentPoint = this.path[0]; // Store the current intersection point (with any of the surfaces)
         let currentDir = this.dir.copy(); // Store the current direction of the ray
         let lastIntersectionIndex = null; // Store the index of the last surface that the ray intersected with
 
-        for (let k = 0; k < MAX_BOUNCE_LIMIT; k++) {
+        for (let k = 0; k < LightRay.maxBounceLimit; k++) {
             let closestIntersection = null; // Store the closest intersection point after checking all surfaces
             let closestIntersectionIndex = null; // Store the index of the closest surface that the ray intersected with
             let closestIntersectionDistance = Infinity; // Store the distance between the current point and the closest intersection point
@@ -125,6 +125,6 @@ export default class LightRay {
         // ctx.strokeStyle = this.color;
         // ctx.stroke();
         // console.log(this.path);
-        renderer.path(this.path, 3, this.color);
+        renderer.path(this.path, LightRay.lightRayRenderWidth, this.color);
     }
 }

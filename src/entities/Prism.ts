@@ -5,6 +5,7 @@ import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 import Renderer from "../graphics/Renderer";
 import { RGBA } from "../lib/Color";
+import Surface from "../primitives/Surface";
 
 const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
 
@@ -18,8 +19,8 @@ export default class Prism extends SurfaceEntity {
         constructorFunc: Prism,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Prism");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Prism");
 
         this.size = 200;
         this.refractiveIndex = 1.5;
@@ -63,11 +64,18 @@ export default class Prism extends SurfaceEntity {
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {
-        super.render(renderer, isSelected);
+        super.render(renderer, isSelected, false);
+
+        renderer.path(
+            [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
+            Surface.surfaceRenderWidth,
+            this.color,
+            true
+        );
 
         renderer.fillPath(
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-            RGBA(255, 255, 255, 20)
+            RGBA(this.color.r, this.color.b, this.color.g, 20)
         );
     }
 }

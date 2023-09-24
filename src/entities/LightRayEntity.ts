@@ -11,8 +11,8 @@ export default class LightRayEntity extends Entity {
         constructorFunc: LightRayEntity,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Light Beam");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Light Beam");
 
         this.init();
     }

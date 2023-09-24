@@ -16,8 +16,8 @@ export default class PointLight extends Entity {
         constructorFunc: PointLight,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Point Light");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Point Light");
         this.numRays = 500;
         this.wavelength = 500;
         this.intensity = 20;

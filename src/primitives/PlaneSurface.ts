@@ -62,7 +62,7 @@ export default abstract class PlaneSurface extends Surface {
 
     // Render the surface
     override render(renderer: Renderer, color: Color = RGBA(255, 255, 255, 1)) {
-        renderer.line(this.v1, this.v2, 1, color);
+        renderer.line(this.v1, this.v2, Surface.surfaceRenderWidth, color);
         // ctx.strokeStyle = color;
         // ctx.lineWidth = 2;
         // ctx.beginPath();

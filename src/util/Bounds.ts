@@ -32,7 +32,7 @@ export default class AABB {
 
     render(renderer: Renderer, color: Color, lineWidth: number = 1) {
         ///TODO: Change this to rect
-        renderer.path([this.start, V(this.end.x, this.start.y), this.end, V(this.start.x, this.end.y), this.start], lineWidth, color);
+        renderer.path([this.start, V(this.end.x, this.start.y), this.end, V(this.start.x, this.end.y)], lineWidth, color, true);
         // ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
     }
 

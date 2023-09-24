@@ -4,7 +4,7 @@ import { plainText as vertexShader } from "../shaders/vertexShader.glsl";
 import { plainText as fragmentShader } from "../shaders/fragmentShader.glsl";
 import Color from "../lib/Color";
 import Vector, { V } from "../lib/Vector";
-import Camera from "../core/Camera";
+import Camera from "./Camera";
 import Renderer from "./Renderer";
 
 const MAX_VERTICES = 20000;
@@ -102,52 +102,41 @@ export default class WebGL2Renderer extends Renderer {
         this.addVerticesAndIndices([...this.calculateSidewaysPoints(v1, v2, w), ...this.calculateSidewaysPoints(v2, v1, w)], [0, 1, 2, 0, 2, 3], color);
     }
 
-    path(vertices: Vector[], w: number, color: Color) {
+    path(vertices: Vector[], w: number, color: Color, closed = false) {
         const vertexData: Vector[] = [];
         const indexData = [];
         const v1 = vertices[0];
         const v2 = vertices[1];
-        vertexData.push(...this.calculateSidewaysPoints(v1, v2, w));
-        for (let i = 0; i < vertices.length - 2; i++) {
-            let x1 = vertices[i].x;
-            let y1 = vertices[i].y;
-            let x2 = vertices[i + 1].x;
-            let y2 = vertices[i + 1].y;
-            let x3 = vertices[i + 2].x;
-            let y3 = vertices[i + 2].y;
-            // const angle = Math.atan2(y2 - y1, x2 - x1) - Math.atan2(y3 - y2, x3 - x2);
-            // if(angle  0.5)
-            const a1 = y1 - y2;
-            const b1 = x1 - x2;
-            const c1 = y1 * (x1 - x2) - x1 * (y1 - y2);
-            const a2 = y2 - y3;
-            const b2 = x2 - x3;
-            const c2 = y2 * (x2 - x3) - x2 * (y2 - y3);
-            const d1 = (w / 2) * Math.sqrt(a1 * a1 + b1 * b1) - c1;
-            const d2 = (w / 2) * Math.sqrt(a1 * a1 + b1 * b1) + c1;
-            const d3 = (w / 2) * Math.sqrt(a2 * a2 + b2 * b2) - c2;
-            const d4 = (w / 2) * Math.sqrt(a2 * a2 + b2 * b2) + c2;
-            // a1x + b1y + d1 = 0
-            // a2x + b2y + d3 = 0
-            const x4 = (b1 * d3 - b2 * d1) / (a1 * b2 - a2 * b1);
-            const y4 = (a2 * d1 - a1 * d3) / (a1 * b2 - a2 * b1);
-            // console.log(d1);
-            // a1x + b1y + d2 = 0
-            // a2x + b2y + d4 = 0
-            const x5 = (b1 * d4 - b2 * d2) / (a1 * b2 - a2 * b1);
-            const y5 = (a2 * d2 - a1 * d4) / (a1 * b2 - a2 * b1);
+        if (!closed) {
+            vertexData.push(...this.calculateSidewaysPoints(v1, v2, w));
+        } else {
+            vertexData.push(...this.calculateVertexPoints(vertices[vertices.length - 1], v1, v2, w));
+        }
+
+        for (let i = 0; i < vertices.length - (closed ? 1 : 2); i++) {
+            // const i = i < 0 ? vertices.length - 1 : i;
+            // console.log(i);
+
             // indices.push(i + 0, i + 1, i + 2, i + 1, i + 2, i + 3);
             // this.addIndices([-2, -1, 0, -1, 0, 1]);
             indexData.push(0 + i * 2, 1 + i * 2, 2 + i * 2, 1 + i * 2, 2 + i * 2, 3 + i * 2);
             // indexData.push(0 + i, 1 + i, 2 + i, 1 + i, 2 + i, 3 + i);
-            vertexData.push(V(-x4, y4));
-            vertexData.push(V(x5, -y5));
+            vertexData.push(...this.calculateVertexPoints(vertices[i], vertices[i + 1], vertices[(i + 2) % vertices.length], w));
             // this.addVertices([V(-x4, y4), V(x5, -y5)], color);
         }
 
-        const i = vertexData.length - 2;
-        indexData.push(i + 0, i + 1, i + 2, i + 0, i + 2, i + 3);
-        vertexData.push(...this.calculateSidewaysPoints(vertices[vertices.length - 1], vertices[vertices.length - 2], w));
+        if (!closed) {
+            const i = vertexData.length - 2;
+            indexData.push(i + 0, i + 1, i + 2, i + 0, i + 2, i + 3);
+            vertexData.push(...this.calculateSidewaysPoints(vertices[vertices.length - 1], vertices[vertices.length - 2], w));
+        } else {
+            const i = vertexData.length - 2;
+            indexData.push(i, i + 1, 0, i + 1, 0, 1);
+            // vertexData.push(...this.calculateSidewaysPoints(vertices[vertices.length - 1], vertices[vertices.length - 2], w));
+        }
+        // console.log(vertexData);
+        // console.log(indexData);
+
         this.addVerticesAndIndices(vertexData, indexData, color);
     }
 
@@ -211,6 +200,38 @@ export default class WebGL2Renderer extends Renderer {
         return [new Vector(x3, y3), new Vector(x4, y4)];
     }
 
+    private calculateVertexPoints(v1: Vector, v2: Vector, v3: Vector, w: number) {
+        let x1 = v1.x;
+        let y1 = v1.y;
+        let x2 = v2.x;
+        let y2 = v2.y;
+        let x3 = v3.x;
+        let y3 = v3.y;
+        // const angle = Math.atan2(y2 - y1, x2 - x1) - Math.atan2(y3 - y2, x3 - x2);
+        // if(angle  0.5)
+        const a1 = y1 - y2;
+        const b1 = x1 - x2;
+        const c1 = y1 * (x1 - x2) - x1 * (y1 - y2);
+        const a2 = y2 - y3;
+        const b2 = x2 - x3;
+        const c2 = y2 * (x2 - x3) - x2 * (y2 - y3);
+        const d1 = (w / 2) * Math.sqrt(a1 * a1 + b1 * b1) - c1;
+        const d2 = (w / 2) * Math.sqrt(a1 * a1 + b1 * b1) + c1;
+        const d3 = (w / 2) * Math.sqrt(a2 * a2 + b2 * b2) - c2;
+        const d4 = (w / 2) * Math.sqrt(a2 * a2 + b2 * b2) + c2;
+        // a1x + b1y + d1 = 0
+        // a2x + b2y + d3 = 0
+        const x4 = (b1 * d3 - b2 * d1) / (a1 * b2 - a2 * b1);
+        const y4 = (a2 * d1 - a1 * d3) / (a1 * b2 - a2 * b1);
+        // console.log(d1);
+        // a1x + b1y + d2 = 0
+        // a2x + b2y + d4 = 0
+        const x5 = (b1 * d4 - b2 * d2) / (a1 * b2 - a2 * b1);
+        const y5 = (a2 * d2 - a1 * d4) / (a1 * b2 - a2 * b1);
+
+        return [V(-x4, y4), V(x5, -y5)];
+    }
+
     private addVertex(v: Vector, color: Color) {
         this.buffers[this.currentBufferIndex].addVertex(v, color);
     }
@@ -238,5 +259,10 @@ export default class WebGL2Renderer extends Renderer {
     private updateBuffers() {
         this.buffers[this.currentBufferIndex].clear();
         this.buffers[this.currentBufferIndex].updateBufferData(this.gl);
+    }
+
+    override resizeCanvas() {
+        super.resizeCanvas();
+        if (this.gl) this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
     }
 }

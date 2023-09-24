@@ -5,8 +5,8 @@ import Entity from "../core/Entity";
 import Renderer from "../graphics/Renderer";
 
 export default abstract class SurfaceEntity extends Entity {
-    constructor(pos: Vector, name: string) {
-        super(pos, name);
+    constructor(pos: Vector, rot: number, name: string) {
+        super(pos, rot, name);
     }
 
     override updateTransforms(deltaPos: Vector, deltaRot: number): void {
@@ -28,8 +28,10 @@ export default abstract class SurfaceEntity extends Entity {
         this.bounds = AABB.fromAABBs(aabbs);
     }
 
-    override render(renderer: Renderer, isSelected: boolean) {
-        for (let s of this.surfaces) s.render(renderer, this.color);
+    override render(renderer: Renderer, isSelected: boolean, drawSurfaces: boolean = true) {
+        if (drawSurfaces) {
+            for (let s of this.surfaces) s.render(renderer, this.color);
+        }
 
         super.render(renderer, isSelected);
     }

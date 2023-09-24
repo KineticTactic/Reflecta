@@ -15,8 +15,8 @@ export default class ConvexLens extends SurfaceEntity {
         constructorFunc: ConvexLens,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Convex Lens");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Convex Lens");
 
         this.span = 1;
         this.radiusOfCurvature = 200;

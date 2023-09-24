@@ -143,6 +143,6 @@ export default abstract class CurvedSurface extends Surface {
         // ctx.lineWidth = 2;
         // ctx.arc(this.center.x, this.center.y, this.radius, angleStart, angleEnd);
         // ctx.stroke();
-        renderer.arc(this.center, this.radius, angleStart, angleEnd, 2, color);
+        renderer.arc(this.center, this.radius, angleStart, angleEnd, Surface.surfaceRenderWidth, color);
     }
 }

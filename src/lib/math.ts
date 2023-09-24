@@ -1,5 +1,11 @@
 import Vector from "./Vector";
 
+let dispersionFactor = 0.3;
+
+export function setDispersionFactor(df: number) {
+    dispersionFactor = df;
+}
+
 export function reflect(incident: Vector, normal: Vector): Vector {
     return Vector.sub(incident, normal.copy().mult((2 * Vector.dot(incident, normal)) / normal.magSq()));
 }
@@ -59,7 +65,6 @@ export function calculateRefractiveIndexForWavelength(wavelength: number, standa
         then adding 1 to it again gives 1.05, essentially reducing the extent to which the refractive index is altered
     */
 
-    const dispersionFactor = 0.3;
     const wavelengthRatio = standardWavelength / wavelength;
     const reducedWavelengthRatio = (wavelengthRatio - 1) * dispersionFactor + 1;
     const ri = reducedWavelengthRatio * refractiveIndex;

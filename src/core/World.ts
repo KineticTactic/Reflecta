@@ -4,16 +4,14 @@ import LightRay from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
 import Renderer from "../graphics/Renderer";
-import Camera from "./Camera";
+import Camera from "../graphics/Camera";
 import WebGL2Renderer from "../graphics/WebGL2Renderer";
+import { setDispersionFactor } from "../lib/math";
 
 export default class World {
     surfaces: Surface[] = [];
     lightRays: LightRay[] = [];
     entities: Entity[] = [];
-
-    worldOffset = Vector.zero();
-    worldScale = 1;
 
     selectedEntityIndex: number = -1;
 
@@ -33,6 +31,13 @@ export default class World {
         renderTime: 0,
         numBuffers: 0,
         usedBuffers: 0,
+    };
+
+    settings = {
+        maxLightBounceLimit: 50,
+        dispersionFactor: 0.3,
+        lightRayRenderWidth: 3,
+        surfaceRenderWidth: 2,
     };
 
     ui: UI = new UI(this);
@@ -198,5 +203,12 @@ export default class World {
         this.stats.renderTime = timerEnd - timerStart;
         this.stats.usedBuffers = (this.renderer as WebGL2Renderer).currentBufferIndex + 1;
         this.stats.numBuffers = (this.renderer as WebGL2Renderer).buffers.length;
+    }
+
+    updateSettings() {
+        setDispersionFactor(this.settings.dispersionFactor);
+        LightRay.maxBounceLimit = this.settings.maxLightBounceLimit;
+        LightRay.lightRayRenderWidth = this.settings.lightRayRenderWidth;
+        Surface.surfaceRenderWidth = this.settings.surfaceRenderWidth;
     }
 }

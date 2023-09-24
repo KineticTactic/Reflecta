@@ -14,8 +14,8 @@ export default class GlassSphere extends SurfaceEntity {
         constructorFunc: GlassSphere,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Glass Sphere");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Glass Sphere");
 
         this.radius = 100;
         this.refractiveIndex = 1.666;

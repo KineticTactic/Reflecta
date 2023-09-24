@@ -22,9 +22,9 @@ export default abstract class Entity {
 
     static entityData: EntityData;
 
-    constructor(pos: Vector, name: string) {
+    constructor(pos: Vector, rot: number, name: string) {
         this.pos = pos;
-        this.rot = 0;
+        this.rot = rot;
         this.name = name;
 
         this.bounds = new AABB(Vector.zero(), Vector.zero());
@@ -32,7 +32,6 @@ export default abstract class Entity {
         // Attributes
         this.attributes = [
             { name: "color", type: AttributeType.Color, value: this.color },
-            { name: "displayBounds", type: AttributeType.Boolean, value: this.displayBounds },
             { name: "position", type: AttributeType.Vector, value: this.pos.copy() },
             { name: "rotation", type: AttributeType.Number, value: this.rot },
         ];
@@ -82,10 +81,8 @@ export default abstract class Entity {
                 this.setRotation(value as number);
                 break;
             case "color":
-                this.color = value as Color;
-                break;
-            case "displayBounds":
-                this.displayBounds = value as boolean;
+                const c = value as Color;
+                this.color = RGBA(c.r, c.g, c.b, Math.ceil(c.a * 255));
                 break;
         }
     }

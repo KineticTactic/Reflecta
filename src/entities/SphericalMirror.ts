@@ -14,8 +14,8 @@ export default class SphericalMirror extends SurfaceEntity {
         constructorFunc: SphericalMirror,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Convex Lens");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Convex Lens");
 
         this.span = 1;
         this.radiusOfCurvature = 200;

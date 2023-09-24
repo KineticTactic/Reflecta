@@ -15,8 +15,8 @@ export default class Laser extends Entity {
         constructorFunc: Laser,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Laser");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Laser");
 
         this.numRays = 500;
 

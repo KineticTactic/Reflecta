@@ -5,6 +5,7 @@ import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 import Renderer from "../graphics/Renderer";
 import { RGBA } from "../lib/Color";
+import Surface from "../primitives/Surface";
 
 export default class GlassSlab extends SurfaceEntity {
     size: Vector;
@@ -16,8 +17,8 @@ export default class GlassSlab extends SurfaceEntity {
         constructorFunc: GlassSlab,
     };
 
-    constructor(pos: Vector) {
-        super(pos, "Glass Slab");
+    constructor(pos: Vector, rot: number = 0) {
+        super(pos, rot, "Glass Slab");
 
         this.size = new Vector(200, 100);
         this.refractiveIndex = 1.5;
@@ -65,7 +66,19 @@ export default class GlassSlab extends SurfaceEntity {
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {
-        super.render(renderer, isSelected);
+        super.render(renderer, isSelected, false);
+
+        renderer.path(
+            [
+                (this.surfaces[0] as PlaneRefractiveSurface).v1,
+                (this.surfaces[0] as PlaneRefractiveSurface).v2,
+                (this.surfaces[3] as PlaneRefractiveSurface).v2,
+                (this.surfaces[1] as PlaneRefractiveSurface).v1,
+            ],
+            Surface.surfaceRenderWidth,
+            RGBA(255, 255, 255, 255),
+            true
+        );
 
         renderer.fillPath(
             [

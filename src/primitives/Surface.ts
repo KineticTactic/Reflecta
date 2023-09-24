@@ -4,6 +4,8 @@ import Vector from "../lib/Vector";
 import AABB from "../util/Bounds";
 
 export default abstract class Surface {
+    static surfaceRenderWidth = 2;
+
     abstract canIntersectTwice: boolean;
 
     abstract intersects(origin: Vector, dir: Vector): Vector | null;
