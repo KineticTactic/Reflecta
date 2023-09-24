@@ -60,6 +60,7 @@ export default class World {
         const index = this.entities.indexOf(entity);
         if (index > -1) this.entities.splice(index, 1);
         this.selectedEntityIndex = -1;
+        this.isDirty = true;
     }
 
     update(delta: number) {
