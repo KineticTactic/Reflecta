@@ -1,9 +1,14 @@
 import Vector from "./Vector";
 
 let dispersionFactor = 0.3;
+let calculateReflectance = false;
 
 export function setDispersionFactor(df: number) {
     dispersionFactor = df;
+}
+
+export function setCalculateReflectance(val: boolean) {
+    calculateReflectance = val;
 }
 
 export function reflect(incident: Vector, normal: Vector): Vector {
@@ -30,7 +35,14 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
         let angleOfRefraction = Math.asin(Math.sin(angleOfIncidence) / refractiveIndex);
         let angleOfDeviation = angleOfIncidence - angleOfRefraction;
 
-        // console.log(angleBetween);
+        // Calculate reflectance (Fresnel's equations)
+        if (calculateReflectance) {
+            const reflectance =
+                ((1 * Math.cos(angleOfIncidence) - refractiveIndex * Math.cos(angleOfRefraction)) /
+                    (1 * Math.cos(angleOfIncidence) + refractiveIndex * Math.cos(angleOfRefraction))) **
+                2;
+            if (Math.random() < reflectance) return reflect(incident, normal);
+        }
 
         return incident.copy().rotate(angleOfDeviation);
     } else {
@@ -50,6 +62,15 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
 
         let angleOfRefraction = Math.asin(sinAngleOfRefraction);
         let angleOfDeviation = angleOfIncidence - angleOfRefraction;
+
+        // Calculate reflectance (Fresnel's equations)
+        if (calculateReflectance) {
+            const reflectance =
+                ((refractiveIndex * Math.cos(angleOfIncidence) - 1 * Math.cos(angleOfRefraction)) /
+                    (refractiveIndex * Math.cos(angleOfIncidence) + 1 * Math.cos(angleOfRefraction))) **
+                2;
+            if (Math.random() < reflectance) return reflect(incident, normal);
+        }
 
         return incident.copy().rotate(-angleOfDeviation);
     }

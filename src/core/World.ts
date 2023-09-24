@@ -6,7 +6,7 @@ import UI from "../ui/UI";
 import Renderer from "../graphics/Renderer";
 import Camera from "../graphics/Camera";
 import WebGL2Renderer from "../graphics/WebGL2Renderer";
-import { setDispersionFactor } from "../lib/math";
+import { setCalculateReflectance, setDispersionFactor } from "../lib/math";
 
 export default class World {
     surfaces: Surface[] = [];
@@ -34,6 +34,7 @@ export default class World {
     };
 
     settings = {
+        calculateReflectance: false,
         maxLightBounceLimit: 50,
         dispersionFactor: 0.3,
         lightRayRenderWidth: 3,
@@ -43,6 +44,8 @@ export default class World {
     ui: UI = new UI(this);
     renderer: Renderer;
     camera: Camera;
+
+    isDirty: boolean = true;
 
     constructor(renderer: Renderer) {
         this.renderer = renderer;
@@ -60,32 +63,40 @@ export default class World {
     }
 
     update(delta: number) {
-        this.surfaces = this.entities.map((e) => e.surfaces).flat();
-        this.lightRays = this.entities.map((e) => e.lightRays).flat();
+        this.isDirty = this.isDirty || this.entities.reduce((prev, curr) => prev || curr.dirty, false);
 
-        let totalLightBounces = 0;
-        let maxLightBounces = 0;
+        if (this.isDirty || this.settings.calculateReflectance) {
+            this.surfaces = this.entities.map((e) => e.surfaces).flat();
+            this.lightRays = this.entities.map((e) => e.lightRays).flat();
 
-        const timerStart = performance.now();
+            const timerStart = performance.now();
 
-        for (let l of this.lightRays) {
-            const lightBounces = l.trace(this.surfaces);
+            let totalLightBounces = 0;
+            let maxLightBounces = 0;
 
-            if (lightBounces > maxLightBounces) maxLightBounces = lightBounces;
-            totalLightBounces += lightBounces;
+            for (let l of this.lightRays) {
+                const lightBounces = l.trace(this.surfaces);
+
+                if (lightBounces > maxLightBounces) maxLightBounces = lightBounces;
+                totalLightBounces += lightBounces;
+            }
+
+            const timerEnd = performance.now();
+            const lightTraceTime = timerEnd - timerStart;
+
+            // Update stats
+            this.stats.entities = this.entities.length;
+            this.stats.lightRays = this.lightRays.length;
+            this.stats.surfaces = this.surfaces.length;
+            this.stats.totalLightBounces = totalLightBounces;
+            this.stats.maxLightBounces = maxLightBounces;
+            this.stats.lightTraceTime = lightTraceTime;
         }
 
-        const timerEnd = performance.now();
-        const lightTraceTime = timerEnd - timerStart;
+        for (let e of this.entities) e.dirty = false;
+        this.isDirty = false;
 
-        // Update stats
         this.stats.frameTime = delta;
-        this.stats.entities = this.entities.length;
-        this.stats.lightRays = this.lightRays.length;
-        this.stats.surfaces = this.surfaces.length;
-        this.stats.totalLightBounces = totalLightBounces;
-        this.stats.maxLightBounces = maxLightBounces;
-        this.stats.lightTraceTime = lightTraceTime;
     }
 
     handleMouseDown(mousePos: Vector, button: MouseEvent["button"]) {
@@ -177,27 +188,12 @@ export default class World {
     render() {
         const timerStart = performance.now();
 
-        // Canvas transformations
-        // ctx.save();
-        // ctx.translate(this.worldOffset.x, this.worldOffset.y);
-        // ctx.scale(this.worldScale, this.worldScale);
-
-        // ctx.lineWidth = 2;
-        // ctx.globalCompositeOperation = "lighter";
-        // Render light rays
-        // ctx.beginPath();
         for (let lightRay of this.lightRays) lightRay.render(this.renderer);
-        // const brightness = 150;
-        // ctx.strokeStyle = `rgba(${brightness}, ${brightness}, ${brightness}, 1)`;
-        // ctx.closePath();
 
         // Render entities
         for (let i = 0; i < this.entities.length; i++) {
             this.entities[i].render(this.renderer, this.selectedEntityIndex == i);
         }
-
-        // Restore default canvas transformations
-        // ctx.restore();
 
         const timerEnd = performance.now();
         this.stats.renderTime = timerEnd - timerStart;
@@ -206,9 +202,11 @@ export default class World {
     }
 
     updateSettings() {
+        setCalculateReflectance(this.settings.calculateReflectance);
         setDispersionFactor(this.settings.dispersionFactor);
         LightRay.maxBounceLimit = this.settings.maxLightBounceLimit;
         LightRay.lightRayRenderWidth = this.settings.lightRayRenderWidth;
         Surface.surfaceRenderWidth = this.settings.surfaceRenderWidth;
+        this.isDirty = true;
     }
 }

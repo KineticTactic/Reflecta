@@ -91,6 +91,9 @@ export default class ConcaveLens extends SurfaceEntity {
     override render(renderer: Renderer, isSelected: boolean): void {
         super.render(renderer, isSelected, true);
 
+        // let angleStart = this.facing.heading() - this.span / 2;
+        // let angleEnd = this.facing.heading() + this.span / 2;
+
         // renderer.path(
         //     [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
         //     2,

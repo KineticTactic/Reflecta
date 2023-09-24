@@ -8,6 +8,8 @@ import { AttributeType } from "../ui/Attribute";
 
 export default class Laser extends Entity {
     numRays: number;
+    dispersable: boolean;
+    intensity: number = 5;
 
     static entityData: EntityData = {
         name: "Laser",
@@ -15,15 +17,20 @@ export default class Laser extends Entity {
         constructorFunc: Laser,
     };
 
-    constructor(pos: Vector, rot: number = 0) {
+    constructor(pos: Vector, rot: number = 0, dispersable: boolean = true) {
         super(pos, rot, "Laser");
 
         this.numRays = 500;
 
+        this.dispersable = dispersable;
+        this.intensity = 5;
+
         this.init();
 
         // Attributes
-        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 200, value: this.numRays });
+        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 1000, value: this.numRays });
+        this.attributes.push({ name: "dispersable", type: AttributeType.Boolean, value: this.dispersable });
+        this.attributes.push({ name: "intensity", type: AttributeType.Number, min: 1, max: 100, step: 0.1, value: this.intensity });
     }
 
     init() {
@@ -34,13 +41,12 @@ export default class Laser extends Entity {
                 new LightRay({
                     origin: Vector.add(this.pos, new Vector(0, 1).rotate(this.rot)),
                     dir: Vector.right().rotate(this.rot),
-                    monochromatic: true,
-                    wavelength: wavelength,
-                    intensity: 5,
+                    monochromatic: this.dispersable,
+                    wavelength: !this.dispersable ? 550 : wavelength,
+                    intensity: !this.dispersable ? 1 : 5,
                 })
             );
         }
-        console.log(this.lightRays[0]);
 
         this.updateBounds();
     }
@@ -67,6 +73,16 @@ export default class Laser extends Entity {
             case "numRays":
                 this.numRays = value as number;
                 this.init();
+                break;
+            case "dispersable":
+                this.dispersable = value as boolean;
+                this.init();
+                break;
+            case "intensity":
+                this.intensity = value as number;
+                for (let l of this.lightRays) {
+                    l.setIntensity(this.intensity);
+                }
                 break;
         }
     }

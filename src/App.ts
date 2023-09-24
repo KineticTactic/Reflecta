@@ -21,9 +21,10 @@ export default class App {
     }
 
     addEntities() {
-        this.world.addEntity(new Prism(V(-1520 / 2, 0)));
-        this.world.addEntity(new Prism(V(200, -100), 1.87));
+        this.world.addEntity(new Prism(V(200, -100)));
         this.world.addEntity(new Laser(V(-100, -60), -0.2));
+        // this.world.addEntity(new Prism(V(-1520 / 2, 0)));
+        // this.world.addEntity(new Laser(V(-100, -60), -0.2));
         this.world.addEntity(new ConcaveLens(V(0, -50)));
     }
 

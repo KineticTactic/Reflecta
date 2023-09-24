@@ -45,6 +45,9 @@ export default class UI {
             expanded: false,
         });
 
+        worldFolder.addBinding(world.settings, "calculateReflectance", { label: "calculate reflectance" }).on("change", () => {
+            world.updateSettings();
+        });
         worldFolder
             .addBinding(world.settings, "maxLightBounceLimit", { min: 0, max: 100, step: 1, label: "light bounce limit" })
             .on("change", world.updateSettings);
