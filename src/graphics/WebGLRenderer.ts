@@ -17,7 +17,7 @@ class BufferData {
     numVertices = 0;
     numIndices = 0;
 
-    constructor(positions: Float32Array, colors: Uint8Array, indices: Uint16Array, gl: WebGL2RenderingContext) {
+    constructor(positions: Float32Array, colors: Uint8Array, indices: Uint16Array, gl: WebGL2RenderingContext | WebGLRenderingContext) {
         this.positions = positions;
         this.colors = colors;
         this.indices = indices;
@@ -41,7 +41,7 @@ class BufferData {
         this.numIndices += ind.length;
     }
 
-    updateBufferData(gl: WebGL2RenderingContext) {
+    updateBufferData(gl: WebGL2RenderingContext | WebGLRenderingContext) {
         twgl.setAttribInfoBufferFromArray(gl, this.bufferInfo.attribs!.position, this.positions);
         twgl.setAttribInfoBufferFromArray(gl, this.bufferInfo.attribs!.color, this.colors);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferInfo.indices!);
@@ -60,8 +60,8 @@ class BufferData {
     }
 }
 
-export default class WebGL2Renderer extends Renderer {
-    gl: WebGL2RenderingContext;
+export default class WebGLRenderer extends Renderer {
+    gl: WebGL2RenderingContext | WebGLRenderingContext;
     shaderProgramInfo: twgl.ProgramInfo;
 
     buffers: BufferData[] = [];
@@ -70,7 +70,19 @@ export default class WebGL2Renderer extends Renderer {
     constructor() {
         super();
 
-        this.gl = this.canvas.getContext("webgl2") as WebGL2RenderingContext;
+        let gl: WebGLRenderingContext | WebGL2RenderingContext | null = this.canvas.getContext("webgl2");
+
+        if (!gl) {
+            console.log("WebGL2 not supported! Reverting to WebGL");
+            gl = this.canvas.getContext("webgl");
+
+            if (!gl) {
+                alert("Failed to create WebGL context! WebGL is not supported on your browser.");
+                throw new Error("WebGL not supported!");
+            }
+        }
+
+        this.gl = gl;
 
         this.shaderProgramInfo = twgl.createProgramInfo(this.gl, [vertexShader, fragmentShader]);
 

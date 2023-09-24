@@ -4,7 +4,7 @@ import ConcaveLens from "./entities/ConcaveLens";
 import Laser from "./entities/Laser";
 import Prism from "./entities/Prism";
 import Renderer from "./graphics/Renderer";
-import WebGL2Renderer from "./graphics/WebGL2Renderer";
+import WebGLRenderer from "./graphics/WebGLRenderer";
 import { V } from "./lib/Vector";
 
 export default class App {
@@ -14,7 +14,7 @@ export default class App {
     lastFrameTime: number = performance.now();
 
     constructor() {
-        this.renderer = new WebGL2Renderer();
+        this.renderer = new WebGLRenderer();
         this.world = new World(this.renderer);
 
         EventHandler.attachEventListeners(this.renderer.canvas, this.world);

@@ -5,7 +5,7 @@ import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
 import Renderer from "../graphics/Renderer";
 import Camera from "../graphics/Camera";
-import WebGL2Renderer from "../graphics/WebGL2Renderer";
+import WebGLRenderer from "../graphics/WebGLRenderer";
 import { setCalculateReflectance, setDispersionFactor } from "../lib/math";
 
 export default class World {
@@ -198,8 +198,8 @@ export default class World {
 
         const timerEnd = performance.now();
         this.stats.renderTime = timerEnd - timerStart;
-        this.stats.usedBuffers = (this.renderer as WebGL2Renderer).currentBufferIndex + 1;
-        this.stats.numBuffers = (this.renderer as WebGL2Renderer).buffers.length;
+        this.stats.usedBuffers = (this.renderer as WebGLRenderer).currentBufferIndex + 1;
+        this.stats.numBuffers = (this.renderer as WebGLRenderer).buffers.length;
     }
 
     updateSettings() {

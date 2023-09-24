@@ -19,6 +19,7 @@ export default abstract class Renderer {
 
     resizeCanvas() {
         const dpi = Math.ceil(window.devicePixelRatio);
+
         this.canvas.width = window.innerWidth * dpi;
         this.canvas.height = window.innerHeight * dpi;
         this.canvas.style.width = window.innerWidth + "px";
