@@ -1,6 +1,7 @@
 import Renderer from "../graphics/Renderer";
 import Color, { RGBA } from "../lib/Color";
 import { closestPointOnLine } from "../lib/intersections";
+import { LightRayResponseInfo } from "../lib/math";
 import Vector from "../lib/Vector";
 import AABB from "../util/Bounds";
 import Surface from "./Surface";
@@ -129,7 +130,7 @@ export default abstract class CurvedSurface extends Surface {
         return AABB.fromPoints(boundingPoints);
     }
 
-    abstract handle(_origin: Vector, dir: Vector, _wavelength: number): Vector;
+    abstract handle(_origin: Vector, dir: Vector, _wavelength: number): LightRayResponseInfo;
 
     render(renderer: Renderer, color: Color = RGBA(255, 255, 255, 255)) {
         let angleStart = this.facing.heading() - this.span / 2;

@@ -12,6 +12,7 @@ export default abstract class Renderer {
 
     line(_v1: Vector, _v2: Vector, _w: number, _color: Color): void {}
     path(_vertices: Vector[], _w: number, _color: Color, _closed = false) {}
+    pathColoured(_vertices: Vector[], _w: number, _colors: Color[], _closed = false) {}
     fillPath(_vertices: Vector[], _color: Color) {}
     arc(_pos: Vector, _radius: number, _startAngle: number, _endAngle: number, _w: number, _color: Color) {}
     clear() {}

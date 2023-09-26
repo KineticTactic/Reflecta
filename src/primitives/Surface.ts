@@ -1,6 +1,7 @@
 import Renderer from "../graphics/Renderer";
 import Color from "../lib/Color";
 import Vector from "../lib/Vector";
+import { LightRayResponseInfo } from "../lib/math";
 import AABB from "../util/Bounds";
 
 export default abstract class Surface {
@@ -9,7 +10,7 @@ export default abstract class Surface {
     abstract canIntersectTwice: boolean;
 
     abstract intersects(origin: Vector, dir: Vector): Vector | null;
-    abstract handle(origin: Vector, dir: Vector, wavelength: number): Vector;
+    abstract handle(origin: Vector, dir: Vector, wavelength: number): LightRayResponseInfo;
 
     abstract calculateAABB(): AABB;
 

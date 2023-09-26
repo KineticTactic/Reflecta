@@ -21,7 +21,9 @@ export default class CurvedRefractiveSurface extends CurvedSurface {
 
         const ri = calculateRefractiveIndexForWavelength(wavelength, 570, this.refractiveIndex);
 
-        return refract(dir, normal, ri, this.criticalAngle);
+        const response = refract(dir, normal, ri, this.criticalAngle);
+        response.newRayOrigin = intersection;
+        return response;
     }
 
     setRefractiveIndex(ri: number) {

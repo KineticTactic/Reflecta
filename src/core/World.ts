@@ -1,12 +1,12 @@
 import Vector, { V } from "../lib/Vector";
 import Entity from "./Entity";
-import LightRay from "../primitives/LightRay";
+import LightRay, { LightRayTraceInfo } from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
 import Renderer from "../graphics/Renderer";
 import Camera from "../graphics/Camera";
 import WebGLRenderer from "../graphics/WebGLRenderer";
-import { setCalculateReflectance, setDispersionFactor } from "../lib/math";
+import Settings from "./Settings";
 
 export default class World {
     surfaces: Surface[] = [];
@@ -33,14 +33,6 @@ export default class World {
         usedBuffers: 0,
     };
 
-    settings = {
-        calculateReflectance: false,
-        maxLightBounceLimit: 50,
-        dispersionFactor: 0.3,
-        lightRayRenderWidth: 3,
-        surfaceRenderWidth: 2,
-    };
-
     ui: UI = new UI(this);
     renderer: Renderer;
     camera: Camera;
@@ -50,6 +42,7 @@ export default class World {
     constructor(renderer: Renderer) {
         this.renderer = renderer;
         this.camera = new Camera(this.renderer.getDisplaySize());
+        this.setDirty();
     }
 
     addEntity(entity: Entity) {
@@ -64,23 +57,55 @@ export default class World {
     }
 
     update(delta: number) {
-        this.isDirty = this.isDirty || this.entities.reduce((prev, curr) => prev || curr.dirty, false);
+        this.isDirty = this.isDirty || this.entities.reduce((prev, curr) => prev || curr.isDirty, false);
 
-        if (this.isDirty || this.settings.calculateReflectance) {
+        // We only update the Light rays and retrace them IF anything in the world has changed
+        if (this.isDirty) {
+            const timerStart = performance.now();
+
+            // All the surfaces and light rays from each entity are pooled into one big array
             this.surfaces = this.entities.map((e) => e.surfaces).flat();
             this.lightRays = this.entities.map((e) => e.lightRays).flat();
 
-            const timerStart = performance.now();
-
+            // Keep track of these to show them in the stats window
             let totalLightBounces = 0;
             let maxLightBounces = 0;
 
-            for (let l of this.lightRays) {
-                const lightBounces = l.trace(this.surfaces);
+            /* Here's how the ray tracing works:
+                1. Loop over all the "primary" rays (those present in entities) and trace them
+                2. The trace function returns a list of "newRays" which are secondary light rays
+                    which are to be added after the primary rays are traced. These are stored in 
+                    "bufferLightRays"
+                3. Keep track of the current length of lightRays
+                4. Add the contents of the bufferLightRays to the main lightRays array and clear 
+                    the buffer array
+                5. Now trace the rays present in the main lightRays array starting from "startIndex"
+                6. Repeat from step 2 onwards UNTIL no new rays are added (bufferLightRays.length == 0)
+                    OR we have looped more than the limit Settings.secondaryLightDepthLimit
+                7. At the end the lightRays array will be populated with every single light ray
+            */
 
-                if (lightBounces > maxLightBounces) maxLightBounces = lightBounces;
-                totalLightBounces += lightBounces;
-            }
+            let startIndex = 0;
+            let traceDepth = 0;
+            let bufferLightRays: LightRay[] = [];
+
+            do {
+                traceDepth++;
+
+                this.lightRays.push(...bufferLightRays);
+                bufferLightRays = [];
+
+                for (let i = startIndex; i < this.lightRays.length; i++) {
+                    const lightTraceInfo: LightRayTraceInfo = this.lightRays[i].trace(this.surfaces);
+
+                    if (lightTraceInfo.newRays.length > 0) bufferLightRays.push(...lightTraceInfo.newRays);
+
+                    if (lightTraceInfo.lightBounces > maxLightBounces) maxLightBounces = lightTraceInfo.lightBounces;
+                    totalLightBounces += lightTraceInfo.lightBounces;
+                }
+
+                startIndex = this.lightRays.length;
+            } while (bufferLightRays.length > 0 && traceDepth < Settings.secondaryLightDepthLimit && Settings.calculateReflectance);
 
             const timerEnd = performance.now();
             const lightTraceTime = timerEnd - timerStart;
@@ -94,7 +119,7 @@ export default class World {
             this.stats.lightTraceTime = lightTraceTime;
         }
 
-        for (let e of this.entities) e.dirty = false;
+        for (let e of this.entities) e.isDirty = false;
         this.isDirty = false;
 
         this.stats.frameTime = delta;
@@ -202,12 +227,7 @@ export default class World {
         this.stats.numBuffers = (this.renderer as WebGLRenderer).buffers.length;
     }
 
-    updateSettings() {
-        setCalculateReflectance(this.settings.calculateReflectance);
-        setDispersionFactor(this.settings.dispersionFactor);
-        LightRay.maxBounceLimit = this.settings.maxLightBounceLimit;
-        LightRay.lightRayRenderWidth = this.settings.lightRayRenderWidth;
-        Surface.surfaceRenderWidth = this.settings.surfaceRenderWidth;
+    setDirty() {
         this.isDirty = true;
     }
 }

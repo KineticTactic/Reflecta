@@ -39,11 +39,19 @@ export default class App {
     render() {
         this.renderer.clear();
 
-        // // Draw a square of side length 200
-        // this.renderer.path([V(-100, -100), V(100, -100), V(100, 100), V(-100, 100)], 40, RGBA(255, 0, 0, 255), true);
+        // this.renderer.beginShape();
 
-        // // Draw a similar square but translated to the left by 300px
-        // this.renderer.path([V(-400, -100), V(-200, -100), V(-200, 100), V(-400, 100), V(-400, -100)], 40, RGBA(0, 255, 0, 255));
+        // // // Draw a square of side length 200
+        // this.renderer.path([V(-100, -100), V(100, -100), V(100, 100), V(-100, 100)], RGBA(255, 0, 0, 255));
+        // // this.renderer.stroke(30, true);
+        // // this.renderer.stroke(20);
+
+        // // // Draw a similar square but translated to the left by 300px
+        // this.renderer.path([V(-400, -100), V(-200, -100), V(-200, 100), V(-400, 100), V(-400, -100)], RGBA(0, 255, 0, 255));
+
+        // this.renderer.stroke(30);
+
+        // this.renderer.line(V(-200, -200), V(300, 300), 100, RGBA(0, 255, 255, 255));
 
         this.world.render();
         this.renderer.render(this.world.camera);

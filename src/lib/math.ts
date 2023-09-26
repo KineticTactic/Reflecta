@@ -1,21 +1,22 @@
+import Settings from "../core/Settings";
 import Vector from "./Vector";
 
-let dispersionFactor = 0.3;
-let calculateReflectance = false;
-
-export function setDispersionFactor(df: number) {
-    dispersionFactor = df;
+export interface LightRayResponseInfo {
+    dir: Vector;
+    newRay: boolean;
+    transmittance?: number;
+    newRayDir?: Vector;
+    newRayOrigin?: Vector;
 }
 
-export function setCalculateReflectance(val: boolean) {
-    calculateReflectance = val;
+export function reflect(incident: Vector, normal: Vector): LightRayResponseInfo {
+    return {
+        dir: Vector.sub(incident, normal.copy().mult((2 * Vector.dot(incident, normal)) / normal.magSq())),
+        newRay: false,
+    };
 }
 
-export function reflect(incident: Vector, normal: Vector): Vector {
-    return Vector.sub(incident, normal.copy().mult((2 * Vector.dot(incident, normal)) / normal.magSq()));
-}
-
-export function refract(incident: Vector, normal: Vector, refractiveIndex: number, criticalAngle: number): Vector {
+export function refract(incident: Vector, normal: Vector, refractiveIndex: number, criticalAngle: number): LightRayResponseInfo {
     // find angle between dir and normal
     let angleBetween = Math.atan2(incident.y, incident.x) - Math.atan2(normal.y, normal.x);
 
@@ -36,15 +37,25 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
         let angleOfDeviation = angleOfIncidence - angleOfRefraction;
 
         // Calculate reflectance (Fresnel's equations)
-        if (calculateReflectance) {
+        if (Settings.calculateReflectance) {
             const reflectance =
                 ((1 * Math.cos(angleOfIncidence) - refractiveIndex * Math.cos(angleOfRefraction)) /
                     (1 * Math.cos(angleOfIncidence) + refractiveIndex * Math.cos(angleOfRefraction))) **
                 2;
-            if (Math.random() < reflectance) return reflect(incident, normal);
+
+            return {
+                dir: incident.copy().rotate(angleOfDeviation),
+                newRay: true,
+                newRayDir: reflect(incident, normal).dir,
+                transmittance: 1 - reflectance,
+            };
+            // if (Math.random() < reflectance) return reflect(incident, normal);
         }
 
-        return incident.copy().rotate(angleOfDeviation);
+        return {
+            dir: incident.copy().rotate(angleOfDeviation),
+            newRay: false,
+        };
     } else {
         // The ray is going from DENSER TO RARER
 
@@ -57,22 +68,35 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
 
         if (angleOfIncidence > criticalAngle || angleOfIncidence < -criticalAngle || sinAngleOfRefraction >= 1 || sinAngleOfRefraction <= -1) {
             // TOTAL INTERNAL REFLECTION!!
-            return reflect(incident, normal);
+            return {
+                dir: reflect(incident, normal).dir,
+                newRay: false,
+            };
         }
 
         let angleOfRefraction = Math.asin(sinAngleOfRefraction);
         let angleOfDeviation = angleOfIncidence - angleOfRefraction;
 
         // Calculate reflectance (Fresnel's equations)
-        if (calculateReflectance) {
+        if (Settings.calculateReflectance) {
             const reflectance =
                 ((refractiveIndex * Math.cos(angleOfIncidence) - 1 * Math.cos(angleOfRefraction)) /
                     (refractiveIndex * Math.cos(angleOfIncidence) + 1 * Math.cos(angleOfRefraction))) **
                 2;
-            if (Math.random() < reflectance) return reflect(incident, normal);
+            // if (Math.random() < reflectance) {
+            return {
+                dir: incident.copy().rotate(-angleOfDeviation),
+                transmittance: 1 - reflectance,
+                newRay: true,
+                newRayDir: reflect(incident, normal).dir,
+            };
+            // }
         }
 
-        return incident.copy().rotate(-angleOfDeviation);
+        return {
+            dir: incident.copy().rotate(-angleOfDeviation),
+            newRay: false,
+        };
     }
 }
 
@@ -87,7 +111,7 @@ export function calculateRefractiveIndexForWavelength(wavelength: number, standa
     */
 
     const wavelengthRatio = standardWavelength / wavelength;
-    const reducedWavelengthRatio = (wavelengthRatio - 1) * dispersionFactor + 1;
+    const reducedWavelengthRatio = (wavelengthRatio - 1) * Settings.dispersionFactor + 1;
     const ri = reducedWavelengthRatio * refractiveIndex;
     return ri;
 }

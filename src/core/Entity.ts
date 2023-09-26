@@ -20,7 +20,7 @@ export default abstract class Entity {
     surfaces: Surface[] = [];
     lightRays: LightRay[] = [];
 
-    dirty: boolean = true;
+    isDirty: boolean = true;
 
     static entityData: EntityData;
 
@@ -44,7 +44,7 @@ export default abstract class Entity {
         this.pos = p.copy();
         this.updateTransforms(deltaPos, 0);
         this.updateBounds();
-        this.dirty = true;
+        this.isDirty = true;
     }
 
     setRotation(r: number) {
@@ -52,7 +52,7 @@ export default abstract class Entity {
         this.rot = r;
         this.updateTransforms(Vector.zero(), deltaRot);
         this.updateBounds();
-        this.dirty = true;
+        this.isDirty = true;
     }
 
     translate(delta: Vector): void {
@@ -61,14 +61,14 @@ export default abstract class Entity {
 
         this.updateTransforms(delta, 0);
         this.updateBounds();
-        this.dirty = true;
+        this.isDirty = true;
     }
 
     rotate(theta: number): void {
         this.rot += theta;
         this.updateTransforms(Vector.zero(), theta);
         this.updateBounds();
-        this.dirty = true;
+        this.isDirty = true;
     }
 
     updateTransforms(_deltaPos: Vector, _deltaRot: number): void {}
@@ -78,7 +78,7 @@ export default abstract class Entity {
 
     updateAttribute(attribute: string, value: string | Vector | number | boolean | Color): void {
         console.log("updating attribute", attribute, value);
-        this.dirty = true;
+        this.isDirty = true;
 
         switch (attribute) {
             case "position":

@@ -11,13 +11,13 @@ const MAX_VERTICES = 20000;
 
 class BufferData {
     positions: Float32Array;
-    colors: Uint8Array;
+    colors: Float32Array;
     indices: Uint16Array;
     bufferInfo: twgl.BufferInfo;
     numVertices = 0;
     numIndices = 0;
 
-    constructor(positions: Float32Array, colors: Uint8Array, indices: Uint16Array, gl: WebGL2RenderingContext | WebGLRenderingContext) {
+    constructor(positions: Float32Array, colors: Float32Array, indices: Uint16Array, gl: WebGL2RenderingContext | WebGLRenderingContext) {
         this.positions = positions;
         this.colors = colors;
         this.indices = indices;
@@ -32,7 +32,7 @@ class BufferData {
     addVertex(v: Vector, color: Color) {
         this.positions[this.numVertices * 2 + 0] = v.x;
         this.positions[this.numVertices * 2 + 1] = v.y;
-        for (let i = 0; i < 4; i++) this.colors[this.numVertices * 4 + i] = color.array()[i];
+        for (let i = 0; i < 4; i++) this.colors[this.numVertices * 4 + i] = color.array()[i] / 255.0;
         this.numVertices++;
     }
 
@@ -96,7 +96,7 @@ export default class WebGLRenderer extends Renderer {
 
     addBuffer() {
         this.currentBufferIndex++;
-        this.buffers.push(new BufferData(new Float32Array(MAX_VERTICES * 2), new Uint8Array(MAX_VERTICES * 4), new Uint16Array(MAX_VERTICES * 3), this.gl));
+        this.buffers.push(new BufferData(new Float32Array(MAX_VERTICES * 2), new Float32Array(MAX_VERTICES * 4), new Uint16Array(MAX_VERTICES * 3), this.gl));
     }
 
     changeBuffer() {
@@ -150,6 +150,47 @@ export default class WebGLRenderer extends Renderer {
         // console.log(indexData);
 
         this.addVerticesAndIndices(vertexData, indexData, color);
+    }
+
+    pathColoured(vertices: Vector[], w: number, colors: Color[], closed = false) {
+        const vertexData: Vector[] = [];
+        const indexData = [];
+        const colorData = [];
+        const v1 = vertices[0];
+        const v2 = vertices[1];
+        if (!closed) {
+            vertexData.push(...this.calculateSidewaysPoints(v1, v2, w));
+        } else {
+            vertexData.push(...this.calculateVertexPoints(vertices[vertices.length - 1], v1, v2, w));
+        }
+        colorData.push(colors[0], colors[0]);
+
+        for (let i = 0; i < vertices.length - (closed ? 1 : 2); i++) {
+            // const i = i < 0 ? vertices.length - 1 : i;
+            // console.log(i);
+
+            // indices.push(i + 0, i + 1, i + 2, i + 1, i + 2, i + 3);
+            // this.addIndices([-2, -1, 0, -1, 0, 1]);
+            indexData.push(0 + i * 2, 1 + i * 2, 2 + i * 2, 1 + i * 2, 2 + i * 2, 3 + i * 2);
+            // indexData.push(0 + i, 1 + i, 2 + i, 1 + i, 2 + i, 3 + i);
+            vertexData.push(...this.calculateVertexPoints(vertices[i], vertices[i + 1], vertices[(i + 2) % vertices.length], w));
+            colorData.push(colors[i + 1], colors[i + 1]);
+            // this.addVertices([V(-x4, y4), V(x5, -y5)], color);
+        }
+
+        const i = vertexData.length - 2;
+        if (!closed) {
+            indexData.push(i + 0, i + 1, i + 2, i + 0, i + 2, i + 3);
+            vertexData.push(...this.calculateSidewaysPoints(vertices[vertices.length - 1], vertices[vertices.length - 2], w));
+            colorData.push(colors[vertices.length - 1], colors[vertices.length - 1]);
+        } else {
+            indexData.push(i, i + 1, 0, i + 1, 0, 1);
+            // vertexData.push(...this.calculateSidewaysPoints(vertices[vertices.length - 1], vertices[vertices.length - 2], w));
+        }
+        // console.log(vertexData);
+        // console.log(indexData);
+
+        this.addVerticesAndIndices(vertexData, indexData, colors);
     }
 
     fillPath(vertices: Vector[], color: Color) {
@@ -248,15 +289,20 @@ export default class WebGLRenderer extends Renderer {
         this.buffers[this.currentBufferIndex].addVertex(v, color);
     }
 
-    private addVertices(vertices: Vector[], color: Color) {
-        for (let i = 0; i < vertices.length; i++) this.addVertex(vertices[i], color);
+    private addVertices(vertices: Vector[], color: Color | Color[]) {
+        if (color instanceof Color) {
+            for (let i = 0; i < vertices.length; i++) this.addVertex(vertices[i], color);
+        } else {
+            // console.log(color.length, vertices.length);
+            for (let i = 0; i < vertices.length; i++) this.addVertex(vertices[i], color[Math.floor(i / 2)]);
+        }
     }
 
     private addIndices(ind: number[]) {
         this.buffers[this.currentBufferIndex].addIndex(ind);
     }
 
-    private addVerticesAndIndices(vertices: Vector[], indices: number[], color: Color) {
+    private addVerticesAndIndices(vertices: Vector[], indices: number[], color: Color | Color[]) {
         if (
             this.buffers[this.currentBufferIndex].numIndices + indices.length >= this.buffers[this.currentBufferIndex].indices.length / 3 ||
             this.buffers[this.currentBufferIndex].numVertices + vertices.length >= this.buffers[this.currentBufferIndex].positions.length / 2

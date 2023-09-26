@@ -5,6 +5,7 @@ import * as tp from "tweakpane";
 import * as tpEssentials from "@tweakpane/plugin-essentials";
 
 import entities from "../entities/entityList";
+import Settings from "../core/Settings";
 
 export default class UI {
     selectedEntity: Entity | null = null;
@@ -45,21 +46,25 @@ export default class UI {
             expanded: false,
         });
 
-        worldFolder.addBinding(world.settings, "calculateReflectance", { label: "calculate reflectance" }).on("change", () => {
-            world.updateSettings();
+        worldFolder.addBinding(Settings, "calculateReflectance", { label: "calculate reflectance" }).on("change", () => {
+            world.setDirty();
+        });
+        worldFolder.addBinding(Settings, "reflectanceFactor", { label: "reflectance factor", min: 0.01, max: 10, step: 0.01 }).on("change", () => {
+            world.setDirty();
         });
         worldFolder
-            .addBinding(world.settings, "maxLightBounceLimit", { min: 0, max: 100, step: 1, label: "light bounce limit" })
-            .on("change", world.updateSettings);
-        worldFolder.addBinding(world.settings, "dispersionFactor", { min: 0, max: 1, step: 0.01, label: "dispersion factor" }).on("change", () => {
-            world.updateSettings();
+            .addBinding(Settings, "secondaryLightIntensityLimit", { label: "secondary light intensity limit", min: 0.001, step: 0.1 })
+            .on("change", () => {
+                world.setDirty();
+            });
+        worldFolder.addBinding(Settings, "maxLightBounceLimit", { min: 0, max: 100, step: 1, label: "light bounce limit" }).on("change", () => {
+            world.setDirty();
         });
-        worldFolder.addBinding(world.settings, "lightRayRenderWidth", { min: 1, max: 10, step: 0.1, label: "light ray width" }).on("change", () => {
-            world.updateSettings();
+        worldFolder.addBinding(Settings, "dispersionFactor", { min: 0, max: 1, step: 0.01, label: "dispersion factor" }).on("change", () => {
+            world.setDirty();
         });
-        worldFolder.addBinding(world.settings, "surfaceRenderWidth", { min: 1, max: 10, step: 0.1, label: "surface width" }).on("change", () => {
-            world.updateSettings();
-        });
+        worldFolder.addBinding(Settings, "lightRayRenderWidth", { min: 1, max: 10, step: 0.1, label: "light ray width" });
+        worldFolder.addBinding(Settings, "surfaceRenderWidth", { min: 1, max: 10, step: 0.1, label: "surface width" });
 
         const statsFolder = this.pane.addFolder({
             title: "Debug stats",

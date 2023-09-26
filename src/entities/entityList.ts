@@ -4,7 +4,7 @@ import GlassSlab from "./GlassSlab";
 import GlassSphere from "./GlassSphere";
 import Laser from "./Laser";
 import LightBeam from "./LightBeam";
-import LightRayEntity from "./LightRayEntity";
+import PlaneMirror from "./PlaneMirror";
 import PointLight from "./PointLight";
 import Prism from "./Prism";
 import SphericalMirror from "./SphericalMirror";
@@ -16,7 +16,7 @@ const entityList = [
     GlassSlab.entityData,
     Laser.entityData,
     LightBeam.entityData,
-    LightRayEntity.entityData,
+    PlaneMirror.entityData,
     PointLight.entityData,
     Prism.entityData,
     SphericalMirror.entityData,

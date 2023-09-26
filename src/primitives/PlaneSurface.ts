@@ -2,6 +2,7 @@ import Renderer from "../graphics/Renderer";
 import Color, { RGBA } from "../lib/Color";
 import Vector from "../lib/Vector";
 import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
+import { LightRayResponseInfo } from "../lib/math";
 import AABB from "../util/Bounds";
 import Surface from "./Surface";
 
@@ -20,7 +21,7 @@ export default abstract class PlaneSurface extends Surface {
         this.calculateNormal();
     }
 
-    abstract handle(_intersection: Vector, _dir: Vector, _wavelength: number): Vector;
+    abstract handle(_intersection: Vector, _dir: Vector, _wavelength: number): LightRayResponseInfo;
 
     // Calculate normal
     calculateNormal() {

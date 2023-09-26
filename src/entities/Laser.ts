@@ -7,9 +7,15 @@ import { interpolate } from "../lib/math";
 import { AttributeType } from "../ui/Attribute";
 
 export default class Laser extends Entity {
+    // Defaults
+    static INTENSITY_IF_DISPERSABLE = 10;
+    static NUMRAYS_IF_DISPERSABLE = 100;
+    static INTENSITY_IF_NOT_DISPERSABLE = 255;
+    static NUMRAYS_IF_NOT_DISPERSABLE = 1;
+
     numRays: number;
     dispersable: boolean;
-    intensity: number = 5;
+    intensity: number;
 
     static entityData: EntityData = {
         name: "Laser",
@@ -20,17 +26,22 @@ export default class Laser extends Entity {
     constructor(pos: Vector, rot: number = 0, dispersable: boolean = true) {
         super(pos, rot, "Laser");
 
-        this.numRays = 500;
-
         this.dispersable = dispersable;
-        this.intensity = 5;
+
+        if (this.dispersable) {
+            this.intensity = Laser.INTENSITY_IF_DISPERSABLE;
+            this.numRays = Laser.NUMRAYS_IF_DISPERSABLE;
+        } else {
+            this.intensity = Laser.INTENSITY_IF_NOT_DISPERSABLE;
+            this.numRays = Laser.NUMRAYS_IF_NOT_DISPERSABLE;
+        }
 
         this.init();
 
         // Attributes
         this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 1000, value: this.numRays });
         this.attributes.push({ name: "dispersable", type: AttributeType.Boolean, value: this.dispersable });
-        this.attributes.push({ name: "intensity", type: AttributeType.Number, min: 1, max: 100, step: 0.1, value: this.intensity });
+        this.attributes.push({ name: "intensity", type: AttributeType.Number, min: 1, max: 255, step: 0.1, value: this.intensity });
     }
 
     init() {
@@ -43,7 +54,7 @@ export default class Laser extends Entity {
                     dir: Vector.right().rotate(this.rot),
                     monochromatic: this.dispersable,
                     wavelength: !this.dispersable ? 550 : wavelength,
-                    intensity: !this.dispersable ? 1 : 5,
+                    intensity: this.intensity,
                 })
             );
         }
@@ -76,6 +87,13 @@ export default class Laser extends Entity {
                 break;
             case "dispersable":
                 this.dispersable = value as boolean;
+                if (this.dispersable) {
+                    this.intensity = Laser.INTENSITY_IF_DISPERSABLE;
+                    this.numRays = Laser.NUMRAYS_IF_DISPERSABLE;
+                } else {
+                    this.intensity = Laser.INTENSITY_IF_NOT_DISPERSABLE;
+                    this.numRays = Laser.NUMRAYS_IF_NOT_DISPERSABLE;
+                }
                 this.init();
                 break;
             case "intensity":
