@@ -64,8 +64,6 @@ export default class Prism extends SurfaceEntity {
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {
-        super.render(renderer, isSelected, false);
-
         renderer.path(
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
             Surface.surfaceRenderWidth,
@@ -77,5 +75,7 @@ export default class Prism extends SurfaceEntity {
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
             RGBA(this.color.r, this.color.b, this.color.g, 20)
         );
+
+        super.render(renderer, isSelected, false);
     }
 }

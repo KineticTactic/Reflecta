@@ -4,6 +4,7 @@ import Vector from "./Vector";
 export interface LightRayResponseInfo {
     dir: Vector;
     newRay: boolean;
+    terminate?: boolean;
     transmittance?: number;
     newRayDir?: Vector;
     newRayOrigin?: Vector;

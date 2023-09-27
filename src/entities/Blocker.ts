@@ -2,19 +2,19 @@ import Vector, { V } from "../lib/Vector";
 import SurfaceEntity from "./SurfaceEntity";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
-import PlaneReflectiveSurface from "../primitives/PlaneReflectiveSurface";
+import PlaneBlockerSurface from "../primitives/PlaneBlockerSurface";
 
-export default class PlaneMirror extends SurfaceEntity {
+export default class Blocker extends SurfaceEntity {
     size: number;
 
     static entityData: EntityData = {
-        name: "Plane Mirror",
-        desc: "A plane mirror.",
-        constructorFunc: PlaneMirror,
+        name: "Blocker",
+        desc: "A blocker surface.",
+        constructorFunc: Blocker,
     };
 
     constructor(pos: Vector, rot: number = 0) {
-        super(pos, rot, "Plane Mirror");
+        super(pos, rot, "Blocker");
 
         this.size = 200;
 
@@ -26,7 +26,7 @@ export default class PlaneMirror extends SurfaceEntity {
 
     init() {
         this.surfaces = [
-            new PlaneReflectiveSurface(Vector.add(this.pos, V(this.size / 2, 0).rotate(this.rot)), Vector.sub(this.pos, V(this.size / 2, 0).rotate(this.rot))),
+            new PlaneBlockerSurface(Vector.add(this.pos, V(this.size / 2, 0).rotate(this.rot)), Vector.sub(this.pos, V(this.size / 2, 0).rotate(this.rot))),
         ];
         this.updateBounds();
     }

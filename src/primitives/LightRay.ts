@@ -70,6 +70,7 @@ export default class LightRay {
         const newRays = [];
 
         let currentIntensity = this.intensity;
+        let isTerminated = false;
 
         for (let k = 0; k < Settings.maxLightBounceLimit; k++) {
             let closestIntersection = null; // Store the closest intersection point after checking all surfaces
@@ -107,6 +108,7 @@ export default class LightRay {
 
                 // surface.handle returns the new direction of the ray after it has been reflected or refracted
                 let r: LightRayResponseInfo = surfaces[closestIntersectionIndex].handle(closestIntersection.copy(), currentDir.copy(), this.wavelength);
+
                 currentDir = r.dir.copy();
 
                 // If new rays are to be added (due to reflectance), then this
@@ -133,6 +135,11 @@ export default class LightRay {
                 this.path.push(closestIntersection);
                 this.pathColors.push(RGBA(this.color.r, this.color.g, this.color.b, currentIntensity));
 
+                if (r.terminate) {
+                    isTerminated = true;
+                    break;
+                }
+
                 // Update the current point and direction
                 currentPoint = closestIntersection;
 
@@ -145,11 +152,13 @@ export default class LightRay {
         }
 
         // Add the last point to the path
-        this.path.push(currentPoint.copy().add(currentDir.mult(6000)));
-        this.pathColors.push(RGBA(this.color.r, this.color.g, this.color.b, currentIntensity));
+        if (!isTerminated) {
+            this.path.push(currentPoint.copy().add(currentDir.mult(6000)));
+            this.pathColors.push(RGBA(this.color.r, this.color.g, this.color.b, currentIntensity));
+        }
 
         return {
-            lightBounces: this.path.length - 2,
+            lightBounces: this.path.length - (isTerminated ? 1 : 2),
             newRays,
         };
     }

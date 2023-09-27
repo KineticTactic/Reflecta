@@ -1,10 +1,13 @@
 import Entity from "../core/Entity";
-import Vector from "../lib/Vector";
+import Vector, { V } from "../lib/Vector";
 import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
 import EntityData from "../core/EntityData";
 import { interpolate } from "../lib/math";
 import { AttributeType } from "../ui/Attribute";
+import Renderer from "../graphics/Renderer";
+import { RGB } from "../lib/Color";
+import Settings from "../core/Settings";
 
 export default class Laser extends Entity {
     // Defaults
@@ -74,7 +77,7 @@ export default class Laser extends Entity {
         const min = this.lightRays[0].origin.copy();
         const max = this.lightRays[this.lightRays.length - 1].origin.copy();
         this.bounds = AABB.fromPoints([min, max]);
-        this.bounds.setMinSize(20);
+        this.bounds.setMinSize(40);
     }
 
     override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
@@ -103,5 +106,20 @@ export default class Laser extends Entity {
                 }
                 break;
         }
+    }
+
+    override render(renderer: Renderer, isSelected: boolean): void {
+        const displaySize = V(30, 8);
+
+        const rectCoords = [
+            Vector.add(this.pos, V(-displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
+            Vector.add(this.pos, V(-displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
+            Vector.add(this.pos, V(displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
+            Vector.add(this.pos, V(displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
+        ];
+
+        renderer.path(rectCoords, 3, RGB(255, 255, 255), true);
+
+        super.render(renderer, isSelected);
     }
 }

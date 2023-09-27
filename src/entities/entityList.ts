@@ -1,3 +1,4 @@
+import Blocker from "./Blocker";
 import ConcaveLens from "./ConcaveLens";
 import ConvexLens from "./ConvexLens";
 import GlassSlab from "./GlassSlab";
@@ -10,6 +11,7 @@ import Prism from "./Prism";
 import SphericalMirror from "./SphericalMirror";
 
 const entityList = [
+    Blocker.entityData,
     ConcaveLens.entityData,
     ConvexLens.entityData,
     GlassSphere.entityData,
