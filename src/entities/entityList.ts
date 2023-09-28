@@ -3,6 +3,8 @@ import ConcaveLens from "./ConcaveLens";
 import ConvexLens from "./ConvexLens";
 import GlassSlab from "./GlassSlab";
 import GlassSphere from "./GlassSphere";
+import IdealConcaveLens from "./IdealConcaveLens";
+import IdealConvexLens from "./IdealConvexLens";
 import Laser from "./Laser";
 import LightBeam from "./LightBeam";
 import PlaneMirror from "./PlaneMirror";
@@ -11,17 +13,19 @@ import Prism from "./Prism";
 import SphericalMirror from "./SphericalMirror";
 
 const entityList = [
-    Blocker.entityData,
-    ConcaveLens.entityData,
-    ConvexLens.entityData,
-    GlassSphere.entityData,
-    GlassSlab.entityData,
     Laser.entityData,
-    LightBeam.entityData,
-    PlaneMirror.entityData,
     PointLight.entityData,
-    Prism.entityData,
+    LightBeam.entityData,
+    GlassSlab.entityData,
+    ConvexLens.entityData,
+    ConcaveLens.entityData,
+    IdealConvexLens.entityData,
+    IdealConcaveLens.entityData,
+    GlassSphere.entityData,
     SphericalMirror.entityData,
+    Prism.entityData,
+    PlaneMirror.entityData,
+    Blocker.entityData,
 ];
 
 export default entityList;

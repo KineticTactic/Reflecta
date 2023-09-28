@@ -50,7 +50,6 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
                 newRayDir: reflect(incident, normal).dir,
                 transmittance: 1 - reflectance,
             };
-            // if (Math.random() < reflectance) return reflect(incident, normal);
         }
 
         return {
@@ -84,14 +83,13 @@ export function refract(incident: Vector, normal: Vector, refractiveIndex: numbe
                 ((refractiveIndex * Math.cos(angleOfIncidence) - 1 * Math.cos(angleOfRefraction)) /
                     (refractiveIndex * Math.cos(angleOfIncidence) + 1 * Math.cos(angleOfRefraction))) **
                 2;
-            // if (Math.random() < reflectance) {
+
             return {
                 dir: incident.copy().rotate(-angleOfDeviation),
                 transmittance: 1 - reflectance,
                 newRay: true,
                 newRayDir: reflect(incident, normal).dir,
             };
-            // }
         }
 
         return {

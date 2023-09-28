@@ -57,6 +57,9 @@ export default class UI {
             .on("change", () => {
                 world.setDirty();
             });
+        worldFolder.addBinding(Settings, "secondaryLightDepthLimit", { label: "secondary light depth limit", min: 1, max: 100, step: 1 }).on("change", () => {
+            world.setDirty();
+        });
         worldFolder.addBinding(Settings, "maxLightBounceLimit", { min: 0, max: 100, step: 1, label: "light bounce limit" }).on("change", () => {
             world.setDirty();
         });

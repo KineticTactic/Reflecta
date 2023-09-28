@@ -1,6 +1,7 @@
 import EventHandler from "./core/EventHandler";
 import World from "./core/World";
 import ConcaveLens from "./entities/ConcaveLens";
+import IdealConvexLens from "./entities/IdealConvexLens";
 import Laser from "./entities/Laser";
 import Prism from "./entities/Prism";
 import Renderer from "./graphics/Renderer";
@@ -21,11 +22,10 @@ export default class App {
     }
 
     addEntities() {
-        this.world.addEntity(new Prism(V(200, -100)));
-        this.world.addEntity(new Laser(V(-100, -60), -0.2));
-        // this.world.addEntity(new Prism(V(-1520 / 2, 0)));
-        // this.world.addEntity(new Laser(V(-100, -60), -0.2));
-        this.world.addEntity(new ConcaveLens(V(0, -50)));
+        // this.world.addEntity(new Prism(V(200, -100)));
+        // this.world.addEntity(new ConcaveLens(V(0, -50)));
+        this.world.addEntity(new Laser(V(-0, -100), Math.PI / 2, false));
+        this.world.addEntity(new IdealConvexLens(V(0, 0), 0));
     }
 
     update() {
