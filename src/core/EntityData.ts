@@ -1,4 +1,5 @@
-import Vector from "../lib/Vector";
+import { Vector } from "polyly";
+
 import Entity from "./Entity";
 
 interface EntityData {

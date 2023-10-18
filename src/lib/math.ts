@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import Settings from "../core/Settings";
-import Vector from "./Vector";
 
 export interface LightRayResponseInfo {
     dir: Vector;

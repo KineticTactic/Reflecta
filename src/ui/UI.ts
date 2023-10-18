@@ -1,6 +1,7 @@
+import { Vector } from "polyly";
+
 import World from "../core/World";
 import Entity from "../core/Entity";
-import Vector from "../lib/Vector";
 import * as tp from "tweakpane";
 import * as tpEssentials from "@tweakpane/plugin-essentials";
 

@@ -1,4 +1,5 @@
-import Vector from "../lib/Vector";
+import { Vector } from "polyly";
+
 import SurfaceEntity from "./SurfaceEntity";
 import CurvedReflectiveSurface from "../primitives/CurvedReflectiveSurface";
 import { AttributeType } from "../ui/Attribute";

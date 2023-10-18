@@ -1,8 +1,10 @@
-import Vector from "../lib/Vector";
+import { Vector } from "polyly";
+
 import SurfaceEntity from "./SurfaceEntity";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
+// import Surface from "../primitives/Surface";
 
 export default class ConvexLens extends SurfaceEntity {
     span: number;
@@ -73,4 +75,19 @@ export default class ConvexLens extends SurfaceEntity {
                 break;
         }
     }
+
+    // override render(renderer: Renderer, isSelected: boolean = false): void {
+    //     renderer.beginPath();
+
+    //     for (const surface of this.surfaces as CurvedRefractiveSurface[]) {
+    //         let angleStart = surface.facing.heading() - this.span / 2;
+    //         let angleEnd = surface.facing.heading() + this.span / 2;
+
+    //         renderer.arc(surface.center, surface.radius, angleEnd, angleStart, this.color);
+    //     }
+
+    //     renderer.strokePath(Surface.surfaceRenderWidth, { closed: true });
+
+    //     super.render(renderer, isSelected, false);
+    // }
 }

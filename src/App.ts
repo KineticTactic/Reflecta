@@ -1,12 +1,11 @@
+import { Renderer, Vector } from "polyly";
+
 import EventHandler from "./core/EventHandler";
 import World from "./core/World";
-import ConcaveLens from "./entities/ConcaveLens";
+// import ConcaveLens from "./entities/ConcaveLens";
 import IdealConvexLens from "./entities/IdealConvexLens";
 import Laser from "./entities/Laser";
-import Prism from "./entities/Prism";
-import Renderer from "./graphics/Renderer";
-import WebGLRenderer from "./graphics/WebGLRenderer";
-import { V } from "./lib/Vector";
+// import Prism from "./entities/Prism";
 
 export default class App {
     world: World;
@@ -15,7 +14,12 @@ export default class App {
     lastFrameTime: number = performance.now();
 
     constructor() {
-        this.renderer = new WebGLRenderer();
+        const canvas = document.getElementById("display") as HTMLCanvasElement;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        this.renderer = new Renderer({ webglVersion: 2, canvas });
+
         this.world = new World(this.renderer);
 
         EventHandler.attachEventListeners(this.renderer.canvas, this.world);
@@ -24,8 +28,8 @@ export default class App {
     addEntities() {
         // this.world.addEntity(new Prism(V(200, -100)));
         // this.world.addEntity(new ConcaveLens(V(0, -50)));
-        this.world.addEntity(new Laser(V(-0, -100), Math.PI / 2, false));
-        this.world.addEntity(new IdealConvexLens(V(0, 0), 0));
+        this.world.addEntity(new Laser(new Vector(-0, -100), Math.PI / 2, false));
+        this.world.addEntity(new IdealConvexLens(new Vector(0, 0), 0));
     }
 
     update() {
@@ -55,5 +59,13 @@ export default class App {
 
         this.world.render();
         this.renderer.render(this.world.camera);
+
+        // console.time();
+        // for (let y = 0; y < 10000; y += 1) {
+        //     this.renderer.line(new Vector(0, y), new Vector(window.innerWidth, y), 1, new Color(255, 255, 255, 255));
+        // }
+
+        // console.timeEnd();
+        // this.renderer.render(this.world.camera);
     }
 }

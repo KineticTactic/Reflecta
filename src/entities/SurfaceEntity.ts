@@ -1,8 +1,7 @@
-import Vector from "../lib/Vector";
+import { Vector, Renderer } from "polyly";
 // import Surface from "../primitives/Surface";
 import AABB from "../util/Bounds";
 import Entity from "../core/Entity";
-import Renderer from "../graphics/Renderer";
 
 export default abstract class SurfaceEntity extends Entity {
     constructor(pos: Vector, rot: number, name: string) {

@@ -1,4 +1,5 @@
-import Vector, { V } from "../lib/Vector";
+import { Vector } from "polyly";
+
 import World from "./World";
 
 export default class EventHandler {
@@ -7,7 +8,7 @@ export default class EventHandler {
     static attachEventListeners(canvas: HTMLCanvasElement, world: World) {
         // Mouse down event
         canvas.addEventListener("mousedown", (e) => {
-            world.handleMouseDown(V(e.clientX, e.clientY), e.button);
+            world.handleMouseDown(new Vector(e.clientX, e.clientY), e.button);
         });
 
         // Touch start event
@@ -16,17 +17,17 @@ export default class EventHandler {
             console.log(e.targetTouches);
 
             if (e.touches.length > 1) {
-                EventHandler.prevTouches = [V(e.touches[0].clientX, e.touches[0].clientY), V(e.touches[1].clientX, e.touches[1].clientY)];
+                EventHandler.prevTouches = [new Vector(e.touches[0].clientX, e.touches[0].clientY), new Vector(e.touches[1].clientX, e.touches[1].clientY)];
                 console.log("YAS");
 
                 return;
             }
-            world.handleMouseDown(V(e.touches[0].clientX, e.touches[0].clientY), 0);
+            world.handleMouseDown(new Vector(e.touches[0].clientX, e.touches[0].clientY), 0);
         });
 
         // Mouse move event
         canvas.addEventListener("mousemove", (e) => {
-            world.handleMouseMove(V(e.clientX, e.clientY));
+            world.handleMouseMove(new Vector(e.clientX, e.clientY));
         });
 
         // Touch move event
@@ -35,7 +36,7 @@ export default class EventHandler {
 
             /// This is kind of a hack to implement pinch zooming
             if (e.touches.length > 1) {
-                const newTouches = [V(e.touches[0].clientX, e.touches[0].clientY), V(e.touches[1].clientX, e.touches[1].clientY)];
+                const newTouches = [new Vector(e.touches[0].clientX, e.touches[0].clientY), new Vector(e.touches[1].clientX, e.touches[1].clientY)];
                 const prevDist = EventHandler.prevTouches[0].dist(EventHandler.prevTouches[1]);
                 const newDist = newTouches[0].dist(newTouches[1]);
                 const delta = newDist - prevDist;
@@ -43,18 +44,18 @@ export default class EventHandler {
                 EventHandler.prevTouches = newTouches;
                 return;
             }
-            world.handleMouseMove(V(e.touches[0].clientX, e.touches[0].clientY));
+            world.handleMouseMove(new Vector(e.touches[0].clientX, e.touches[0].clientY));
             e.preventDefault();
         });
 
         // Mouse up event
         canvas.addEventListener("mouseup", (e) => {
-            world.handleMouseUp(V(e.clientX, e.clientY));
+            world.handleMouseUp(new Vector(e.clientX, e.clientY));
         });
 
         // Touch end event
         canvas.addEventListener("touchend", (e) => {
-            world.handleMouseUp(V(0, 0));
+            world.handleMouseUp(new Vector(0, 0));
             e.preventDefault();
         });
 
@@ -64,7 +65,7 @@ export default class EventHandler {
         });
 
         window.addEventListener("resize", () => {
-            world.renderer.resizeCanvas();
+            world.renderer.resizeCanvas(window.innerWidth, window.innerHeight);
             world.camera.setDisplaySize(world.renderer.getDisplaySize());
         });
     }

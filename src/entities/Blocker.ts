@@ -1,4 +1,5 @@
-import Vector, { V } from "../lib/Vector";
+import { Vector } from "polyly";
+
 import SurfaceEntity from "./SurfaceEntity";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
@@ -26,7 +27,10 @@ export default class Blocker extends SurfaceEntity {
 
     init() {
         this.surfaces = [
-            new PlaneBlockerSurface(Vector.add(this.pos, V(this.size / 2, 0).rotate(this.rot)), Vector.sub(this.pos, V(this.size / 2, 0).rotate(this.rot))),
+            new PlaneBlockerSurface(
+                Vector.add(this.pos, new Vector(this.size / 2, 0).rotate(this.rot)),
+                Vector.sub(this.pos, new Vector(this.size / 2, 0).rotate(this.rot))
+            ),
         ];
         this.updateBounds();
     }

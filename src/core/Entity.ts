@@ -1,18 +1,17 @@
-import Color, { RGBA } from "../lib/Color";
-import Vector from "../lib/Vector";
+import { Vector, Color, Renderer } from "polyly";
+
 import LightRay from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import { Attribute, AttributeType } from "../ui/Attribute";
 import AABB from "../util/Bounds";
 import EntityData from "./EntityData";
-import Renderer from "../graphics/Renderer";
 
 export default abstract class Entity {
     pos: Vector;
     rot: number;
     bounds: AABB;
     name: string;
-    color: Color = RGBA(255, 255, 255, 255);
+    color: Color = new Color(255, 255, 255, 255);
     displayBounds: boolean = false;
 
     attributes: Attribute[];
@@ -88,13 +87,13 @@ export default abstract class Entity {
                 break;
             case "color":
                 const c = value as Color;
-                this.color = RGBA(c.r, c.g, c.b, Math.ceil(c.a * 255));
+                this.color = new Color(c.r, c.g, c.b, Math.ceil(c.a * 255));
                 break;
         }
     }
 
     render(renderer: Renderer, isSelected: boolean): void {
-        if (this.displayBounds) this.bounds.render(renderer, RGBA(132, 36, 185, 200), 2);
-        if (isSelected) this.bounds.render(renderer, RGBA(132, 36, 185), 2);
+        if (this.displayBounds) this.bounds.render(renderer, new Color(132, 36, 185, 200), 2);
+        if (isSelected) this.bounds.render(renderer, new Color(132, 36, 185), 2);
     }
 }

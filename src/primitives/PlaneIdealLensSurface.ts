@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import PlaneSurface from "./PlaneSurface";
-import Vector, { V } from "../lib/Vector";
 
 export enum LensType {
     Convex = 1,
@@ -75,7 +76,7 @@ export default class PlaneIdealLensSurface extends PlaneSurface {
 
         // So we can calculate the point where the ray hits the focal plane by advancing
         // from the intersection point on the lens by r units in the direction of the lens
-        const focalPlaneIntersection = V(x3, y3).add(dir.copy().normalize().mult(r));
+        const focalPlaneIntersection = new Vector(x3, y3).add(dir.copy().normalize().mult(r));
 
         // By the properties of ideal lens, parallel rays hit the same point on the focal plane,
         // So our incident ray will also hit the same point on the focal plane as the parallel ray

@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import PlaneSurface from "./PlaneSurface";
-import Vector from "../lib/Vector";
 import { calculateRefractiveIndexForWavelength, refract } from "../lib/math";
 
 export default class PlaneRefractiveSurface extends PlaneSurface {

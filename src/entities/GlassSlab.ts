@@ -1,10 +1,9 @@
-import Vector from "../lib/Vector";
+import { Vector, Renderer, Color } from "polyly";
+
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
-import Renderer from "../graphics/Renderer";
-import { RGBA } from "../lib/Color";
 import Surface from "../primitives/Surface";
 
 export default class GlassSlab extends SurfaceEntity {
@@ -68,26 +67,31 @@ export default class GlassSlab extends SurfaceEntity {
     override render(renderer: Renderer, isSelected: boolean): void {
         super.render(renderer, isSelected, false);
 
-        renderer.path(
-            [
-                (this.surfaces[0] as PlaneRefractiveSurface).v1,
-                (this.surfaces[0] as PlaneRefractiveSurface).v2,
-                (this.surfaces[3] as PlaneRefractiveSurface).v2,
-                (this.surfaces[1] as PlaneRefractiveSurface).v1,
-            ],
-            Surface.surfaceRenderWidth,
-            RGBA(255, 255, 255, 255),
-            true
-        );
+        renderer.beginPath();
+        ///TODO: CHANGE TO RECT
+        ///TODO: Probably stop taking colour in drawing functions.
 
-        renderer.fillPath(
+        renderer.vertices(
             [
                 (this.surfaces[0] as PlaneRefractiveSurface).v1,
                 (this.surfaces[0] as PlaneRefractiveSurface).v2,
                 (this.surfaces[3] as PlaneRefractiveSurface).v2,
                 (this.surfaces[1] as PlaneRefractiveSurface).v1,
             ],
-            RGBA(255, 255, 255, 20)
+            this.color
         );
+        renderer.strokePath(Surface.surfaceRenderWidth, { closed: true });
+
+        renderer.beginPath();
+        renderer.vertices(
+            [
+                (this.surfaces[0] as PlaneRefractiveSurface).v1,
+                (this.surfaces[0] as PlaneRefractiveSurface).v2,
+                (this.surfaces[3] as PlaneRefractiveSurface).v2,
+                (this.surfaces[1] as PlaneRefractiveSurface).v1,
+            ],
+            new Color(this.color.r, this.color.g, this.color.b, 25)
+        );
+        renderer.fillPath();
     }
 }

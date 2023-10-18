@@ -2,6 +2,8 @@
 https://physics.stackexchange.com/questions/94375/what-r-g-b-values-would-represent-a-445nm-monochrome-lightsource-color-on-a-co/94446#94446
 */
 
+import { Color, RGB } from "polyly";
+
 import { clamp, interpolate } from "./math";
 
 const CIE1964 = [
@@ -102,47 +104,22 @@ const CIE1964 = [
     [0.000001251141, 0.00000045181, 0.0], // 830
 ];
 
-export function RGB(r: number, g: number, b: number) {
-    return new Color(r, g, b);
-}
+export function wavelengthToRGB(lambda: number): Color {
+    if (lambda < 380 || lambda > 830) return RGB(0, 0, 0);
 
-export function RGBA(r: number, g: number, b: number, a: number = 255) {
-    return new Color(r, g, b, a);
-}
+    const index = Math.floor((lambda - 360) / 5);
 
-export default class Color {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
+    const X = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][0], CIE1964[index + 1][0]);
+    const Y = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][1], CIE1964[index + 1][1]);
+    const Z = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][2], CIE1964[index + 1][2]);
 
-    constructor(r: number, g: number, b: number, a: number = 255) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
-    }
+    // const sum = X + Y + Z;
 
-    array() {
-        return [this.r, this.g, this.b, this.a];
-    }
+    // const x = X / sum;
+    // const y = Y / sum;
+    // const z = Z / sum;
 
-    static wavelengthToRGB(lambda: number): Color {
-        if (lambda < 380 || lambda > 830) return RGB(0, 0, 0);
-
-        const index = Math.floor((lambda - 360) / 5);
-
-        const X = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][0], CIE1964[index + 1][0]);
-        const Y = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][1], CIE1964[index + 1][1]);
-        const Z = interpolate(lambda, 360 + index * 5, 360 + (index + 1) * 5, CIE1964[index][2], CIE1964[index + 1][2]);
-
-        // const sum = X + Y + Z;
-
-        // const x = X / sum;
-        // const y = Y / sum;
-        // const z = Z / sum;
-
-        /*
+    /*
     		The matix values in the next step depend on location of RGB in the XYZ color space.
     		These constants are for
             Observer:          2°
@@ -150,22 +127,13 @@ export default class Color {
             RGB Working Space: sRGB
 		*/
 
-        let r = X * 3.2404542 + Y * -1.5371385 + Z * -0.4985314;
-        let g = X * -0.969266 + Y * 1.8760108 + Z * 0.041556;
-        let b = X * 0.0556434 + Y * -0.2040259 + Z * 1.0572252;
+    let r = X * 3.2404542 + Y * -1.5371385 + Z * -0.4985314;
+    let g = X * -0.969266 + Y * 1.8760108 + Z * 0.041556;
+    let b = X * 0.0556434 + Y * -0.2040259 + Z * 1.0572252;
 
-        r = Math.floor(clamp(r * 255, 0, 255));
-        g = Math.floor(clamp(g * 255, 0, 255));
-        b = Math.floor(clamp(b * 255, 0, 255));
+    r = Math.floor(clamp(r * 255, 0, 255));
+    g = Math.floor(clamp(g * 255, 0, 255));
+    b = Math.floor(clamp(b * 255, 0, 255));
 
-        return RGB(r, g, b);
-    }
-
-    static wavelengthToHex(lambda: number) {
-        return Color.rgbToHex(Color.wavelengthToRGB(lambda));
-    }
-
-    static rgbToHex(color: Color): string {
-        return "#" + ((1 << 24) | (color.r << 16) | (color.g << 8) | color.b).toString(16).slice(1);
-    }
+    return RGB(r, g, b);
 }

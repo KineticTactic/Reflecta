@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import PlaneSurface from "./PlaneSurface";
-import Vector from "../lib/Vector";
 import { LightRayResponseInfo } from "../lib/math";
 
 export default class PlaneBlockerSurface extends PlaneSurface {

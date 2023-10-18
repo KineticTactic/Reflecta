@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import { calculateRefractiveIndexForWavelength, refract } from "../lib/math";
-import Vector from "../lib/Vector";
 import CurvedSurface from "./CurvedSurface";
 
 export default class CurvedRefractiveSurface extends CurvedSurface {

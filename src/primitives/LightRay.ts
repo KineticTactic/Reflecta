@@ -1,7 +1,7 @@
+import { Vector, Renderer, Color } from "polyly";
+
+import { wavelengthToRGB } from "../lib/color";
 import Settings from "../core/Settings";
-import Renderer from "../graphics/Renderer";
-import Color, { RGBA } from "../lib/Color";
-import Vector from "../lib/Vector";
 import { LightRayResponseInfo } from "../lib/math";
 import Surface from "./Surface";
 
@@ -27,7 +27,7 @@ export default class LightRay {
     monochromatic: boolean = true;
     wavelength: number = 500;
     intensity: number = 100;
-    color: Color = RGBA(1, 1, 1, 0);
+    color: Color = new Color(1, 1, 1, 0);
 
     // constructor(origin: Vector, dir: Vector, wavelength = 550, intensity = 100) {
     constructor(options: LightRayOptions) {
@@ -40,7 +40,7 @@ export default class LightRay {
             this.setIntensity(options.intensity || 100);
         } else {
             this.monochromatic = false;
-            this.color = options.color || RGBA(255, 255, 255, options.intensity || 100);
+            this.color = options.color || new Color(255, 255, 255, options.intensity || 100);
             this.setIntensity(options.intensity!);
         }
         this.path = [this.origin];
@@ -50,8 +50,8 @@ export default class LightRay {
     setWavelength(wavelength: number) {
         this.wavelength = wavelength;
 
-        let c = Color.wavelengthToRGB(this.wavelength);
-        this.color = RGBA(c.r, c.g, c.b, this.intensity);
+        let c = wavelengthToRGB(this.wavelength);
+        this.color = new Color(c.r, c.g, c.b, this.intensity);
     }
 
     setIntensity(intensity: number) {
@@ -133,7 +133,7 @@ export default class LightRay {
                 }
 
                 this.path.push(closestIntersection);
-                this.pathColors.push(RGBA(this.color.r, this.color.g, this.color.b, currentIntensity));
+                this.pathColors.push(new Color(this.color.r, this.color.g, this.color.b, currentIntensity));
 
                 if (r.terminate) {
                     isTerminated = true;
@@ -154,7 +154,7 @@ export default class LightRay {
         // Add the last point to the path
         if (!isTerminated) {
             this.path.push(currentPoint.copy().add(currentDir.mult(6000)));
-            this.pathColors.push(RGBA(this.color.r, this.color.g, this.color.b, currentIntensity));
+            this.pathColors.push(new Color(this.color.r, this.color.g, this.color.b, currentIntensity));
         }
 
         return {

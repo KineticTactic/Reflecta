@@ -1,11 +1,9 @@
-import Vector, { V } from "../lib/Vector";
+import { Vector, Renderer, Camera } from "polyly";
+
 import Entity from "./Entity";
 import LightRay, { LightRayTraceInfo } from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
-import Renderer from "../graphics/Renderer";
-import Camera from "../graphics/Camera";
-import WebGLRenderer from "../graphics/WebGLRenderer";
 import Settings from "./Settings";
 
 export default class World {
@@ -208,7 +206,7 @@ export default class World {
         const dx = (worldMousePos.x - this.camera.pos.x) * (scaleFactor - 1);
         const dy = (worldMousePos.y - this.camera.pos.y) * (scaleFactor - 1);
 
-        this.camera.translate(V(dx, dy));
+        this.camera.translate(new Vector(dx, dy));
     }
 
     render() {
@@ -223,8 +221,9 @@ export default class World {
 
         const timerEnd = performance.now();
         this.stats.renderTime = timerEnd - timerStart;
-        this.stats.usedBuffers = (this.renderer as WebGLRenderer).currentBufferIndex + 1;
-        this.stats.numBuffers = (this.renderer as WebGLRenderer).buffers.length;
+        ///TODO: UNCOMMENT
+        // this.stats.usedBuffers = this.renderer.currentBufferIndex + 1;
+        // this.stats.numBuffers = this.renderer.buffers.length;
     }
 
     setDirty() {

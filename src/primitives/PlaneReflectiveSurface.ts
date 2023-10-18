@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import PlaneSurface from "./PlaneSurface";
-import Vector from "../lib/Vector";
 import { reflect } from "../lib/math";
 
 export default class PlaneReflectiveSurface extends PlaneSurface {

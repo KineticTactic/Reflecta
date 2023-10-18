@@ -1,8 +1,7 @@
-import Renderer from "../graphics/Renderer";
-import Color, { RGBA } from "../lib/Color";
+import { Vector, Renderer, Color } from "polyly";
+
 import { closestPointOnLine } from "../lib/intersections";
 import { LightRayResponseInfo } from "../lib/math";
-import Vector from "../lib/Vector";
 import AABB from "../util/Bounds";
 import Surface from "./Surface";
 
@@ -132,18 +131,13 @@ export default abstract class CurvedSurface extends Surface {
 
     abstract handle(_origin: Vector, dir: Vector, _wavelength: number): LightRayResponseInfo;
 
-    render(renderer: Renderer, color: Color = RGBA(255, 255, 255, 255)) {
+    render(renderer: Renderer, color: Color = new Color(255, 255, 255, 255)) {
         let angleStart = this.facing.heading() - this.span / 2;
         let angleEnd = this.facing.heading() + this.span / 2;
 
-        // angleStart = 0;
-        // angleEnd = Math.PI * 2;
-
-        // ctx.beginPath();
-        // ctx.strokeStyle = color;
-        // ctx.lineWidth = 2;
-        // ctx.arc(this.center.x, this.center.y, this.radius, angleStart, angleEnd);
-        // ctx.stroke();
-        renderer.arc(this.center, this.radius, angleStart, angleEnd, Surface.surfaceRenderWidth, color);
+        ///TODO: CHANGE
+        renderer.beginPath();
+        renderer.arc(this.center, this.radius, angleStart, angleEnd, color);
+        renderer.strokePath(Surface.surfaceRenderWidth);
     }
 }

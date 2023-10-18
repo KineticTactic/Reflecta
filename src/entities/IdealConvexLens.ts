@@ -1,4 +1,5 @@
-import Vector, { V } from "../lib/Vector";
+import { Vector } from "polyly";
+
 import SurfaceEntity from "./SurfaceEntity";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
@@ -27,8 +28,8 @@ export default class IdealConvexLens extends SurfaceEntity {
     init() {
         this.surfaces = [
             new PlaneIdealLensSurface(
-                Vector.add(this.pos, V(this.size / 2, 0).rotate(this.rot)),
-                Vector.sub(this.pos, V(this.size / 2, 0).rotate(this.rot)),
+                Vector.add(this.pos, new Vector(this.size / 2, 0).rotate(this.rot)),
+                Vector.sub(this.pos, new Vector(this.size / 2, 0).rotate(this.rot)),
                 LensType.Convex
             ),
         ];

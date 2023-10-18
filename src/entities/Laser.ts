@@ -1,12 +1,11 @@
+import { Vector, Renderer, Color } from "polyly";
+
 import Entity from "../core/Entity";
-import Vector, { V } from "../lib/Vector";
 import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
 import EntityData from "../core/EntityData";
 import { interpolate } from "../lib/math";
 import { AttributeType } from "../ui/Attribute";
-import Renderer from "../graphics/Renderer";
-import { RGB } from "../lib/Color";
 import Settings from "../core/Settings";
 
 export default class Laser extends Entity {
@@ -109,16 +108,20 @@ export default class Laser extends Entity {
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {
-        const displaySize = V(30, 8);
+        const displaySize = new Vector(30, 8);
 
-        const rectCoords = [
-            Vector.add(this.pos, V(-displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
-            Vector.add(this.pos, V(-displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
-            Vector.add(this.pos, V(displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
-            Vector.add(this.pos, V(displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
-        ];
+        renderer.beginPath();
+        renderer.vertices(
+            [
+                Vector.add(this.pos, new Vector(-displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
+                Vector.add(this.pos, new Vector(-displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
+                Vector.add(this.pos, new Vector(displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
+                Vector.add(this.pos, new Vector(displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
+            ],
+            Color.WHITE
+        );
 
-        renderer.path(rectCoords, 3, RGB(255, 255, 255), true);
+        renderer.strokePath(3, { closed: true });
 
         super.render(renderer, isSelected);
     }

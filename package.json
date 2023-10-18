@@ -14,13 +14,13 @@
     "devDependencies": {
         "@tweakpane/core": "^2.0.1",
         "gh-pages": "^5.0.0",
-        "typescript": "^4.9.3",
-        "vite": "^4.2.0",
+        "typescript": "^5.2.2",
+        "vite": "^4.5.0",
         "vite-plugin-plain-text": "^1.4.2"
     },
     "dependencies": {
         "@tweakpane/plugin-essentials": "^0.2.0",
-        "tweakpane": "^4.0.1",
-        "twgl.js": "^5.5.3"
+        "polyly": "^0.2.4",
+        "tweakpane": "^4.0.1"
     }
 }

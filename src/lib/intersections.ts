@@ -1,4 +1,4 @@
-import Vector from "./Vector";
+import { Vector } from "polyly";
 
 // https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect/565282#565282
 

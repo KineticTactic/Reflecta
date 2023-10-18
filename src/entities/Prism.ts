@@ -1,10 +1,9 @@
-import Vector from "../lib/Vector";
+import { Vector, Renderer, Color } from "polyly";
+
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
-import Renderer from "../graphics/Renderer";
-import { RGBA } from "../lib/Color";
 import Surface from "../primitives/Surface";
 
 const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
@@ -64,17 +63,19 @@ export default class Prism extends SurfaceEntity {
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {
-        renderer.path(
+        renderer.beginPath();
+        renderer.vertices(
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-            Surface.surfaceRenderWidth,
-            this.color,
-            true
+            this.color
         );
+        renderer.strokePath(Surface.surfaceRenderWidth, { closed: true });
 
-        renderer.fillPath(
+        renderer.beginPath();
+        renderer.vertices(
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-            RGBA(this.color.r, this.color.b, this.color.g, 20)
+            new Color(this.color.r, this.color.g, this.color.b, 25)
         );
+        renderer.fillPath();
 
         super.render(renderer, isSelected, false);
     }

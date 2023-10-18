@@ -1,6 +1,6 @@
 # Light Playground
 
-[Check it out here!](https://kinetictactic.github.io/light-playground)
+### [Check it out here!](https://kinetictactic.github.io/light-playground)
 
 ![light-playground](assets/screenshot.png)
 
@@ -8,19 +8,37 @@ A simple and robust sandbox-type program written in JavaScript to simulate light
 
 ## Features
 
--   Various light Sources such as Point Lights, Light Rays, Light Beams and Lasers
+-   Light Sources such as Point Lights, Light Rays, Light Beams and Lasers, and objects such as Prisms, Lenses (ideal and realistic), Mirrors, etc.
 
--   Various objects like Prisms, Lenses, Mirrors, etc. and update their properties in real-time.
+-   Reflection, Refraction, and Total internal reflection based on Snell's laws.
 
--   Uses WebGL2 for rendering.
+-   Realistic partial reflection/refraction (reflectance/transmittance) calculation using fresnel equations. Enable it in `World settings > calculate reflectance`.
+
+-   Dispersion of rays, variable refractive indices based on wavelength
+
+-   Accurate Color simulation from wavelength using CIE1964 color transforms.
+
+-   Dynamically update properties in real time.
+
+-   Uses [polyly](https://github.com/KineticTactic/polyly) for rendering, a fast and dynamic WebGL 2D primitives renderer that I wrote specifically for this project.
 
 ## Screenshots
 
-![light-playground](assets/gif.gif)
+![light-playground](assets/gif2.gif)
 
 <!-- ![light-playground](assets/dispersion.png) -->
 
 ![light-playground](assets/screenshot2.png)
+
+<!-- ![light-playground](assets/screenshot.png) -->
+
+![light-playground](assets/gif.gif)
+
+![light-playground](assets/screenshot3.png)
+
+![light-playground](assets/screenshot4.png)
+
+![light-playground](assets/screenshot5.png)
 
 ## Running locally / Contributing
 
@@ -58,7 +76,7 @@ Other than that, I also like the idea of this being used for educational purpose
 
 ## External Dependencies
 
--   [twgl.js](https://twgljs.org/), a WebGL helper library.
+-   [polyly](https://github.com/KineticTactic/polyly/), a WebGL 2D primitives renderer that i built specifically for this project.
 
 -   [Tweakpane](https://cocopon.github.io/tweakpane/), a data-driven UI library.
 

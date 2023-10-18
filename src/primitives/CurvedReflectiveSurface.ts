@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import { reflect } from "../lib/math";
-import Vector from "../lib/Vector";
 import CurvedSurface from "./CurvedSurface";
 
 export default class CurvedReflectiveSurface extends CurvedSurface {

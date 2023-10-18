@@ -1,6 +1,4 @@
-import Renderer from "../graphics/Renderer";
-import Color from "../lib/Color";
-import Vector, { V } from "../lib/Vector";
+import { Renderer, Color, Vector } from "polyly";
 
 export default class AABB {
     start: Vector;
@@ -32,7 +30,12 @@ export default class AABB {
 
     render(renderer: Renderer, color: Color, lineWidth: number = 1) {
         ///TODO: Change this to rect
-        renderer.path([this.start, V(this.end.x, this.start.y), this.end, V(this.start.x, this.end.y)], lineWidth, color, true);
+        renderer.beginPath();
+        renderer.vertex(this.start, color);
+        renderer.vertex(new Vector(this.end.x, this.start.y), color);
+        renderer.vertex(this.end, color);
+        renderer.vertex(new Vector(this.start.x, this.end.y), color);
+        renderer.strokePath(lineWidth, { closed: true, dashed: true, dashLength: 5 });
         // ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
     }
 

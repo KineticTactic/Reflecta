@@ -1,5 +1,6 @@
+import { Vector } from "polyly";
+
 import Entity from "../core/Entity";
-import Vector from "../lib/Vector";
 import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
 import { AttributeType } from "../ui/Attribute";

@@ -1,6 +1,5 @@
-import Renderer from "../graphics/Renderer";
-import Color from "../lib/Color";
-import Vector from "../lib/Vector";
+import { Renderer, Vector, Color } from "polyly";
+
 import { LightRayResponseInfo } from "../lib/math";
 import AABB from "../util/Bounds";
 

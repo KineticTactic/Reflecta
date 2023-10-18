@@ -1,10 +1,9 @@
-import Vector from "../lib/Vector";
+import { Vector, Renderer } from "polyly";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
-import Renderer from "../graphics/Renderer";
 
 export default class ConcaveLens extends SurfaceEntity {
     span: number;
