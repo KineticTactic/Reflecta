@@ -74,6 +74,31 @@
     font-size: 0.9rem !important;
 }
 
+#lower-container {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    /* border: green 1px solid; */
+    margin: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.lower-button {
+    background: none;
+    border: none;
+    width: 2.3rem;
+    cursor: pointer;
+}
+
+.lower-button:hover .svg-icon {
+    fill: #aaa;
+}
+
+.svg-icon {
+    fill: #666;
+}
+
 html,
 body {
     margin: 0;

@@ -14,6 +14,8 @@ export default abstract class Entity {
     color: Color = new Color(255, 255, 255, 255);
     displayBounds: boolean = false;
 
+    [key: string]: any;
+
     attributes: Attribute[];
 
     surfaces: Surface[] = [];
@@ -32,15 +34,18 @@ export default abstract class Entity {
 
         // Attributes
         this.attributes = [
-            { name: "color", type: AttributeType.Color, value: this.color },
-            { name: "position", type: AttributeType.Vector, value: this.pos.copy() },
-            { name: "rotation", type: AttributeType.Number, value: this.rot },
+            { name: "color", key: "color", type: AttributeType.Color, value: this.color },
+            { name: "position", key: "pos", type: AttributeType.Vector, value: this.pos.copy() },
+            { name: "rotation", key: "rot", type: AttributeType.Number, value: this.rot },
         ];
     }
+
+    init() {}
 
     setPosition(p: Vector) {
         const deltaPos = Vector.sub(p, this.pos);
         this.pos = p.copy();
+        this.attributes[1].value = this.pos.copy();
         this.updateTransforms(deltaPos, 0);
         this.updateBounds();
         this.isDirty = true;
@@ -49,6 +54,7 @@ export default abstract class Entity {
     setRotation(r: number) {
         const deltaRot = r - this.rot;
         this.rot = r;
+        this.attributes[2].value = this.rot;
         this.updateTransforms(Vector.zero(), deltaRot);
         this.updateBounds();
         this.isDirty = true;
@@ -56,7 +62,7 @@ export default abstract class Entity {
 
     translate(delta: Vector): void {
         this.pos.add(delta);
-
+        this.attributes[1].value = this.pos.copy();
         this.updateTransforms(delta, 0);
         this.updateBounds();
         this.isDirty = true;
@@ -64,6 +70,7 @@ export default abstract class Entity {
 
     rotate(theta: number): void {
         this.rot += theta;
+        this.attributes[2].value = this.rot;
         this.updateTransforms(Vector.zero(), theta);
         this.updateBounds();
         this.isDirty = true;

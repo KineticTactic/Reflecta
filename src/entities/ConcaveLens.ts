@@ -60,6 +60,7 @@ export default class ConcaveLens extends SurfaceEntity {
             new PlaneRefractiveSurface(new Vector(this.pos.x + x, this.pos.y - h), new Vector(this.pos.x - x, this.pos.y - h), this.refractiveIndex),
         ];
 
+        this.rotate(this.rot);
         this.updateBounds();
     }
 

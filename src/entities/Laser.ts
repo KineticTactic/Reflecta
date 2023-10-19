@@ -47,6 +47,14 @@ export default class Laser extends Entity {
     }
 
     init() {
+        if (this.dispersable) {
+            this.intensity = Laser.INTENSITY_IF_DISPERSABLE;
+            this.numRays = Laser.NUMRAYS_IF_DISPERSABLE;
+        } else {
+            this.intensity = Laser.INTENSITY_IF_NOT_DISPERSABLE;
+            this.numRays = Laser.NUMRAYS_IF_NOT_DISPERSABLE;
+        }
+
         this.lightRays = [];
         for (let i = 0; i < this.numRays; i++) {
             let wavelength = interpolate(i, 0, this.numRays, 400, 700);
@@ -89,13 +97,6 @@ export default class Laser extends Entity {
                 break;
             case "dispersable":
                 this.dispersable = value as boolean;
-                if (this.dispersable) {
-                    this.intensity = Laser.INTENSITY_IF_DISPERSABLE;
-                    this.numRays = Laser.NUMRAYS_IF_DISPERSABLE;
-                } else {
-                    this.intensity = Laser.INTENSITY_IF_NOT_DISPERSABLE;
-                    this.numRays = Laser.NUMRAYS_IF_NOT_DISPERSABLE;
-                }
                 this.init();
                 break;
             case "intensity":

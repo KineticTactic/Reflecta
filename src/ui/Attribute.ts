@@ -8,6 +8,7 @@ export enum AttributeType {
 
 export interface Attribute {
     name: string;
+    key?: string;
     // value: any;
     type: AttributeType;
     min?: number;

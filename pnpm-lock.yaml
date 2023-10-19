@@ -8,6 +8,9 @@ dependencies:
   '@tweakpane/plugin-essentials':
     specifier: ^0.2.0
     version: 0.2.0(tweakpane@4.0.1)
+  lz-string:
+    specifier: ^1.5.0
+    version: 1.5.0
   polyly:
     specifier: ^0.2.4
     version: 0.2.4
@@ -655,6 +658,11 @@ packages:
     dependencies:
       p-locate: 4.1.0
     dev: true
+
+  /lz-string@1.5.0:
+    resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
+    hasBin: true
+    dev: false
 
   /make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}

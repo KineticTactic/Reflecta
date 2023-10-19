@@ -7,6 +7,8 @@ import * as tpEssentials from "@tweakpane/plugin-essentials";
 
 import entities from "../entities/entityList";
 import Settings from "../core/Settings";
+import { SaveState } from "../util/SaveState";
+import { CaptureCanvas } from "../util/CaptureCanvas";
 
 export default class UI {
     selectedEntity: Entity | null = null;
@@ -15,8 +17,22 @@ export default class UI {
     pane: tp.Pane;
     attribFolder: tp.FolderApi | null = null;
 
+    copyLinkBtn: HTMLButtonElement;
+    captureBtn: HTMLButtonElement;
+
     constructor(world: World) {
         this.world = world;
+
+        // HTML Elements
+        this.copyLinkBtn = document.getElementById("copy-link") as HTMLButtonElement;
+        this.captureBtn = document.getElementById("capture") as HTMLButtonElement;
+        this.copyLinkBtn.addEventListener("click", () => {
+            const encoded = SaveState.encodeWorld(this.world);
+            navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}?state=${encoded}`);
+        });
+        this.captureBtn.addEventListener("click", () => {
+            CaptureCanvas.captureFlag = true;
+        });
 
         // Create a new pane instance
         this.pane = new tp.Pane({
@@ -126,5 +142,9 @@ export default class UI {
                     entity.updateAttribute(attr.name, ev.value as any);
                 });
         }
+    }
+
+    refresh() {
+        this.attribFolder?.refresh();
     }
 }

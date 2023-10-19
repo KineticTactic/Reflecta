@@ -53,6 +53,8 @@ export default class ConvexLens extends SurfaceEntity {
             ),
         ];
 
+        this.rotate(this.rot);
+
         this.updateBounds();
     }
 

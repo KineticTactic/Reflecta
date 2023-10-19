@@ -187,6 +187,7 @@ export default class World {
             // translate with left mouse button
             this.entities[this.selectedEntityIndex].translate(worldDeltaMousePos);
         }
+        this.ui.refresh();
         return;
     }
 
