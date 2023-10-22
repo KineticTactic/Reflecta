@@ -4,95 +4,135 @@ import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
+import { EntityOptions } from "../core/Entity";
+
+export interface ConcaveLensOptions extends EntityOptions {
+    span?: number;
+    radiusOfCurvature?: number;
+    thickness?: number;
+    refractiveIndex?: number;
+}
 
 export default class ConcaveLens extends SurfaceEntity {
-    span: number;
-    radiusOfCurvature: number;
-    thickness: number;
-    refractiveIndex: number;
-
     static entityData: EntityData = {
         name: "Concave Lens",
         desc: "A concave lens.",
         constructorFunc: ConcaveLens,
     };
 
-    constructor(pos: Vector, rot: number = 0) {
-        super(pos, rot, "Concave Lens");
+    constructor(options: ConcaveLensOptions) {
+        super("Concave Lens", options);
 
-        this.span = 0.4;
-        this.radiusOfCurvature = 500;
-        this.thickness = 4;
-        this.refractiveIndex = 1.666;
+        this.attribs.span = {
+            name: "span",
+            type: AttributeType.Number,
+            min: 0,
+            max: 1000,
+            value: options.span || 0.4,
+            onchange: () => this.init(),
+        };
+        this.attribs.radiusOfCurvature = {
+            name: "radiusOfCurvature",
+            value: options.radiusOfCurvature || 500,
+            type: AttributeType.Number,
+            min: 0,
+            max: 1000,
+            onchange: () => this.init(),
+        };
+        this.attribs.thickness = {
+            name: "thickness",
+            value: options.thickness || 4,
+            type: AttributeType.Number,
+            min: 0,
+            max: 1000,
+            onchange: () => this.init(),
+        };
+        this.attribs.refractiveIndex = {
+            name: "refractiveIndex",
+            value: options.refractiveIndex || 1.666,
+            type: AttributeType.Number,
+            min: 0.1,
+            max: 10,
+            onchange: () => {
+                this.surfaces.forEach((surface) => {
+                    (surface as PlaneRefractiveSurface).setRefractiveIndex(this.attribs.refractiveIndex.value);
+                });
+            },
+        };
 
         this.init();
-
-        // Attributes
-        this.attributes.push({ name: "span", type: AttributeType.Number, min: 0, max: 1000, value: this.span });
-        this.attributes.push({ name: "radiusOfCurvature", type: AttributeType.Number, min: 0, max: 1000, value: this.radiusOfCurvature });
-        this.attributes.push({ name: "thickness", type: AttributeType.Number, min: 0, max: 1000, value: this.thickness });
-        this.attributes.push({ name: "refractiveIndex", type: AttributeType.Number, min: 0.1, max: 10, value: this.refractiveIndex });
     }
 
     init() {
-        let centerOffset = this.radiusOfCurvature + this.thickness / 2;
-        let h = this.radiusOfCurvature * Math.sin(this.span / 2);
-        let x = this.radiusOfCurvature - Math.cos(this.span / 2) * this.radiusOfCurvature + this.thickness / 2;
+        let centerOffset = this.attribs.radiusOfCurvature.value + this.attribs.thickness.value / 2;
+        let h = this.attribs.radiusOfCurvature.value * Math.sin(this.attribs.span.value / 2);
+        let x =
+            this.attribs.radiusOfCurvature.value -
+            Math.cos(this.attribs.span.value / 2) * this.attribs.radiusOfCurvature.value +
+            this.attribs.thickness.value / 2;
 
         this.surfaces = [
             new CurvedRefractiveSurface(
                 new Vector(this.pos.x - centerOffset, this.pos.y),
-                this.radiusOfCurvature,
+                this.attribs.radiusOfCurvature.value,
                 Vector.right(),
-                this.span,
-                this.refractiveIndex,
+                this.attribs.span.value,
+                this.attribs.refractiveIndex.value,
                 -1
             ),
             new CurvedRefractiveSurface(
                 new Vector(this.pos.x + centerOffset, this.pos.y),
-                this.radiusOfCurvature,
+                this.attribs.radiusOfCurvature.value,
                 Vector.left(),
-                this.span,
-                this.refractiveIndex,
+                this.attribs.span.value,
+                this.attribs.refractiveIndex.value,
                 -1
             ),
-            new PlaneRefractiveSurface(new Vector(this.pos.x - x, this.pos.y + h), new Vector(this.pos.x + x, this.pos.y + h), this.refractiveIndex),
-            new PlaneRefractiveSurface(new Vector(this.pos.x + x, this.pos.y - h), new Vector(this.pos.x - x, this.pos.y - h), this.refractiveIndex),
+            new PlaneRefractiveSurface(
+                new Vector(this.pos.x - x, this.pos.y + h),
+                new Vector(this.pos.x + x, this.pos.y + h),
+                this.attribs.refractiveIndex.value
+            ),
+            new PlaneRefractiveSurface(
+                new Vector(this.pos.x + x, this.pos.y - h),
+                new Vector(this.pos.x - x, this.pos.y - h),
+                this.attribs.refractiveIndex.value
+            ),
         ];
 
         this.rotate(this.rot);
         this.updateBounds();
     }
 
-    override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
-        super.updateAttribute(attribute, value);
-        switch (attribute) {
-            case "span":
-                this.span = value as number;
-                this.init();
-                break;
-            case "radiusOfCurvature":
-                this.radiusOfCurvature = value as number;
-                this.init();
-                break;
-            case "thickness":
-                this.thickness = value as number;
-                this.init();
-                break;
-            case "refractiveIndex":
-                this.refractiveIndex = value as number;
-                this.surfaces.forEach((surface) => {
-                    (surface as PlaneRefractiveSurface).setRefractiveIndex(this.refractiveIndex);
-                });
-                break;
-        }
-    }
+    // override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
+    //     super.updateAttribute(attribute, value);
+    //     switch (attribute) {
+    //         case "span":
+    //             this.attribs.span.value = value as number;
+    //             this.init();
+    //             break;
+    //         case "radiusOfCurvature":
+    //             this.attribs.radiusOfCurvature.value = value as number;
+    //             this.init();
+    //             break;
+    //         case "thickness":
+    //             this.attribs.thickness.value = value as number;
+    //             this.init();
+    //             break;
+    //         case "refractiveIndex":
+    //             this.attribs.refractiveIndex.value = value as number;
+    //             this.surfaces.forEach((surface) => {
+    //                 (surface as PlaneRefractiveSurface).setRefractiveIndex(this.attribs.refractiveIndex.value);
+    //             });
+    //             break;
+    //     }
+    // }
 
     override render(renderer: Renderer, isSelected: boolean): void {
         super.render(renderer, isSelected, true);
 
-        // let angleStart = this.facing.heading() - this.span / 2;
-        // let angleEnd = this.facing.heading() + this.span / 2;
+        // let angleStart = this.facing.heading() - this.attribs.span.value / 2;
+        // let angleEnd = this.facing.heading() + this.attribs.span.value / 2;
 
         // renderer.path(
         //     [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],

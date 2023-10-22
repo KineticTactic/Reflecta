@@ -1,5 +1,3 @@
-import { Vector } from "polyly";
-
 import World from "../core/World";
 import Entity from "../core/Entity";
 import * as tp from "tweakpane";
@@ -55,7 +53,7 @@ export default class UI {
                 cells: (x: number, y: number) => ({ title: y * 2 + x < entities.length ? entities[y * 2 + x].name : "*" }),
             }) as tpEssentials.ButtonGridApi
         ).on("click", (ev) => {
-            world.addEntity(new entities[ev.index[1] * 2 + ev.index[0]].constructorFunc(new Vector(0, 0), 0));
+            world.addEntity(new entities[ev.index[1] * 2 + ev.index[0]].constructorFunc({}));
         });
 
         const worldFolder = this.pane.addFolder({
@@ -120,16 +118,26 @@ export default class UI {
             expanded: window.innerWidth > 800,
         });
 
-        this.attribFolder
-            .addButton({
-                title: "Delete Entity",
-            })
-            .on("click", () => {
-                this.world.removeEntity(entity);
-                this.deselectEntity();
-            });
+        this.attribFolder.addButton({ title: "Delete Entity" }).on("click", () => {
+            this.world.removeEntity(entity);
+            this.deselectEntity();
+        });
 
-        for (const attr of entity.attributes) {
+        this.attribFolder.addBinding(entity, "pos", { label: "position" }).on("change", () => {
+            entity.updatePositionUI();
+        });
+
+        this.attribFolder.addBinding(entity, "rot", { label: "rotation" }).on("change", () => {
+            entity.updateRotationUI();
+        });
+
+        this.attribFolder.addBinding(entity, "color", { label: "color" });
+
+        for (const [key, attr] of Object.entries(entity.attribs)) {
+            console.log(key, attr);
+
+            if (attr.hide) continue;
+
             this.attribFolder
                 .addBinding(attr, "value", {
                     label: attr.name,
@@ -138,8 +146,11 @@ export default class UI {
                     step: attr.step,
                 })
                 .on("change", (ev) => {
-                    console.log(ev);
-                    entity.updateAttribute(attr.name, ev.value as any);
+                    console.log(attr);
+                    if (attr.onchange) attr.onchange(ev.value);
+                    entity.isDirty = true;
+                    // entity.updateAttribute(attr.name, ev.value as any);
+                    this.refresh();
                 });
         }
     }

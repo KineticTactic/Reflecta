@@ -1,11 +1,9 @@
-import { Vector } from "polyly";
-
-import Entity from "./Entity";
+import Entity, { EntityOptions } from "./Entity";
 
 interface EntityData {
     name: string;
     desc: string;
-    constructorFunc: { new (pos: Vector, rot: number): Entity }; // This weird new thing refers to a "Class" type
+    constructorFunc: { new (options: EntityOptions): Entity }; // This weird new thing refers to a "Class" type
 }
 
 export default EntityData;

@@ -1,15 +1,19 @@
 import { Vector } from "polyly";
 
-import Entity from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 
+export interface PointLightOptions extends EntityOptions {
+    numRays?: number;
+    wavelength?: number;
+    intensity?: number;
+}
+
 export default class PointLight extends Entity {
-    numRays: number;
-    wavelength: number;
-    intensity: number;
+    // monochromatic: boolean = false;
 
     static entityData: EntityData = {
         name: "Point Light",
@@ -17,29 +21,52 @@ export default class PointLight extends Entity {
         constructorFunc: PointLight,
     };
 
-    constructor(pos: Vector, rot: number = 0) {
-        super(pos, rot, "Point Light");
-        this.numRays = 500;
-        this.wavelength = 500;
-        this.intensity = 20;
+    constructor(options: PointLightOptions) {
+        super("Point Light", options);
+
+        this.attribs.numRays = {
+            name: "numRays",
+            value: options.numRays || 500,
+            type: AttributeType.Number,
+            min: 0,
+            max: 10000,
+            step: 1,
+            onchange: () => this.init(),
+        };
+        this.attribs.wavelength = {
+            name: "wavelength",
+            value: options.wavelength || 500,
+            type: AttributeType.Number,
+            min: 360,
+            max: 830,
+            onchange: () => {
+                for (const ray of this.lightRays) ray.setWavelength(this.attribs.wavelength.value);
+            },
+        };
+        this.attribs.intensity = {
+            name: "intensity",
+            value: options.intensity || 20,
+            type: AttributeType.Number,
+            min: 1,
+            max: 255,
+            onchange: () => {
+                for (const ray of this.lightRays) ray.setIntensity(this.attribs.intensity.value);
+            },
+        };
 
         this.init();
-
-        // Attributes
-        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000, value: this.numRays });
-        this.attributes.push({ name: "wavelength", type: AttributeType.Number, min: 360, max: 830, value: this.wavelength });
-        this.attributes.push({ name: "intensity", type: AttributeType.Number, min: 1, max: 255, value: this.intensity });
     }
 
     init() {
         this.lightRays = [];
-        for (let i = 0; i < this.numRays; i++) {
+        for (let i = 0; i < this.attribs.numRays.value; i++) {
             this.lightRays.push(
                 new LightRay({
                     origin: this.pos,
-                    dir: new Vector(1, 0).rotate(((Math.PI * 2) / this.numRays) * i),
+                    dir: new Vector(1, 0).rotate(((Math.PI * 2) / this.attribs.numRays.value) * i),
                     monochromatic: false,
-                    intensity: this.intensity,
+                    intensity: this.attribs.intensity.value,
+                    wavelength: this.attribs.wavelength.value,
                 })
             );
         }
@@ -53,24 +80,5 @@ export default class PointLight extends Entity {
     override updateBounds(): void {
         this.bounds = AABB.fromPoints([this.pos.copy(), this.pos.copy()]);
         this.bounds.setMinSize(50);
-    }
-
-    override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
-        super.updateAttribute(attribute, value);
-
-        switch (attribute) {
-            case "numRays":
-                this.numRays = value as number;
-                this.init();
-                break;
-            case "wavelength":
-                this.wavelength = value as number;
-                for (const ray of this.lightRays) ray.setWavelength(this.wavelength);
-                break;
-            case "intensity":
-                this.intensity = value as number;
-                for (const ray of this.lightRays) ray.setIntensity(this.intensity);
-                break;
-        }
     }
 }

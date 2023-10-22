@@ -4,32 +4,39 @@ import SurfaceEntity from "./SurfaceEntity";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 import PlaneReflectiveSurface from "../primitives/PlaneReflectiveSurface";
+import { EntityOptions } from "../core/Entity";
+
+export interface PlaneMirrorOptions extends EntityOptions {
+    size?: number;
+}
 
 export default class PlaneMirror extends SurfaceEntity {
-    size: number;
-
     static entityData: EntityData = {
         name: "Plane Mirror",
         desc: "A plane mirror.",
         constructorFunc: PlaneMirror,
     };
 
-    constructor(pos: Vector, rot: number = 0) {
-        super(pos, rot, "Plane Mirror");
+    constructor(options: PlaneMirrorOptions) {
+        super("Plane Mirror", options);
 
-        this.size = 200;
+        this.attribs.size = {
+            name: "size",
+            value: options.size || 200,
+            type: AttributeType.Number,
+            min: 0,
+            max: 1000,
+            onchange: () => this.init(),
+        };
 
         this.init();
-
-        // Attributes
-        this.attributes.push({ name: "size", type: AttributeType.Number, min: 0, max: 1000, value: this.size });
     }
 
     init() {
         this.surfaces = [
             new PlaneReflectiveSurface(
-                Vector.add(this.pos, new Vector(this.size / 2, 0).rotate(this.rot)),
-                Vector.sub(this.pos, new Vector(this.size / 2, 0).rotate(this.rot))
+                Vector.add(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)),
+                Vector.sub(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot))
             ),
         ];
         this.updateBounds();
@@ -38,15 +45,5 @@ export default class PlaneMirror extends SurfaceEntity {
     override updateBounds(): void {
         super.updateBounds();
         this.bounds.setMinSize(30);
-    }
-
-    override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
-        super.updateAttribute(attribute, value);
-        switch (attribute) {
-            case "size":
-                this.size = value as number;
-                this.init();
-                break;
-        }
     }
 }

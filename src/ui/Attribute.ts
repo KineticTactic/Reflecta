@@ -6,13 +6,14 @@ export enum AttributeType {
     Vector = "vector",
 }
 
-export interface Attribute {
+export interface Attribute<Type> {
     name: string;
     key?: string;
-    // value: any;
     type: AttributeType;
     min?: number;
     max?: number;
     step?: number;
-    value: any;
+    value: Type;
+    hide?: boolean;
+    onchange?: (value: Type) => void;
 }

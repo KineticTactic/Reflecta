@@ -1,11 +1,13 @@
 import { Vector, Renderer } from "polyly";
 // import Surface from "../primitives/Surface";
 import AABB from "../util/Bounds";
-import Entity from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
+
+export type SurfaceEntityOptions = EntityOptions;
 
 export default abstract class SurfaceEntity extends Entity {
-    constructor(pos: Vector, rot: number, name: string) {
-        super(pos, rot, name);
+    constructor(name: string, options: SurfaceEntityOptions = {}) {
+        super(name, options);
     }
 
     override updateTransforms(deltaPos: Vector, deltaRot: number): void {

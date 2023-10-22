@@ -52,7 +52,7 @@
     top: 0;
     width: 300px;
     margin: 1rem;
-    max-height: calc(100vh - 2rem);
+    max-height: calc(100vh - 4rem);
     overflow-y: auto;
 }
 

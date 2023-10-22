@@ -1,46 +1,68 @@
 import { Vector } from "polyly";
 
-import Entity from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
 import { AttributeType } from "../ui/Attribute";
 import EntityData from "../core/EntityData";
 
-export default class LightBeam extends Entity {
-    size: number;
-    numRays: number;
-    intensity: number;
+export interface LightBeamOptions extends EntityOptions {
+    size?: number;
+    numRays?: number;
+    intensity?: number;
+}
 
+export default class LightBeam extends Entity {
     static entityData: EntityData = {
         name: "Light Beam",
         desc: "A light beam.",
         constructorFunc: LightBeam,
     };
 
-    constructor(pos: Vector, rot: number = 0) {
-        super(pos, rot, "Light Beam");
+    constructor(options: LightBeamOptions) {
+        super("Light Beam", options);
 
-        this.size = 150;
-        this.numRays = 100;
-        this.intensity = 50;
+        this.attribs.size = {
+            name: "size",
+            value: options.size || 150,
+            type: AttributeType.Number,
+            min: 0,
+            max: 10000,
+            onchange: () => this.init(),
+        };
+        this.attribs.numRays = {
+            name: "numRays",
+            value: options.numRays || 100,
+            type: AttributeType.Number,
+            min: 0,
+            max: 10000,
+            onchange: () => this.init(),
+        };
+        this.attribs.intensity = {
+            name: "intensity",
+            value: options.intensity || 50,
+            type: AttributeType.Number,
+            min: 1,
+            max: 255,
+            onchange: () => {
+                for (let l of this.lightRays) {
+                    l.setIntensity(this.attribs.intensity.value);
+                }
+            },
+        };
 
         this.init();
-
-        // Attributes
-        this.attributes.push({ name: "size", type: AttributeType.Number, min: 0, max: 10000, value: this.size });
-        this.attributes.push({ name: "numRays", type: AttributeType.Number, min: 0, max: 10000, value: this.numRays });
-        this.attributes.push({ name: "intensity", type: AttributeType.Number, min: 1, max: 255, value: this.intensity });
     }
 
     init() {
         this.lightRays = [];
-        for (let i = -this.size / 2; i <= this.size / 2; i += this.size / this.numRays) {
+        for (let i = -this.attribs.size.value / 2; i <= this.attribs.size.value / 2; i += this.attribs.size.value / this.attribs.numRays.value) {
             this.lightRays.push(
                 new LightRay({
                     origin: Vector.add(this.pos, new Vector(0, i).rotate(this.rot)),
                     dir: Vector.right().rotate(this.rot),
                     monochromatic: false,
-                    intensity: this.intensity,
+                    intensity: this.attribs.intensity.value,
                 })
             );
         }
@@ -60,26 +82,5 @@ export default class LightBeam extends Entity {
         const max = this.lightRays[this.lightRays.length - 1].origin.copy();
         this.bounds = AABB.fromPoints([min, max]);
         this.bounds.setMinSize(20);
-    }
-
-    override updateAttribute(attribute: string, value: string | Vector | boolean | number): void {
-        super.updateAttribute(attribute, value);
-
-        switch (attribute) {
-            case "size":
-                this.size = value as number;
-                this.init();
-                break;
-            case "numRays":
-                this.numRays = value as number;
-                this.init();
-                break;
-            case "intensity":
-                this.intensity = value as number;
-                for (let l of this.lightRays) {
-                    l.setIntensity(this.intensity);
-                }
-                break;
-        }
     }
 }

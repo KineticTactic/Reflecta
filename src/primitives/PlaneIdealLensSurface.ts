@@ -11,12 +11,15 @@ export default class PlaneIdealLensSurface extends PlaneSurface {
     type: LensType;
     focalLength: number;
 
-    constructor(v1: Vector, v2: Vector, type: LensType) {
+    constructor(v1: Vector, v2: Vector, type: LensType, focalLength: number) {
         super(v1, v2);
 
         this.type = type;
+        this.focalLength = focalLength;
+    }
 
-        this.focalLength = 200;
+    setFocalLength(focalLength: number) {
+        this.focalLength = focalLength;
     }
 
     handle(intersection: Vector, dir: Vector, _wavelength: number) {
