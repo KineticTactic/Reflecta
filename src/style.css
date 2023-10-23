@@ -184,3 +184,83 @@ input {
 .vector-y::before {
     content: "y"
 }
+
+.left-bar-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.left-bar-container button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    width: 2.5rem;
+}
+
+
+#close-left-bar-btn {
+    margin: 0.2rem;
+}
+
+.left-bar-container svg {
+    fill: #666;
+}
+
+#left-bar {
+    width: 20rem;
+    height: 95vh;
+    margin: 2.5vh 2.5vh;
+    border: solid 2px #141414;
+    border-radius: 5px;
+    background-color: #141414;
+    background-color: #040404;
+
+    display: none;
+}
+
+.left-bar-heading {
+    display: flex;
+    justify-content: space-between;
+    background-color: #141414;
+    align-items: center;
+}
+
+#left-bar h3 {
+    display: inline-block;
+    font-family: "Inconsolata";
+    color: #aaa;
+    font-weight: 400;
+    margin: 0 1rem;
+}
+
+#example-list {
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.example {
+    padding: 10%;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+/* .example  */
+
+.example:hover {
+    border: 1px solid #666;
+}
+
+.example img {
+    width: 100%;
+}
+
+.example .name {
+    color: #aaa;
+    font-family: "Inconsolata";
+}

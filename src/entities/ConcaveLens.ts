@@ -1,7 +1,7 @@
 import { Vector, Renderer } from "polyly";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
-import { AttributeType } from "../ui/Attribute";
+import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 import { EntityOptions } from "../core/Entity";
@@ -25,10 +25,10 @@ export default class ConcaveLens extends SurfaceEntity {
 
         this.attribs.span = {
             name: "span",
+            value: options.span || 0.4,
             type: AttributeType.Number,
             min: 0,
-            max: 1000,
-            value: options.span || 0.4,
+            max: Math.PI * 2,
             onchange: () => this.init(),
         };
         this.attribs.radiusOfCurvature = {

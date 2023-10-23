@@ -5,7 +5,7 @@ import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
 import EntityData from "../core/EntityData";
 import { clamp, interpolate } from "../lib/math";
-import { AttributeType } from "../ui/Attribute";
+import { AttributeType } from "../core/Attribute";
 import Settings from "../core/Settings";
 
 export interface LaserOptions extends EntityOptions {
@@ -43,7 +43,7 @@ export default class Laser extends Entity {
             value: options.intensity || 255,
             type: AttributeType.Number,
             min: 1,
-            max: 500,
+            max: 1000,
             step: 0.1,
             onchange: () => {
                 for (const ray of this.lightRays) ray.setIntensity(this.getEachRayIntensity());

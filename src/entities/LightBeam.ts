@@ -3,7 +3,7 @@ import { Vector } from "polyly";
 import Entity, { EntityOptions } from "../core/Entity";
 import LightRay from "../primitives/LightRay";
 import AABB from "../util/Bounds";
-import { AttributeType } from "../ui/Attribute";
+import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 
 export interface LightBeamOptions extends EntityOptions {

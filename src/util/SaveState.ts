@@ -5,8 +5,8 @@ import entityList from "../entities/entityList";
 import Settings from "../core/Settings";
 
 export class SaveState {
-    static encodeWorld(world: World) {
-        const entityDataList = world.entities.map((e) => {
+    static createEntityDataList(world: World) {
+        return world.entities.map((e) => {
             const entityData: { [key: string]: any } = {
                 name: e.name,
                 pos: e.pos,
@@ -18,6 +18,10 @@ export class SaveState {
             }
             return entityData;
         });
+    }
+
+    static encodeWorld(world: World) {
+        const entityDataList = SaveState.createEntityDataList(world);
 
         const dataJSON = {
             entities: entityDataList,
@@ -63,5 +67,14 @@ export class SaveState {
         for (const [key, value] of Object.entries(data.world)) {
             (Settings as any)[key] = value;
         }
+    }
+
+    static getCurrentSceneCode(world: World) {
+        let code = "";
+        const entityDataList = SaveState.createEntityDataList(world);
+        for (const entity of entityDataList) {
+            code += `this.world.addEntity(new ${entity.name}(${JSON.stringify(entity)}));\n`;
+        }
+        return code;
     }
 }

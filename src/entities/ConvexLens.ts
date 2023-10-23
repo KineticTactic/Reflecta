@@ -2,7 +2,7 @@ import { Vector } from "polyly";
 
 import SurfaceEntity from "./SurfaceEntity";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
-import { AttributeType } from "../ui/Attribute";
+import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import { EntityOptions } from "../core/Entity";
 // import Surface from "../primitives/Surface";
@@ -28,7 +28,7 @@ export default class ConvexLens extends SurfaceEntity {
             value: options.span || 1,
             type: AttributeType.Number,
             min: 0,
-            max: 1000,
+            max: Math.PI * 2,
             onchange: () => this.init(),
         };
         this.attribs.radiusOfCurvature = {

@@ -2,7 +2,7 @@ import { Vector } from "polyly";
 
 import SurfaceEntity from "./SurfaceEntity";
 import CurvedReflectiveSurface from "../primitives/CurvedReflectiveSurface";
-import { AttributeType } from "../ui/Attribute";
+import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import { EntityOptions } from "../core/Entity";
 
@@ -26,10 +26,11 @@ export default class SphericalMirror extends SurfaceEntity {
             value: options.span || 1,
             type: AttributeType.Number,
             min: 0,
-            max: 1000,
+            max: Math.PI * 2,
             onchange: () => this.init(),
         };
-        this.attribs.refractiveIndex = {
+
+        this.attribs.radiusOfCurvature = {
             name: "radiusOfCurvature",
             value: options.radiusOfCurvature || 200,
             type: AttributeType.Number,

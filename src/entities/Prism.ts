@@ -1,7 +1,7 @@
 import { Vector, Renderer, Color } from "polyly";
 
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
-import { AttributeType } from "../ui/Attribute";
+import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 import Surface from "../primitives/Surface";

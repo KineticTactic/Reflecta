@@ -2,7 +2,7 @@ import { Vector, Color, Renderer } from "polyly";
 
 import LightRay from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
-import { Attribute } from "../ui/Attribute";
+import { Attribute } from "./Attribute";
 import AABB from "../util/Bounds";
 import EntityData from "./EntityData";
 

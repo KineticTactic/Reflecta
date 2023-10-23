@@ -1,7 +1,7 @@
 import { Vector } from "polyly";
 
 import SurfaceEntity from "./SurfaceEntity";
-import { AttributeType } from "../ui/Attribute";
+import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import PlaneReflectiveSurface from "../primitives/PlaneReflectiveSurface";
 import { EntityOptions } from "../core/Entity";

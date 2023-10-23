@@ -3,8 +3,9 @@ import Entity from "../core/Entity";
 import * as tp from "tweakpane";
 import * as tpEssentials from "@tweakpane/plugin-essentials";
 
+import examples from "../examples/examples";
 import entities from "../entities/entityList";
-import Settings from "../core/Settings";
+import Settings, { resetSettings } from "../core/Settings";
 import { SaveState } from "../util/SaveState";
 import { CaptureCanvas } from "../util/CaptureCanvas";
 
@@ -32,6 +33,44 @@ export default class UI {
             CaptureCanvas.captureFlag = true;
         });
 
+        const openLeftBarBtn = document.getElementById("open-left-bar-btn") as HTMLButtonElement;
+        const closeLeftBarBtn = document.getElementById("close-left-bar-btn") as HTMLButtonElement;
+        const leftBarDiv = document.getElementById("left-bar") as HTMLDivElement;
+        openLeftBarBtn.addEventListener("click", () => {
+            leftBarDiv.style.display = "block";
+            openLeftBarBtn.style.display = "none";
+        });
+
+        closeLeftBarBtn.addEventListener("click", () => {
+            leftBarDiv.style.display = "none";
+            openLeftBarBtn.style.display = "block";
+        });
+
+        const exampleListDiv = document.getElementById("example-list") as HTMLDivElement;
+        for (const example of examples) {
+            const exampleDiv = document.createElement("div");
+            exampleDiv.classList.add("example");
+            const exampleImg = document.createElement("img");
+            exampleImg.src = `./examples/${example.img}`;
+            exampleImg.alt = example.name;
+            exampleDiv.appendChild(exampleImg);
+            const exampleName = document.createElement("div");
+            exampleName.classList.add("name");
+            exampleName.innerText = example.name;
+            exampleDiv.appendChild(exampleName);
+
+            exampleDiv.addEventListener("click", () => {
+                this.world.entities = [];
+                resetSettings();
+                example.init(this.world);
+                this.deselectEntity();
+                leftBarDiv.style.display = "none";
+                openLeftBarBtn.style.display = "block";
+            });
+
+            exampleListDiv.appendChild(exampleDiv);
+        }
+
         // Create a new pane instance
         this.pane = new tp.Pane({
             container: document.getElementById("tweakpane-container") as HTMLElement,
@@ -48,7 +87,7 @@ export default class UI {
             addEntityFolder.addBlade({
                 view: "buttongrid",
                 size: [2, Math.ceil(entities.length / 2)], // columns (2) x rows (as many required)
-                // Conver x,y coordinates to index in entities array
+                // Convert x,y coordinates to index in entities array
                 // If we have odd number of entities, index will be out of bounds, so in that case we return a dummy entity
                 cells: (x: number, y: number) => ({ title: y * 2 + x < entities.length ? entities[y * 2 + x].name : "*" }),
             }) as tpEssentials.ButtonGridApi
@@ -84,22 +123,26 @@ export default class UI {
         worldFolder.addBinding(Settings, "lightRayRenderWidth", { min: 1, max: 10, step: 0.1, label: "light ray width" });
         worldFolder.addBinding(Settings, "surfaceRenderWidth", { min: 1, max: 10, step: 0.1, label: "surface width" });
 
-        const statsFolder = this.pane.addFolder({
+        const debugFolder = this.pane.addFolder({
             title: "Debug stats",
             expanded: false,
         });
-        statsFolder.addBinding(world.stats, "frameTime", { readonly: true, label: "frame time" });
-        statsFolder.addBinding(world.stats, "entities", { readonly: true });
-        statsFolder.addBinding(world.stats, "lightRays", { readonly: true, label: "light rays" });
-        statsFolder.addBinding(world.stats, "surfaces", { readonly: true });
-        statsFolder.addBinding(world.stats, "totalLightBounces", { readonly: true, label: "total bounces" });
-        statsFolder.addBinding(world.stats, "maxLightBounces", { readonly: true, label: "max bounces" });
-        statsFolder.addBinding(world.stats, "lightTraceTime", { readonly: true, label: "trace time(ms)" });
-        statsFolder.addBinding(world.stats, "lightTraceTime", { readonly: true, label: " ", view: "graph" });
-        statsFolder.addBinding(world.stats, "renderTime", { readonly: true, label: "render time(ms)" });
-        statsFolder.addBinding(world.stats, "renderTime", { readonly: true, label: " ", view: "graph" });
-        statsFolder.addBinding(world.stats, "numBuffers", { readonly: true, label: "buffer count" });
-        statsFolder.addBinding(world.stats, "usedBuffers", { readonly: true, label: "used buffers" });
+        debugFolder.addBinding(world.stats, "frameTime", { readonly: true, label: "frame time" });
+        debugFolder.addBinding(world.stats, "entities", { readonly: true });
+        debugFolder.addBinding(world.stats, "lightRays", { readonly: true, label: "light rays" });
+        debugFolder.addBinding(world.stats, "surfaces", { readonly: true });
+        debugFolder.addBinding(world.stats, "totalLightBounces", { readonly: true, label: "total bounces" });
+        debugFolder.addBinding(world.stats, "maxLightBounces", { readonly: true, label: "max bounces" });
+        debugFolder.addBinding(world.stats, "lightTraceTime", { readonly: true, label: "trace time(ms)" });
+        debugFolder.addBinding(world.stats, "lightTraceTime", { readonly: true, label: " ", view: "graph" });
+        debugFolder.addBinding(world.stats, "renderTime", { readonly: true, label: "render time(ms)" });
+        debugFolder.addBinding(world.stats, "renderTime", { readonly: true, label: " ", view: "graph" });
+        debugFolder.addBinding(world.stats, "numBuffers", { readonly: true, label: "buffer count" });
+        debugFolder.addBinding(world.stats, "usedBuffers", { readonly: true, label: "used buffers" });
+        debugFolder.addButton({ title: "Copy Scene Code" }).on("click", () => {
+            const code = SaveState.getCurrentSceneCode(this.world);
+            navigator.clipboard.writeText(code);
+        });
     }
 
     selectEntity(entity: Entity): void {
