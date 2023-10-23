@@ -37,28 +37,30 @@ export class SaveState {
         const data = JSON.parse(decoded);
         const entities = [];
         console.log(data);
-        for (let obj of data.entities) {
-            console.log(obj);
-
+        for (const entityData of data.entities) {
             const entityOptions: { [key: string]: any } = {};
 
-            for (let attrib of Object.keys(obj)) {
-                if (obj[attrib].x !== undefined && obj[attrib].y !== undefined) {
-                    entityOptions[attrib] = new Vector(obj[attrib].x, obj[attrib].y);
-                } else if (obj[attrib].r !== undefined && obj[attrib].g !== undefined && obj[attrib].b !== undefined && obj[attrib].a !== undefined) {
-                    entityOptions[attrib] = new Color(obj[attrib].r, obj[attrib].g, obj[attrib].b, obj[attrib].a);
+            console.log(entityData);
+            for (const [key, value] of Object.entries<any>(entityData)) {
+                console.log(key, value);
+                if (value.x !== undefined && value.y !== undefined) {
+                    entityOptions[key] = new Vector(value.x, value.y);
+                } else if (value.r !== undefined && value.g !== undefined && value.b !== undefined && value.a !== undefined) {
+                    entityOptions[key] = new Color(value.r, value.g, value.b, value.a);
                 } else {
-                    entityOptions[attrib] = obj[attrib];
+                    entityOptions[key] = value;
                 }
             }
 
-            const entity = new (entityList.find((e) => e.name === obj.name)!.constructorFunc)(entityOptions);
+            console.log("OPTIONS: ", entityOptions);
+
+            const entity = new (entityList.find((e) => e.name === entityData.name)!.constructorFunc)(entityOptions);
             entities.push(entity);
         }
 
         world.entities = entities;
 
-        for (let [key, value] of Object.entries(data.world)) {
+        for (const [key, value] of Object.entries(data.world)) {
             (Settings as any)[key] = value;
         }
     }

@@ -109,10 +109,14 @@ export default class UI {
 
     deselectEntity() {
         this.selectedEntity = null;
+        console.log("YAS");
+
         if (this.attribFolder) this.attribFolder.dispose();
     }
 
     createEntityAttributesFolder(entity: Entity) {
+        if (this.attribFolder) this.pane.remove(this.attribFolder);
+
         this.attribFolder = this.pane.addFolder({
             title: entity.name,
             expanded: window.innerWidth > 800,
@@ -133,10 +137,10 @@ export default class UI {
 
         this.attribFolder.addBinding(entity, "color", { label: "color" });
 
-        for (const [key, attr] of Object.entries(entity.attribs)) {
-            console.log(key, attr);
-
-            if (attr.hide) continue;
+        for (const [_, attr] of Object.entries(entity.attribs)) {
+            if (attr.show && !attr.show()) {
+                continue;
+            }
 
             this.attribFolder
                 .addBinding(attr, "value", {
@@ -146,10 +150,17 @@ export default class UI {
                     step: attr.step,
                 })
                 .on("change", (ev) => {
-                    console.log(attr);
-                    if (attr.onchange) attr.onchange(ev.value);
                     entity.isDirty = true;
-                    // entity.updateAttribute(attr.name, ev.value as any);
+
+                    if (attr.onchange) {
+                        const ret = attr.onchange(ev.value);
+
+                        // If it returns a true value, we refresh the UI
+                        if (ret) {
+                            this.createEntityAttributesFolder(entity);
+                            return;
+                        }
+                    }
                     this.refresh();
                 });
         }

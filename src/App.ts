@@ -4,12 +4,14 @@ import EventHandler from "./core/EventHandler";
 import World from "./core/World";
 // import ConcaveLens from "./entities/ConcaveLens";
 // import IdealConvexLens from "./entities/IdealConvexLens";
-import Laser from "./entities/Laser";
+// import Laser from "./entities/Laser";
 // import ConcaveLens from "./entities/ConcaveLens";
 // import Prism from "./entities/Prism";
 import { SaveState } from "./util/SaveState";
 import { CaptureCanvas } from "./util/CaptureCanvas";
 import ConvexLens from "./entities/ConvexLens";
+// import PointLight from "./entities/PointLight";
+import LightBeam from "./entities/LightBeam";
 // import Prism from "./entities/Prism";
 
 export default class App {
@@ -33,7 +35,7 @@ export default class App {
     addEntities() {
         // this.world.addEntity(new Prism({ pos: new Vector(200, -100) }));
         this.world.addEntity(new ConvexLens({ pos: new Vector(-200, -50) }));
-        this.world.addEntity(new Laser({ pos: new Vector(-0, -100), rot: Math.PI / 2, polychromatic: false }));
+        this.world.addEntity(new LightBeam({ pos: new Vector(-0, -100), rot: Math.PI + 0.01 }));
         // this.world.addEntity(new ConvexLens({ pos: new Vector(50, 0), rot: Math.PI / 2 }));
 
         // Check if we have a state query param in the URL

@@ -47,6 +47,19 @@ export default class LightRay {
         this.pathColors = [this.color];
     }
 
+    setMonochromatic(monochromatic: boolean) {
+        this.monochromatic = monochromatic;
+        if (monochromatic) {
+            this.setWavelength(this.wavelength);
+        } else {
+            this.setColor(Color.WHITE);
+        }
+    }
+
+    setColor(color: Color) {
+        this.color = color;
+    }
+
     setWavelength(wavelength: number) {
         this.wavelength = wavelength;
 

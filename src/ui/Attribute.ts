@@ -14,6 +14,6 @@ export interface Attribute<Type> {
     max?: number;
     step?: number;
     value: Type;
-    hide?: boolean;
-    onchange?: (value: Type) => void;
+    onchange?: (value: Type) => void | boolean;
+    show?: () => boolean;
 }
