@@ -149,6 +149,7 @@ export default class World {
 
             // We clicked somewhere else, so deselect currently selected entity and remove its draggables
             this.entities[this.selectedEntityIndex].removeDraggables();
+            this.entities[this.selectedEntityIndex].displayBounds = false;
             this.ui.deselectEntity();
         }
 
@@ -201,7 +202,11 @@ export default class World {
                 break;
 
             case State.NONE: // Draw bounding boxes if mouse is over any entity
-                for (let e of this.entities) e.displayBounds = e.bounds.has(worldMousePos);
+                if (this.selectedEntityIndex !== -1 && this.entities[this.selectedEntityIndex].bounds.has(worldMousePos)) break;
+                for (let e of this.entities) {
+                    e.displayBounds = e.bounds.has(worldMousePos);
+                    if (e.displayBounds) break;
+                }
         }
 
         this.lastMousePos = mousePos.copy();
@@ -245,5 +250,16 @@ export default class World {
 
     setDirty() {
         this.isDirty = true;
+    }
+
+    reset() {
+        for (const e of this.entities) e.removeDraggables();
+        this.entities = [];
+        this.lightRays = [];
+        this.surfaces = [];
+        this.selectedEntityIndex = -1;
+        this.selectedDraggable = null;
+        this.state = State.NONE;
+        this.setDirty();
     }
 }

@@ -59,15 +59,7 @@ export default abstract class Entity {
 
     init() {}
 
-    createDraggables(_world: World) {
-        // this.draggables
-        //     .push
-        //     // new Draggable(this.pos, world, (newPos) => {
-        //     //     console.log("YES");
-        //     //     this.setPosition(newPos);
-        //     // })
-        //     ();
-    }
+    createDraggables(_world: World) {}
 
     removeDraggables() {
         this.draggables.forEach((draggable) => draggable.elt.remove());

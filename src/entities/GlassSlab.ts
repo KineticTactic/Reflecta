@@ -27,10 +27,11 @@ export default class GlassSlab extends SurfaceEntity {
         this.attribs.size = {
             name: "size",
             type: AttributeType.Number,
-            min: 0,
-            max: 1000,
+            // min: 0,
             value: options.size || new Vector(200, 100),
-            onchange: () => this.init(),
+            onchange: () => {
+                this.init();
+            },
         };
         this.attribs.refractiveIndex = {
             name: "refractiveIndex",
@@ -62,7 +63,6 @@ export default class GlassSlab extends SurfaceEntity {
             new PlaneRefractiveSurface(v4.copy(), v3.copy(), this.attribs.refractiveIndex.value),
             new PlaneRefractiveSurface(v1.copy(), v4.copy(), this.attribs.refractiveIndex.value),
         ];
-        console.log("INIT");
 
         this.updateBounds();
     }
@@ -72,6 +72,8 @@ export default class GlassSlab extends SurfaceEntity {
         this.draggables.push(
             new Draggable(Vector.add(this.pos, Vector.mult(this.attribs.size.value, 0.5).rotate(this.rot)), world, (newPos: Vector) => {
                 this.attribs.size.value = Vector.sub(newPos, this.pos).mult(2).rotate(-this.rot);
+                this.attribs.size.value.x = Math.abs(this.attribs.size.value.x);
+                this.attribs.size.value.y = Math.abs(this.attribs.size.value.y);
                 this.init();
                 this.isDirty = true;
             })

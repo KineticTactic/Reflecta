@@ -60,6 +60,7 @@ export default class UI {
             exampleDiv.appendChild(exampleName);
 
             exampleDiv.addEventListener("click", () => {
+                this.world.reset();
                 this.world.entities = [];
                 resetSettings();
                 example.init(this.world);

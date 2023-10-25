@@ -31,7 +31,7 @@ export default class EventHandler {
         });
 
         // Touch move event
-        canvas.addEventListener("touchmove", (e) => {
+        window.addEventListener("touchmove", (e) => {
             console.log(e.touches);
 
             /// This is kind of a hack to implement pinch zooming

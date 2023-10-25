@@ -24,8 +24,18 @@ export class Draggable {
             world.state = State.MOVE_DRAGGABLE;
         });
 
+        this.elt.addEventListener("touchstart", () => {
+            world.selectedDraggable = this;
+            world.state = State.MOVE_DRAGGABLE;
+        });
+
         this.elt.addEventListener("mouseup", (e) => {
             world.handleMouseUp(new Vector(e.clientX, e.clientY));
+        });
+
+        this.elt.addEventListener("touchend", (e) => {
+            world.handleMouseUp(new Vector(0, 0));
+            e.preventDefault();
         });
     }
 
