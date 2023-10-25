@@ -5,6 +5,15 @@ import LightRay, { LightRayTraceInfo } from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
 import Settings from "./Settings";
+import { Draggable } from "../util/Draggable";
+
+export enum State {
+    NONE,
+    MOVE_CAMERA,
+    MOVE_ENTITY,
+    ROTATE_ENTITY,
+    MOVE_DRAGGABLE,
+}
 
 export default class World {
     surfaces: Surface[] = [];
@@ -12,11 +21,9 @@ export default class World {
     entities: Entity[] = [];
 
     selectedEntityIndex: number = -1;
+    selectedDraggable: Draggable | null = null;
 
-    isMouseDown = false;
     lastMousePos: Vector = Vector.zero();
-    isSelectedEntityBeingDragged = false;
-    buttonDown: number = -1;
 
     stats = {
         frameTime: 0,
@@ -34,12 +41,14 @@ export default class World {
     ui: UI = new UI(this);
     renderer: Renderer;
     camera: Camera;
+    state: State = State.NONE;
 
     isDirty: boolean = true;
 
     constructor(renderer: Renderer) {
         this.renderer = renderer;
         this.camera = new Camera(this.renderer.getDisplaySize());
+        this.renderer.camera = this.camera; ///TODO: Uset setCamera or something
         this.setDirty();
     }
 
@@ -51,7 +60,7 @@ export default class World {
         const index = this.entities.indexOf(entity);
         if (index > -1) this.entities.splice(index, 1);
         this.selectedEntityIndex = -1;
-        this.isDirty = true;
+        this.setDirty();
     }
 
     update(delta: number) {
@@ -124,90 +133,96 @@ export default class World {
     }
 
     handleMouseDown(mousePos: Vector, button: MouseEvent["button"]) {
-        // const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
+        this.lastMousePos = mousePos.copy();
+
         const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);
 
         ///TODO: Objects on top of one another cant be selected, only the topmost one is selected
 
-        // const previouslySelected = this.selectedEntityIndex;
+        // If we are clicking on a previously selected entity, then we are dragging it
+        if (this.selectedEntityIndex !== -1) {
+            if (this.entities[this.selectedEntityIndex].bounds.has(worldMousePos)) {
+                // We clicked on the already selected entity
+                this.state = button === 0 ? State.MOVE_ENTITY : State.ROTATE_ENTITY;
+                return;
+            }
+
+            // We clicked somewhere else, so deselect currently selected entity and remove its draggables
+            this.entities[this.selectedEntityIndex].removeDraggables();
+            this.ui.deselectEntity();
+        }
+
         this.selectedEntityIndex = -1;
-        this.ui.deselectEntity();
+
         for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i].bounds.has(worldMousePos)) {
-                console.log("Selected entity:", this.entities[i]);
-
+                // We selected some entity
                 this.selectedEntityIndex = i;
-                this.isSelectedEntityBeingDragged = true;
-
+                this.entities[i].createDraggables(this);
                 this.ui.selectEntity(this.entities[i]);
 
-                break;
+                this.state = button === 0 ? State.MOVE_ENTITY : State.ROTATE_ENTITY;
+                return;
             }
         }
 
-        this.isMouseDown = true;
-        this.buttonDown = button;
-        this.lastMousePos = mousePos.copy();
+        // If we didnt select any entity, then we are dragging the world space
+        this.state = State.MOVE_CAMERA;
     }
 
     handleMouseMove(mousePos: Vector) {
-        if (this.isMouseDown) {
-            this.handleDrag(mousePos);
-        } else {
-            // Calculate mouse position in world space
-            // const worldMousePos = Vector.sub(mousePos, this.worldOffset).div(this.worldScale);
-            const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);
-            // Check if mouse is hovering over an entity to draw AABBs
-            for (let e of this.entities) {
-                e.displayBounds = e.bounds.has(worldMousePos);
-            }
-        }
-        this.lastMousePos = mousePos.copy();
-    }
-
-    handleDrag(mousePos: Vector) {
         const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);
         const lastWorldMousePos = this.camera.screenSpaceToWorldSpace(this.lastMousePos);
         const worldDeltaMousePos = Vector.sub(worldMousePos, lastWorldMousePos);
 
-        // If no entity is selected then we are dragging the world space
-        if (this.selectedEntityIndex === -1) {
-            this.camera.translate(worldDeltaMousePos.mult(-1));
-            return;
+        switch (this.state) {
+            case State.MOVE_DRAGGABLE:
+                if (!this.selectedDraggable) return;
+                this.selectedDraggable.setScreenPos(mousePos);
+                this.selectedDraggable.onMoveFunc(this.selectedDraggable.pos);
+                this.ui.refresh();
+                break;
+
+            case State.MOVE_CAMERA:
+                this.camera.translate(worldDeltaMousePos.mult(-1));
+                break;
+
+            case State.MOVE_ENTITY:
+                this.entities[this.selectedEntityIndex].translate(worldDeltaMousePos);
+                this.ui.refresh();
+                break;
+
+            case State.ROTATE_ENTITY:
+                const originToLastMousePos = Vector.sub(lastWorldMousePos, this.entities[this.selectedEntityIndex].pos);
+                const originToMousePos = Vector.sub(worldMousePos, this.entities[this.selectedEntityIndex].pos);
+                const angle = Vector.angleBetween(originToLastMousePos, originToMousePos);
+                this.entities[this.selectedEntityIndex].rotate(angle);
+                this.ui.refresh();
+                break;
+
+            case State.NONE: // Draw bounding boxes if mouse is over any entity
+                for (let e of this.entities) e.displayBounds = e.bounds.has(worldMousePos);
         }
 
-        // At this point some entity is selected
-        if (this.buttonDown === 2) {
-            // Rotate with right mouse button
-            const originToLastMousePos = Vector.sub(lastWorldMousePos, this.entities[this.selectedEntityIndex].pos);
-            const originToMousePos = Vector.sub(worldMousePos, this.entities[this.selectedEntityIndex].pos);
-            const angle = Vector.angleBetween(originToLastMousePos, originToMousePos);
-            this.entities[this.selectedEntityIndex].rotate(angle);
-        } else {
-            // translate with left mouse button
-            this.entities[this.selectedEntityIndex].translate(worldDeltaMousePos);
-        }
-        this.ui.refresh();
-        return;
+        this.lastMousePos = mousePos.copy();
     }
 
     handleMouseUp(_mousePos: Vector) {
-        this.isMouseDown = false;
-        this.isSelectedEntityBeingDragged = false;
-        this.buttonDown = -1;
+        this.state = State.NONE;
+        this.selectedDraggable = null;
     }
 
     handleMouseWheel(delta: number) {
         let scaleFactor = 0.8;
         scaleFactor = delta > 0 ? 1 / scaleFactor : scaleFactor;
-
         this.camera.setZoom(this.camera.zoom * scaleFactor);
 
         const worldMousePos = this.camera.screenSpaceToWorldSpace(this.lastMousePos);
         const dx = (worldMousePos.x - this.camera.pos.x) * (scaleFactor - 1);
         const dy = (worldMousePos.y - this.camera.pos.y) * (scaleFactor - 1);
-
         this.camera.translate(new Vector(dx, dy));
+
+        this.entities[this.selectedEntityIndex].updateDraggables();
     }
 
     render() {
@@ -222,6 +237,7 @@ export default class World {
 
         const timerEnd = performance.now();
         this.stats.renderTime = timerEnd - timerStart;
+
         ///TODO: UNCOMMENT
         // this.stats.usedBuffers = this.renderer.currentBufferIndex + 1;
         // this.stats.numBuffers = this.renderer.buffers.length;

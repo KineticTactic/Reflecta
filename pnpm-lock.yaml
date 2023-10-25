@@ -12,8 +12,8 @@ dependencies:
     specifier: ^1.5.0
     version: 1.5.0
   polyly:
-    specifier: ^0.2.4
-    version: 0.2.4
+    specifier: ^0.2.6
+    version: 0.2.6
   tweakpane:
     specifier: ^4.0.1
     version: 4.0.1
@@ -776,8 +776,8 @@ packages:
       find-up: 4.1.0
     dev: true
 
-  /polyly@0.2.4:
-    resolution: {integrity: sha512-7iC4HuBrhOSrk6IS6s/ocY/T8fmPJ1dm92c48DKzxorhO8M29Xy4YcE2VRiUqwlX3cvM+RkvdVxmNve2EDF88A==}
+  /polyly@0.2.6:
+    resolution: {integrity: sha512-UY+lWNkuo1oLHxbcGw8NHLCvwXqBbTFAC6w5eoPaMlnlXSTsyQCcQ9bq9f+lf6/TBJZkq9UKATsKj699mieJmg==}
     dependencies:
       twgl.js: 5.5.3
     dev: false

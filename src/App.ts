@@ -55,7 +55,7 @@ export default class App {
         // this.renderer.line(V(-200, -200), V(300, 300), 100, RGBA(0, 255, 255, 255));
 
         this.world.render();
-        this.renderer.render(this.world.camera);
+        this.renderer.render();
 
         if (CaptureCanvas.captureFlag === true) {
             CaptureCanvas.capture(this.world);

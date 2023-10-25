@@ -6,6 +6,8 @@ import EntityData from "../core/EntityData";
 import SurfaceEntity from "./SurfaceEntity";
 import Surface from "../primitives/Surface";
 import { EntityOptions } from "../core/Entity";
+import World from "../core/World";
+import { Draggable } from "../util/Draggable";
 
 const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
 
@@ -58,16 +60,34 @@ export default class Prism extends SurfaceEntity {
             new PlaneRefractiveSurface(v3.copy(), v2.copy(), this.attribs.refractiveIndex.value),
             new PlaneRefractiveSurface(v1.copy(), v3.copy(), this.attribs.refractiveIndex.value),
         ];
+        // console.log("PRISM INIT", this.rot);
 
         this.updateBounds();
+    }
+
+    override createDraggables(world: World): void {
+        super.createDraggables(world);
+        this.draggables.push(
+            new Draggable(
+                Vector.add(this.pos, new Vector((this.attribs.size.value * Math.sqrt(3) * 2) / 6, 0).rotate(Math.PI / 6 + this.rot)),
+                world,
+                (newPos: Vector) => {
+                    this.attribs.size.value = (Vector.sub(newPos, this.pos).mag() * 6) / (2 * Math.sqrt(3));
+                    this.setRotation(Vector.sub(newPos, this.pos).heading() - Math.PI / 6);
+                    this.init();
+                    this.isDirty = true;
+                }
+            )
+        );
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {
         renderer.beginPath();
         renderer.vertices(
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-            this.color
+            new Color(this.color.r, this.color.g, this.color.b, 255)
         );
+
         renderer.strokePath(Surface.surfaceRenderWidth, { closed: true });
 
         renderer.beginPath();
@@ -78,5 +98,7 @@ export default class Prism extends SurfaceEntity {
         renderer.fillPath();
 
         super.render(renderer, isSelected, false);
+
+        // console.log((this.surfaces[0] as PlaneRefractiveSurface).v2);
     }
 }

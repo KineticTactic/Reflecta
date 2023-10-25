@@ -26,7 +26,7 @@ export default class EventHandler {
         });
 
         // Mouse move event
-        canvas.addEventListener("mousemove", (e) => {
+        window.addEventListener("mousemove", (e) => {
             world.handleMouseMove(new Vector(e.clientX, e.clientY));
         });
 
@@ -67,6 +67,7 @@ export default class EventHandler {
         window.addEventListener("resize", () => {
             world.renderer.resizeCanvas(window.innerWidth, window.innerHeight);
             world.camera.setDisplaySize(world.renderer.getDisplaySize());
+            if (world.entities[world.selectedEntityIndex]) world.entities[world.selectedEntityIndex].updateDraggables();
         });
     }
 }

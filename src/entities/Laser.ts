@@ -87,8 +87,6 @@ export default class Laser extends Entity {
             // If polychromatic and white both are false, then wavelength is hidden
         };
 
-        console.log(this.attribs);
-
         this.init();
     }
 

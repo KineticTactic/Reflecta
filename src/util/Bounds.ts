@@ -28,14 +28,18 @@ export default class AABB {
         }
     }
 
-    render(renderer: Renderer, color: Color, lineWidth: number = 1) {
+    render(renderer: Renderer, _color: Color, _lineWidth: number = 1) {
         ///TODO: Change this to rect
+        const color = new Color(180, 100, 180);
+        const lineWidth = 2 / renderer.camera.zoom;
+        const rectStart = Vector.sub(this.start, new Vector(2, 2));
+        const rectEnd = Vector.add(this.end, new Vector(2, 2));
         renderer.beginPath();
-        renderer.vertex(this.start, color);
-        renderer.vertex(new Vector(this.end.x, this.start.y), color);
-        renderer.vertex(this.end, color);
-        renderer.vertex(new Vector(this.start.x, this.end.y), color);
-        renderer.strokePath(lineWidth, { closed: true, dashed: true, dashLength: 5 });
+        renderer.vertex(rectStart, color);
+        renderer.vertex(new Vector(rectEnd.x, rectStart.y), color);
+        renderer.vertex(rectEnd, color);
+        renderer.vertex(new Vector(rectStart.x, rectEnd.y), color);
+        renderer.strokePath(lineWidth, { closed: true, dashed: true, dashLength: 8 / renderer.camera.zoom });
         // ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
     }
 

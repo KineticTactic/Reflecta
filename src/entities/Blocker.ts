@@ -32,7 +32,7 @@ export default class Blocker extends SurfaceEntity {
         this.init();
     }
 
-    init() {
+    override init() {
         this.surfaces = [
             new PlaneBlockerSurface(
                 Vector.add(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)),

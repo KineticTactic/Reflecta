@@ -11,17 +11,24 @@ export default abstract class SurfaceEntity extends Entity {
     }
 
     override updateTransforms(deltaPos: Vector, deltaRot: number): void {
-        for (let s of this.surfaces) {
+        for (const s of this.surfaces) {
             s.translate(deltaPos);
             s.rotateAboutAxis(deltaRot, this.pos.copy());
+        }
+
+        for (const draggable of this.draggables) {
+            let draggablePos = draggable.pos.copy();
+            draggablePos.add(deltaPos);
+            draggablePos = draggablePos.rotateAboutAxis(deltaRot, this.pos.copy());
+            draggable.setWorldPos(draggablePos);
         }
     }
 
     override updateBounds(): void {
         // Calculate AABB of each surface, store them to an array, then calculate an AABB encompassing all of them.
-        let aabbs: AABB[] = [];
+        const aabbs: AABB[] = [];
 
-        for (let s of this.surfaces) {
+        for (const s of this.surfaces) {
             const aabb = s.calculateAABB();
             aabbs.push(aabb);
         }
@@ -31,7 +38,7 @@ export default abstract class SurfaceEntity extends Entity {
 
     override render(renderer: Renderer, isSelected: boolean, drawSurfaces: boolean = true) {
         if (drawSurfaces) {
-            for (let s of this.surfaces) s.render(renderer, this.color);
+            for (const s of this.surfaces) s.render(renderer, this.color);
         }
 
         super.render(renderer, isSelected);
