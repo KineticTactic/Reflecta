@@ -3,9 +3,8 @@ import { Vector, Renderer, Color } from "polyly";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
-import SurfaceEntity from "./SurfaceEntity";
 import Surface from "../primitives/Surface";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 import World from "../core/World";
 import { Draggable } from "../util/Draggable";
 
@@ -14,7 +13,7 @@ export interface GlassSlabOptions extends EntityOptions {
     refractiveIndex?: number;
 }
 
-export default class GlassSlab extends SurfaceEntity {
+export default class GlassSlab extends Entity {
     static entityData: EntityData = {
         name: "Glass Slab",
         desc: "A glass slab.",
@@ -27,10 +26,12 @@ export default class GlassSlab extends SurfaceEntity {
         this.attribs.size = {
             name: "size",
             type: AttributeType.Number,
-            // min: 0,
             value: options.size || new Vector(200, 100),
             onchange: () => {
+                this.attribs.size.value.x = Math.abs(this.attribs.size.value.x);
+                this.attribs.size.value.y = Math.abs(this.attribs.size.value.y);
                 this.init();
+                this.draggables[0].setWorldPos(Vector.add(this.pos, Vector.mult(this.attribs.size.value, 0.5).rotate(this.rot)));
             },
         };
         this.attribs.refractiveIndex = {

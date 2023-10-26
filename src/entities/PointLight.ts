@@ -2,7 +2,6 @@ import { Vector } from "polyly";
 
 import Entity, { EntityOptions } from "../core/Entity";
 import LightRay from "../primitives/LightRay";
-import AABB from "../util/Bounds";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import { clamp } from "../lib/math";
@@ -83,7 +82,7 @@ export default class PointLight extends Entity {
         for (let i = 0; i < this.attribs.numRays.value; i++) {
             this.lightRays.push(
                 new LightRay({
-                    origin: this.pos,
+                    origin: this.pos.copy(),
                     dir: new Vector(1, 0).rotate(((Math.PI * 2) / this.attribs.numRays.value) * i),
                     monochromatic: this.attribs.monochromatic.value,
                     intensity: eachRayIntensity,
@@ -92,15 +91,6 @@ export default class PointLight extends Entity {
             );
         }
         this.updateBounds();
-    }
-
-    override updateTransforms(_deltaPos: Vector, _deltaRot: number): void {
-        for (let l of this.lightRays) l.origin = this.pos;
-    }
-
-    override updateBounds(): void {
-        this.bounds = AABB.fromPoints([this.pos.copy(), this.pos.copy()]);
-        this.bounds.setMinSize(50);
     }
 
     getEachRayIntensity() {

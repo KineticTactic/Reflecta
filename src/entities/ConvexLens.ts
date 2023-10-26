@@ -1,10 +1,9 @@
 import { Vector } from "polyly";
 
-import SurfaceEntity from "./SurfaceEntity";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 // import Surface from "../primitives/Surface";
 
 export interface ConvexLensOptions extends EntityOptions {
@@ -13,7 +12,7 @@ export interface ConvexLensOptions extends EntityOptions {
     refractiveIndex?: number;
 }
 
-export default class ConvexLens extends SurfaceEntity {
+export default class ConvexLens extends Entity {
     static entityData: EntityData = {
         name: "Convex Lens",
         desc: "A convex lens.",

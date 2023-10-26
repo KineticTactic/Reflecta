@@ -1,17 +1,16 @@
 import { Vector } from "polyly";
 
-import SurfaceEntity from "./SurfaceEntity";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import PlaneIdealLensSurface, { LensType } from "../primitives/PlaneIdealLensSurface";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 
 export interface IdealConvexLensOptions extends EntityOptions {
     size?: number;
     focalLength?: number;
 }
 
-export default class IdealConvexLens extends SurfaceEntity {
+export default class IdealConvexLens extends Entity {
     static entityData: EntityData = {
         name: "Ideal Convex Lens",
         desc: "An ideal convex lens.",

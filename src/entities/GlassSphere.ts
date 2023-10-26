@@ -1,6 +1,6 @@
 import { Vector } from "polyly";
 
-import SurfaceEntity from "./SurfaceEntity";
+import Entity from "../core/Entity";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
@@ -11,7 +11,7 @@ export interface GlassSphereOptions extends EntityOptions {
     refractiveIndex?: number;
 }
 
-export default class GlassSphere extends SurfaceEntity {
+export default class GlassSphere extends Entity {
     static entityData: EntityData = {
         name: "Glass Sphere",
         desc: "A glass sphere.",

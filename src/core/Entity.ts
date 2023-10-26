@@ -126,11 +126,56 @@ export default abstract class Entity {
         this.lastRot = this.rot;
     }
 
-    updateTransforms(_deltaPos: Vector, _deltaRot: number): void {}
-    updateBounds(): void {}
+    // Updates all the surfaces, light rays and draggables when entity is moved or rotated
+    updateTransforms(deltaPos: Vector, deltaRot: number): void {
+        // Update all the surfaces
+        for (const s of this.surfaces) {
+            s.translate(deltaPos);
+            s.rotateAboutAxis(deltaRot, this.pos.copy());
+        }
 
-    render(renderer: Renderer, isSelected: boolean): void {
+        // Update all the light rays
+        for (const l of this.lightRays) {
+            l.origin.add(deltaPos);
+            l.origin.rotateAboutAxis(deltaRot, this.pos);
+            l.dir.rotate(deltaRot);
+        }
+
+        // Update all the draggables
+        for (const draggable of this.draggables) {
+            let draggablePos = draggable.pos.copy();
+            draggablePos.add(deltaPos);
+            draggablePos = draggablePos.rotateAboutAxis(deltaRot, this.pos.copy());
+            draggable.setWorldPos(draggablePos);
+        }
+    }
+
+    updateBounds(): void {
+        const aabbs: AABB[] = [];
+
+        // Calculate surface AABBs
+        for (const s of this.surfaces) {
+            const aabb = s.calculateAABB();
+            aabbs.push(aabb);
+        }
+
+        // Only considering first and last light ray for now
+        if (this.lightRays.length > 0) {
+            const min = this.lightRays[0].origin.copy();
+            const max = this.lightRays[this.lightRays.length - 1].origin.copy();
+            aabbs.push(AABB.fromPoints([min, max]));
+        }
+
+        this.bounds = AABB.fromAABBs(aabbs);
+        this.bounds.setMinSize(50);
+    }
+
+    render(renderer: Renderer, isSelected: boolean, drawSurfaces: boolean = true): void {
         if (this.displayBounds) this.bounds.render(renderer, new Color(132, 36, 185, 200), 2);
         if (isSelected) this.bounds.render(renderer, new Color(132, 36, 185), 2);
+
+        if (drawSurfaces) {
+            for (const s of this.surfaces) s.render(renderer, this.color);
+        }
     }
 }

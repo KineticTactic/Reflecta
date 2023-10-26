@@ -1,16 +1,15 @@
 import { Vector } from "polyly";
 
-import SurfaceEntity from "./SurfaceEntity";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import PlaneBlockerSurface from "../primitives/PlaneBlockerSurface";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 
 export interface BlockerOptions extends EntityOptions {
     size?: number;
 }
 
-export default class Blocker extends SurfaceEntity {
+export default class Blocker extends Entity {
     static entityData: EntityData = {
         name: "Blocker",
         desc: "A blocker surface.",

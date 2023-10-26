@@ -3,9 +3,8 @@ import { Vector, Renderer, Color } from "polyly";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
-import SurfaceEntity from "./SurfaceEntity";
 import Surface from "../primitives/Surface";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 import World from "../core/World";
 import { Draggable } from "../util/Draggable";
 
@@ -16,7 +15,7 @@ export interface PrismOptions extends EntityOptions {
     refractiveIndex?: number;
 }
 
-export default class Prism extends SurfaceEntity {
+export default class Prism extends Entity {
     static entityData: EntityData = {
         name: "Prism",
         desc: "A prism.",
@@ -32,7 +31,10 @@ export default class Prism extends SurfaceEntity {
             min: 0,
             max: 1000,
             value: options.size || 200,
-            onchange: () => this.init(),
+            onchange: () => {
+                this.init();
+                this.draggables[0].setWorldPos(new Vector((this.attribs.size.value * Math.sqrt(3) * 2) / 6, 0).rotate(Math.PI / 6 + this.rot));
+            },
         };
         this.attribs.refractiveIndex = {
             name: "refractiveIndex",

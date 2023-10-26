@@ -1,17 +1,16 @@
 import { Vector } from "polyly";
 
-import SurfaceEntity from "./SurfaceEntity";
 import CurvedReflectiveSurface from "../primitives/CurvedReflectiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 
 export interface SphericalMirrorOptions extends EntityOptions {
     span?: number;
     radiusOfCurvature?: number;
 }
 
-export default class SphericalMirror extends SurfaceEntity {
+export default class SphericalMirror extends Entity {
     static entityData: EntityData = {
         name: "Spherical Mirror",
         desc: "A spherical mirror.",

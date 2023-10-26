@@ -3,8 +3,7 @@ import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
-import SurfaceEntity from "./SurfaceEntity";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 
 export interface ConcaveLensOptions extends EntityOptions {
     span?: number;
@@ -13,7 +12,7 @@ export interface ConcaveLensOptions extends EntityOptions {
     refractiveIndex?: number;
 }
 
-export default class ConcaveLens extends SurfaceEntity {
+export default class ConcaveLens extends Entity {
     static entityData: EntityData = {
         name: "Concave Lens",
         desc: "A concave lens.",

@@ -2,7 +2,6 @@ import { Vector } from "polyly";
 
 import Entity, { EntityOptions } from "../core/Entity";
 import LightRay from "../primitives/LightRay";
-import AABB from "../util/Bounds";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 
@@ -98,21 +97,6 @@ export default class LightBeam extends Entity {
         }
         console.log(this.lightRays.length);
         this.updateBounds();
-    }
-
-    override updateTransforms(deltaPos: Vector, deltaRot: number): void {
-        for (let l of this.lightRays) {
-            l.origin.add(deltaPos);
-            l.origin.rotateAboutAxis(deltaRot, this.pos);
-            l.dir = Vector.right().rotate(this.rot);
-        }
-    }
-
-    override updateBounds() {
-        const min = this.lightRays[0].origin.copy();
-        const max = this.lightRays[this.lightRays.length - 1].origin.copy();
-        this.bounds = AABB.fromPoints([min, max]);
-        this.bounds.setMinSize(20);
     }
 
     getEachRayIntensity() {

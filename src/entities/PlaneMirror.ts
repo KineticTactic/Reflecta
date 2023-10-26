@@ -1,16 +1,15 @@
 import { Vector } from "polyly";
 
-import SurfaceEntity from "./SurfaceEntity";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import PlaneReflectiveSurface from "../primitives/PlaneReflectiveSurface";
-import { EntityOptions } from "../core/Entity";
+import Entity, { EntityOptions } from "../core/Entity";
 
 export interface PlaneMirrorOptions extends EntityOptions {
     size?: number;
 }
 
-export default class PlaneMirror extends SurfaceEntity {
+export default class PlaneMirror extends Entity {
     static entityData: EntityData = {
         name: "Plane Mirror",
         desc: "A plane mirror.",

@@ -227,7 +227,7 @@ export default class World {
         const dy = (worldMousePos.y - this.camera.pos.y) * (scaleFactor - 1);
         this.camera.translate(new Vector(dx, dy));
 
-        this.entities[this.selectedEntityIndex].updateDraggables();
+        if (this.selectedEntityIndex !== -1) this.entities[this.selectedEntityIndex].updateDraggables();
     }
 
     render() {
