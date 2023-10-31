@@ -54,6 +54,7 @@ export default class SphericalMirror extends Entity {
                 this.attribs.span.value
             ),
         ];
+        this.rotate(this.rot);
         this.updateBounds();
     }
 }

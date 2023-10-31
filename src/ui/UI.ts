@@ -47,12 +47,14 @@ export default class UI {
         const leftBarDiv = document.getElementById("left-bar") as HTMLDivElement;
 
         openLeftBarBtn.addEventListener("click", () => {
-            leftBarDiv.style.display = "block";
+            // leftBarDiv.style.display = "block";
+            leftBarDiv.classList.toggle("hidden");
             openLeftBarBtn.style.display = "none";
         });
 
         closeLeftBarBtn.addEventListener("click", () => {
-            leftBarDiv.style.display = "none";
+            leftBarDiv.classList.toggle("hidden");
+            // leftBarDiv.style.display = "none";
             openLeftBarBtn.style.display = "block";
         });
 
@@ -77,7 +79,7 @@ export default class UI {
                 resetSettings();
                 example.init(this.world);
                 this.deselectEntity();
-                leftBarDiv.style.display = "none";
+                leftBarDiv.classList.toggle("hidden");
                 openLeftBarBtn.style.display = "block";
             });
 

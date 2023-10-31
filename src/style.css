@@ -210,7 +210,14 @@ input {
     fill: #666;
 }
 
+.left-bar-container svg:hover {
+    fill: #aaa;
+}
+
 #left-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 20rem;
     height: 95vh;
     margin: 2.5vh 2.5vh;
@@ -219,7 +226,31 @@ input {
     background-color: #141414;
     background-color: #040404;
 
-    display: none;
+    transform: none;
+    /* opacity: 1; */
+
+    transition: transform 0.2s ease-in-out;
+    overflow-y: scroll;
+    /* display: none; */
+}
+
+#left-bar::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+#left-bar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+#left-bar::-webkit-scrollbar-thumb {
+    background-color: var(--tp-container-background-color);
+    border-radius: 20px;
+}
+
+
+.hidden {
+    transform: translateX(-25rem) !important;
+    /* opacity: 0 !important; */
 }
 
 .left-bar-heading {
@@ -248,6 +279,7 @@ input {
     padding: 10%;
     border: 1px solid #333;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 /* .example  */

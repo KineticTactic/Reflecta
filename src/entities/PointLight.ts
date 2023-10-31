@@ -10,7 +10,7 @@ export interface PointLightOptions extends EntityOptions {
     numRays?: number;
     wavelength?: number;
     intensity?: number;
-    monochromatic?: number;
+    monochromatic?: boolean;
 }
 
 export default class PointLight extends Entity {
