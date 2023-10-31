@@ -1,15 +1,9 @@
-import { Renderer, Vector } from "polyly";
+import { Renderer } from "polyly";
 
 import EventHandler from "./core/EventHandler";
 import World from "./core/World";
 import { SaveState } from "./util/SaveState";
 import { CaptureCanvas } from "./util/CaptureCanvas";
-import PointLight from "./entities/PointLight";
-import SphericalMirror from "./entities/SphericalMirror";
-import settings from "./core/Settings";
-import GlassSphere from "./entities/GlassSphere";
-import ConvexLens from "./entities/ConvexLens";
-import Laser from "./entities/Laser";
 
 export default class App {
     world: World;
