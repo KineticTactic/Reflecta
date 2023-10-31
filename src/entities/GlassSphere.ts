@@ -12,7 +12,7 @@ export interface GlassSphereOptions extends EntityOptions {
 }
 
 export default class GlassSphere extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Glass Sphere",
         desc: "A glass sphere.",
         constructorFunc: GlassSphere,
@@ -45,7 +45,7 @@ export default class GlassSphere extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         this.surfaces = [
             new CurvedRefractiveSurface(this.pos.copy(), this.attribs.radius.value, Vector.right(), Math.PI * 2, this.attribs.refractiveIndex.value),
         ];

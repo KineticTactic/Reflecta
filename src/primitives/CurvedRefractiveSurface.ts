@@ -16,7 +16,7 @@ export default class CurvedRefractiveSurface extends CurvedSurface {
         this.normal = normal;
     }
 
-    handle(intersection: Vector, dir: Vector, wavelength: number) {
+    override handle(intersection: Vector, dir: Vector, wavelength: number) {
         // Calculate normal vector by (intersection point - center)
         let normal = Vector.sub(intersection, this.center).normalize().mult(this.normal);
 

@@ -14,7 +14,7 @@ export interface PointLightOptions extends EntityOptions {
 }
 
 export default class PointLight extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Point Light",
         desc: "A point light.",
         constructorFunc: PointLight,
@@ -74,7 +74,7 @@ export default class PointLight extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         this.lightRays = [];
 
         const eachRayIntensity = this.getEachRayIntensity();

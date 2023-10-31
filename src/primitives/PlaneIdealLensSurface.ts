@@ -7,6 +7,7 @@ export enum LensType {
     Concave,
 }
 
+// This class represents an Ideal Lens (thin lens)
 export default class PlaneIdealLensSurface extends PlaneSurface {
     type: LensType;
     focalLength: number;
@@ -18,11 +19,7 @@ export default class PlaneIdealLensSurface extends PlaneSurface {
         this.focalLength = focalLength;
     }
 
-    setFocalLength(focalLength: number) {
-        this.focalLength = focalLength;
-    }
-
-    handle(intersection: Vector, dir: Vector, _wavelength: number) {
+    override handle(intersection: Vector, dir: Vector, _wavelength: number) {
         // Coordinates of end points of lens
         const x1 = this.v1.x;
         const y1 = this.v1.y;
@@ -95,5 +92,9 @@ export default class PlaneIdealLensSurface extends PlaneSurface {
             dir: newDir,
             newRay: false,
         };
+    }
+
+    setFocalLength(focalLength: number) {
+        this.focalLength = focalLength;
     }
 }

@@ -11,7 +11,7 @@ export interface SphericalMirrorOptions extends EntityOptions {
 }
 
 export default class SphericalMirror extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Spherical Mirror",
         desc: "A spherical mirror.",
         constructorFunc: SphericalMirror,
@@ -41,7 +41,7 @@ export default class SphericalMirror extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         let l = this.attribs.radiusOfCurvature.value * Math.sin(this.attribs.span.value / 2);
 
         let centerOffset = Math.sqrt(this.attribs.radiusOfCurvature.value ** 2 - l ** 2);

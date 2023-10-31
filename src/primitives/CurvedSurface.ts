@@ -1,8 +1,7 @@
 import { Vector, Renderer, Color } from "polyly";
 
 import { closestPointOnLine } from "../lib/intersections";
-import { LightRayResponseInfo } from "../lib/math";
-import AABB from "../util/Bounds";
+import AABB from "../util/AABB";
 import Surface from "./Surface";
 
 export default abstract class CurvedSurface extends Surface {
@@ -20,12 +19,12 @@ export default abstract class CurvedSurface extends Surface {
         this.span = span;
     }
 
-    intersects(origin: Vector, dir: Vector): Vector | null {
+    override intersects(origin: Vector, dir: Vector): Vector | null {
         // Calculate the closest point on the ray to the center of the circle
-        let closestPoint = closestPointOnLine(origin.copy(), dir.copy(), this.center);
+        const closestPoint = closestPointOnLine(origin.copy(), dir.copy(), this.center);
 
         // Squared distance
-        let closestPointDistSq = Vector.sub(closestPoint, this.center).magSq();
+        const closestPointDistSq = Vector.sub(closestPoint, this.center).magSq();
 
         // If the closest point is outside the circle, there is no intersection
         if (closestPointDistSq > this.radius * this.radius) {
@@ -35,58 +34,37 @@ export default abstract class CurvedSurface extends Surface {
         // We now know that the closest point is inside the circle
 
         // This is the distance we have to move along the ray on either side of the closest point to get the intersection points with the circle
-        let k = Math.sqrt(this.radius * this.radius - closestPointDistSq);
+        const k = Math.sqrt(this.radius * this.radius - closestPointDistSq);
 
         // Check if the origin is outside the circle
         // If it is, then there MAY be 2 intersections, one forward along the ray and another backward
         if (Vector.sub(origin, closestPoint).magSq() > k * k) {
             // Calculate backward intersection
             // If exists, it will be closer to the origin than the forward intersection
-
-            let intersection = Vector.sub(closestPoint, dir.copy().normalize().mult(k));
+            const intersection = Vector.sub(closestPoint, dir.copy().normalize().mult(k));
             if (Math.abs(Vector.angleBetween(Vector.sub(intersection, origin), dir)) > 0.2) {
             } else {
-                let centerToIntersectionVector = Vector.sub(intersection, this.center);
-                // console.log(this.facing);
-
-                let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
-
-                // point(intersection);
+                const centerToIntersectionVector = Vector.sub(intersection, this.center);
+                const angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
 
                 // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
                 if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
                     // The intersection LIES WITHIN THE ARC
-                    // point(intersection);
                     return intersection;
                 }
             }
         }
 
         // Check for forward intersection now
+        const intersection = Vector.add(closestPoint, dir.copy().normalize().mult(k));
 
-        let intersection = Vector.add(closestPoint, dir.copy().normalize().mult(k));
-
-        if (Math.abs(Vector.angleBetween(Vector.sub(intersection, origin), dir)) > 0.2) {
-            // console.log(Vector.angleBetween(Vector.sub(closestPoint, origin), dir));
-            // console.log(Math.abs(Vector.angleBetween(Vector.sub(closestPoint, origin), dir)));
-        } else {
-            let centerToIntersectionVector = Vector.sub(intersection, this.center);
-            let angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
-
-            // console.log(Vector.angleBetween(Vector.sub(closestPoint, origin), dir));
-
-            // point(closestPoint);
-            // point(origin);
-            // console.log();
+        if (Math.abs(Vector.angleBetween(Vector.sub(intersection, origin), dir)) <= 0.2) {
+            const centerToIntersectionVector = Vector.sub(intersection, this.center);
+            const angleBetweenFacingAndIntersection = Math.abs(Vector.angleBetween(centerToIntersectionVector, this.facing));
 
             // A buffer of 0.01 is added so that the ray doesn't intersect with the same point twice
             if (angleBetweenFacingAndIntersection <= this.span / 2 && origin.dist(intersection) > 0.01) {
-                // point(intersection);
-                // console.log(dir);
-
                 // The intersection LIES WITHIN THE ARC
-                // console.log(this.center);
-
                 return intersection;
             }
         }
@@ -129,11 +107,9 @@ export default abstract class CurvedSurface extends Surface {
         return AABB.fromPoints(boundingPoints);
     }
 
-    abstract handle(_origin: Vector, dir: Vector, _wavelength: number): LightRayResponseInfo;
-
     render(renderer: Renderer, color: Color = new Color(255, 255, 255, 255)) {
-        let angleStart = this.facing.heading() - this.span / 2;
-        let angleEnd = this.facing.heading() + this.span / 2;
+        const angleStart = this.facing.heading() - this.span / 2;
+        const angleEnd = this.facing.heading() + this.span / 2;
 
         ///TODO: CHANGE
         renderer.beginPath();

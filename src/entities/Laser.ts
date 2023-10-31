@@ -16,7 +16,7 @@ export interface LaserOptions extends EntityOptions {
 }
 
 export default class Laser extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Laser",
         desc: "A laser.",
         constructorFunc: Laser,
@@ -89,7 +89,7 @@ export default class Laser extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         this.lightRays = [];
         for (let i = 0; i < this.attribs.numRays.value; i++) {
             let wavelength = interpolate(i, 0, this.attribs.numRays.value, 400, 700);

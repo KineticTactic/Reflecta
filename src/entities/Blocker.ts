@@ -10,7 +10,7 @@ export interface BlockerOptions extends EntityOptions {
 }
 
 export default class Blocker extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Blocker",
         desc: "A blocker surface.",
         constructorFunc: Blocker,

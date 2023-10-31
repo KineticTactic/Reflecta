@@ -11,7 +11,7 @@ export interface IdealConvexLensOptions extends EntityOptions {
 }
 
 export default class IdealConvexLens extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Ideal Convex Lens",
         desc: "An ideal convex lens.",
         constructorFunc: IdealConvexLens,
@@ -39,7 +39,7 @@ export default class IdealConvexLens extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         this.surfaces = [
             new PlaneIdealLensSurface(
                 Vector.add(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)),

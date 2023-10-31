@@ -10,7 +10,7 @@ export interface PlaneMirrorOptions extends EntityOptions {
 }
 
 export default class PlaneMirror extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Plane Mirror",
         desc: "A plane mirror.",
         constructorFunc: PlaneMirror,
@@ -31,7 +31,7 @@ export default class PlaneMirror extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         this.surfaces = [
             new PlaneReflectiveSurface(
                 Vector.add(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)),

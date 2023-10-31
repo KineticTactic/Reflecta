@@ -8,8 +8,7 @@ export default class CurvedReflectiveSurface extends CurvedSurface {
         super(center, radius, facing, span);
     }
 
-    handle(intersection: Vector, dir: Vector, _wavelength: number) {
-        // Calculate normal vector by (intersection point - center)
+    override handle(intersection: Vector, dir: Vector, _wavelength: number) {
         let normal = Vector.sub(intersection, this.center).normalize();
         return reflect(dir, normal);
     }

@@ -14,7 +14,7 @@ export interface LightBeamOptions extends EntityOptions {
 }
 
 export default class LightBeam extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Light Beam",
         desc: "A light beam.",
         constructorFunc: LightBeam,
@@ -83,7 +83,7 @@ export default class LightBeam extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         this.lightRays = [];
         for (let i = -this.attribs.size.value / 2; i < this.attribs.size.value / 2; i += this.attribs.size.value / this.attribs.numRays.value) {
             this.lightRays.push(

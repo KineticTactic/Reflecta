@@ -14,7 +14,7 @@ export interface GlassSlabOptions extends EntityOptions {
 }
 
 export default class GlassSlab extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Glass Slab",
         desc: "A glass slab.",
         constructorFunc: GlassSlab,
@@ -50,7 +50,7 @@ export default class GlassSlab extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         const halfSize = this.attribs.size.value.copy().mult(0.5);
 
         const v1 = Vector.add(this.pos, new Vector(-halfSize.x, -halfSize.y).rotate(this.rot));

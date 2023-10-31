@@ -29,10 +29,8 @@ export class SaveState {
         };
 
         const str = JSON.stringify(dataJSON);
-        console.log(dataJSON);
-
         const encoded = lzstring.compressToEncodedURIComponent(str);
-        console.log(encoded);
+
         return encoded;
     }
 
@@ -40,13 +38,11 @@ export class SaveState {
         const decoded = lzstring.decompressFromEncodedURIComponent(encoded);
         const data = JSON.parse(decoded);
         const entities = [];
-        console.log(data);
+
         for (const entityData of data.entities) {
             const entityOptions: { [key: string]: any } = {};
 
-            console.log(entityData);
             for (const [key, value] of Object.entries<any>(entityData)) {
-                console.log(key, value);
                 if (value.x !== undefined && value.y !== undefined) {
                     entityOptions[key] = new Vector(value.x, value.y);
                 } else if (value.r !== undefined && value.g !== undefined && value.b !== undefined && value.a !== undefined) {
@@ -56,12 +52,11 @@ export class SaveState {
                 }
             }
 
-            console.log("OPTIONS: ", entityOptions);
-
             const entity = new (entityList.find((e) => e.name === entityData.name)!.constructorFunc)(entityOptions);
             entities.push(entity);
         }
 
+        world.reset();
         world.entities = entities;
 
         for (const [key, value] of Object.entries(data.world)) {

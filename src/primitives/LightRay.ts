@@ -29,7 +29,6 @@ export default class LightRay {
     intensity: number = 100;
     color: Color = new Color(1, 1, 1, 0);
 
-    // constructor(origin: Vector, dir: Vector, wavelength = 550, intensity = 100) {
     constructor(options: LightRayOptions) {
         this.origin = options.origin;
         this.dir = options.dir.copy();
@@ -72,6 +71,7 @@ export default class LightRay {
         this.color.a = intensity;
     }
 
+    // The main tracing function
     trace(surfaces: Surface[]): LightRayTraceInfo {
         this.path = [this.origin];
         this.pathColors = [this.color];
@@ -79,11 +79,10 @@ export default class LightRay {
         let currentPoint = this.path[0]; // Store the current intersection point (with any of the surfaces)
         let currentDir = this.dir.copy(); // Store the current direction of the ray
         let lastIntersectionIndex = null; // Store the index of the last surface that the ray intersected with
-
-        const newRays = [];
-
         let currentIntensity = this.intensity;
         let isTerminated = false;
+
+        const newRays = [];
 
         for (let k = 0; k < Settings.maxLightBounceLimit; k++) {
             let closestIntersection = null; // Store the closest intersection point after checking all surfaces
@@ -97,18 +96,17 @@ export default class LightRay {
                 if (i === lastIntersectionIndex && !surfaces[i].canIntersectTwice) continue;
 
                 // Check if the current surface intersects with the ray
-                let intersection = surfaces[i].intersects(currentPoint.copy(), currentDir.copy());
+                const intersection = surfaces[i].intersects(currentPoint.copy(), currentDir.copy());
 
                 // If there is no intersection, continue to the next surface
                 if (!intersection) continue;
 
                 // Calculate the distance between the current point and the intersection point
                 // We can only use the squared magnitude because we don't need the actual distance
-                let intersectionDistance = Vector.sub(intersection, currentPoint).magSq();
+                const intersectionDistance = Vector.sub(intersection, currentPoint).magSq();
 
                 // If the intersection point is closer than the closest intersection point, update the closest intersection point
                 if (intersectionDistance < closestIntersectionDistance) {
-                    //&& i !== lastIntersectionIndex) {
                     closestIntersection = intersection;
                     closestIntersectionDistance = intersectionDistance;
                     closestIntersectionIndex = i;
@@ -120,7 +118,7 @@ export default class LightRay {
                 // Add the closest intersection point to the path
 
                 // surface.handle returns the new direction of the ray after it has been reflected or refracted
-                let r: LightRayResponseInfo = surfaces[closestIntersectionIndex].handle(closestIntersection.copy(), currentDir.copy(), this.wavelength);
+                const r: LightRayResponseInfo = surfaces[closestIntersectionIndex].handle(closestIntersection.copy(), currentDir.copy(), this.wavelength);
 
                 currentDir = r.dir.copy();
 
@@ -177,32 +175,8 @@ export default class LightRay {
     }
 
     render(renderer: Renderer) {
-        ///TODO: Use fixed length array for the path
-        // ctx.moveTo(this.origin.x, this.origin.y);
-        // ctx.beginPath();
-        // for (let p of this.path) {
-        //     ctx.lineTo(p.x, p.y);
-        // }
-        // ctx.strokeStyle = this.color;
-        // ctx.stroke();
-        // console.log(this.path);
-        // console.log(this.path);
-
-        // const colors = new Array(this.path.length);
-        // console.log(this.intensities);
-
-        // for (let i = 0; i < this.intensities.length; i++) {
-        //     colors[i] = RGBA(this.color.r, this.color.g, this.color.b, this.intensities[i]);
-        //     // colors[i].a = this.intensities[i];
-        // }
-        // console.log(colors);
-
-        // console.log(this.intensities.length, this.path.length);
         for (let i = 0; i < this.path.length - 1; i++) {
             renderer.line(this.path[i], this.path[i + 1], Settings.lightRayRenderWidth, this.pathColors[i]);
         }
-        // renderer.pathColoured(this.path, LightRay.lightRayRenderWidth, this.pathColors);
-
-        // renderer.path(this.path, LightRay.lightRayRenderWidth, this.color);
     }
 }

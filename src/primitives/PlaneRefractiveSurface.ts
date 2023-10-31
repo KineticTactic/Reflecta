@@ -14,11 +14,12 @@ export default class PlaneRefractiveSurface extends PlaneSurface {
         this.criticalAngle = Math.asin(1 / this.refractiveIndex);
     }
 
-    handle(intersection: Vector, dir: Vector, wavelength: number) {
+    override handle(intersection: Vector, dir: Vector, wavelength: number) {
         const ri = calculateRefractiveIndexForWavelength(wavelength, 570, this.refractiveIndex);
 
         const response = refract(dir, this.normal, ri, this.criticalAngle);
         response.newRayOrigin = intersection;
+
         return response;
     }
 

@@ -13,7 +13,7 @@ export interface ConcaveLensOptions extends EntityOptions {
 }
 
 export default class ConcaveLens extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Concave Lens",
         desc: "A concave lens.",
         constructorFunc: ConcaveLens,
@@ -62,7 +62,7 @@ export default class ConcaveLens extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         let centerOffset = this.attribs.radiusOfCurvature.value + this.attribs.thickness.value / 2;
         let h = this.attribs.radiusOfCurvature.value * Math.sin(this.attribs.span.value / 2);
         let x =

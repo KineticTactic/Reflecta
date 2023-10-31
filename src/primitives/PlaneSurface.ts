@@ -1,8 +1,7 @@
 import { Renderer, Vector, Color, RGBA } from "polyly";
 
-import { linePointIntersection, lineRayIntersection } from "../lib/intersections";
-import { LightRayResponseInfo } from "../lib/math";
-import AABB from "../util/Bounds";
+import { lineRayIntersection } from "../lib/intersections";
+import AABB from "../util/AABB";
 import Surface from "./Surface";
 
 export default abstract class PlaneSurface extends Surface {
@@ -13,25 +12,11 @@ export default abstract class PlaneSurface extends Surface {
 
     constructor(v1: Vector, v2: Vector) {
         super();
+
         // Start and end point vectors
         this.v1 = v1;
         this.v2 = v2;
 
-        this.calculateNormal();
-    }
-
-    abstract handle(_intersection: Vector, _dir: Vector, _wavelength: number): LightRayResponseInfo;
-
-    // Calculate normal
-    calculateNormal() {
-        this.normal = Vector.sub(this.v2, this.v1)
-            .rotate(Math.PI / 2)
-            .normalize();
-    }
-
-    setVertices(v1: Vector, v2: Vector) {
-        this.v1 = v1.copy();
-        this.v2 = v2.copy();
         this.calculateNormal();
     }
 
@@ -47,13 +32,8 @@ export default abstract class PlaneSurface extends Surface {
         this.calculateNormal();
     }
 
-    intersects(rayOrigin: Vector, rayDir: Vector): Vector | null {
-        let intersection = lineRayIntersection(this.v1.copy(), this.v2.copy(), rayOrigin.copy(), rayDir.copy());
-        return intersection;
-    }
-
-    intersectsPoint(point: Vector, margin: number = 0.1): boolean {
-        return linePointIntersection(this.v1.copy(), this.v2.copy(), point.copy(), margin);
+    override intersects(rayOrigin: Vector, rayDir: Vector): Vector | null {
+        return lineRayIntersection(this.v1.copy(), this.v2.copy(), rayOrigin.copy(), rayDir.copy());
     }
 
     override calculateAABB(): AABB {
@@ -62,5 +42,17 @@ export default abstract class PlaneSurface extends Surface {
 
     override render(renderer: Renderer, color: Color = RGBA(255, 255, 255, 1)) {
         renderer.line(this.v1, this.v2, Surface.surfaceRenderWidth, color);
+    }
+
+    calculateNormal() {
+        this.normal = Vector.sub(this.v2, this.v1)
+            .rotate(Math.PI / 2)
+            .normalize();
+    }
+
+    setVertices(v1: Vector, v2: Vector) {
+        this.v1 = v1.copy();
+        this.v2 = v2.copy();
+        this.calculateNormal();
     }
 }

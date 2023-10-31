@@ -16,7 +16,7 @@ export interface PrismOptions extends EntityOptions {
 }
 
 export default class Prism extends Entity {
-    static entityData: EntityData = {
+    static override entityData: EntityData = {
         name: "Prism",
         desc: "A prism.",
         constructorFunc: Prism,
@@ -52,7 +52,7 @@ export default class Prism extends Entity {
         this.init();
     }
 
-    init() {
+    override init() {
         let v1 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[0].copy().mult(this.attribs.size.value).rotate(this.rot));
         let v2 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[1].copy().mult(this.attribs.size.value).rotate(this.rot));
         let v3 = Vector.add(this.pos, EQUILATERAL_PRISM_VERTICES[2].copy().mult(this.attribs.size.value).rotate(this.rot));

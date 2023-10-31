@@ -3,7 +3,7 @@ import { Vector, Color, Renderer } from "polyly";
 import LightRay from "../primitives/LightRay";
 import Surface from "../primitives/Surface";
 import { Attribute } from "./Attribute";
-import AABB from "../util/Bounds";
+import AABB from "../util/AABB";
 import EntityData from "./EntityData";
 import { Draggable } from "../util/Draggable";
 import World from "./World";

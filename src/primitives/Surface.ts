@@ -1,7 +1,7 @@
 import { Renderer, Vector, Color } from "polyly";
 
 import { LightRayResponseInfo } from "../lib/math";
-import AABB from "../util/Bounds";
+import AABB from "../util/AABB";
 
 export default abstract class Surface {
     static surfaceRenderWidth = 2;
