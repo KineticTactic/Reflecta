@@ -7,6 +7,7 @@ import Surface from "../primitives/Surface";
 import Entity, { EntityOptions } from "../core/Entity";
 import World from "../core/World";
 import { Draggable } from "../util/Draggable";
+import Settings from "../core/Settings";
 
 const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
 
@@ -95,7 +96,7 @@ export default class Prism extends Entity {
         renderer.beginPath();
         renderer.vertices(
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-            new Color(this.color.r, this.color.g, this.color.b, 25)
+            new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255)
         );
         renderer.fill();
 

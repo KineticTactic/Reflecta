@@ -4,6 +4,7 @@ import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import Entity, { EntityOptions } from "../core/Entity";
+import settings from "../core/Settings";
 
 export interface ConcaveLensOptions extends EntityOptions {
     span?: number;
@@ -154,7 +155,7 @@ export default class ConcaveLens extends Entity {
             );
 
             renderer.beginPath();
-            renderer.setVertexColor(new Color(255, 255, 255, 25));
+            renderer.setVertexColor(new Color(255, 255, 255, settings.glassOpacity * 255));
             renderer.vertices([p1, p2, p3, p4]);
             renderer.fill();
         }

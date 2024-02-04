@@ -7,6 +7,7 @@ import Surface from "../primitives/Surface";
 import Entity, { EntityOptions } from "../core/Entity";
 import World from "../core/World";
 import { Draggable } from "../util/Draggable";
+import Settings from "../core/Settings";
 
 export interface GlassSlabOptions extends EntityOptions {
     size?: Vector;
@@ -105,7 +106,7 @@ export default class GlassSlab extends Entity {
                 (this.surfaces[3] as PlaneRefractiveSurface).v2,
                 (this.surfaces[1] as PlaneRefractiveSurface).v1,
             ],
-            new Color(this.color.r, this.color.g, this.color.b, 25)
+            new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255)
         );
         renderer.fill();
 

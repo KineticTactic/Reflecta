@@ -4,6 +4,7 @@ import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import Entity, { EntityOptions } from "../core/Entity";
+import settings from "../core/Settings";
 // import Surface from "../primitives/Surface";
 
 export interface ConvexLensOptions extends EntityOptions {
@@ -87,7 +88,13 @@ export default class ConvexLens extends Entity {
             let angleStart = surface.facing.heading() - this.attribs.span.value / 2;
             let angleEnd = surface.facing.heading() + this.attribs.span.value / 2;
 
-            renderer.arc(surface.center, surface.radius, angleEnd, angleStart, new Color(this.color.r, this.color.g, this.color.b, 25));
+            renderer.arc(
+                surface.center,
+                surface.radius,
+                angleEnd,
+                angleStart,
+                new Color(this.color.r, this.color.g, this.color.b, settings.glassOpacity * 255)
+            );
         }
 
         renderer.fill();

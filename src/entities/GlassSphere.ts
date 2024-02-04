@@ -1,10 +1,12 @@
-import { Vector } from "polyly";
+import { Color, Renderer, Vector } from "polyly";
 
 import Entity from "../core/Entity";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import { EntityOptions } from "../core/Entity";
+import Surface from "../primitives/Surface";
+import Settings from "../core/Settings";
 
 export interface GlassSphereOptions extends EntityOptions {
     radius?: number;
@@ -50,5 +52,21 @@ export default class GlassSphere extends Entity {
             new CurvedRefractiveSurface(this.pos.copy(), this.attribs.radius.value, Vector.right(), Math.PI * 2, this.attribs.refractiveIndex.value),
         ];
         this.updateBounds();
+    }
+
+    override render(renderer: Renderer, isSelected: boolean) {
+        const s = this.surfaces[0] as CurvedRefractiveSurface;
+        const angleStart = s.facing.heading() - s.span / 2;
+        const angleEnd = s.facing.heading() + s.span / 2;
+
+        renderer.beginPath();
+        renderer.arc(s.center, s.radius, angleStart, angleEnd, this.color);
+        renderer.stroke(Surface.surfaceRenderWidth, { closed: true });
+
+        renderer.beginPath();
+        renderer.arc(s.center, s.radius, angleStart, angleEnd, new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255));
+        renderer.fill();
+
+        super.render(renderer, isSelected, false);
     }
 }

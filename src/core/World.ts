@@ -254,7 +254,7 @@ export default class World {
     render() {
         const timerStart = performance.now();
 
-        Grid.render(this, this.renderer);
+        if (Settings.showGrid) Grid.render(this, this.renderer, Settings.gridSize, Settings.gridDivisions);
 
         for (let lightRay of this.lightRays) lightRay.render(this.renderer);
 

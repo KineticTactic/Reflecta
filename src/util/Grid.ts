@@ -5,7 +5,7 @@ export default class Grid {
     static majorGridSize = 500;
     static minorGridSize = 100;
 
-    static render(world: World, renderer: Renderer) {
+    static render(world: World, renderer: Renderer, gridSize: number, gridDivisions: number) {
         const screenBoundStart = world.camera.screenSpaceToWorldSpace(new Vector(0, 0));
         const screenBoundEnd = world.camera.screenSpaceToWorldSpace(new Vector(renderer.canvas.width, renderer.canvas.height));
 
@@ -21,8 +21,8 @@ export default class Grid {
         renderer.stroke(2 / renderer.camera.zoom);
 
         // Github Copilot wrote this line of code
-        Grid.majorGridSize = 500 * Math.pow(10, Math.floor(Math.log10(2 / renderer.camera.zoom)));
-        Grid.minorGridSize = Grid.majorGridSize / 5;
+        Grid.majorGridSize = gridSize * Math.pow(10, Math.floor(Math.log10(2 / renderer.camera.zoom)));
+        Grid.minorGridSize = Grid.majorGridSize / gridDivisions;
 
         // Minor and Major grids
         this.drawGrid(renderer, Grid.minorGridSize, new Color(50, 50, 50, 255), screenBoundStart, screenBoundEnd);

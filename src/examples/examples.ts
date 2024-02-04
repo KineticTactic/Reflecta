@@ -111,6 +111,7 @@ const examples: Example[] = [
         img: "showcase2.png",
         init: (world: World) => {
             Settings.calculateReflectance = true;
+            Settings.glassOpacity = 0;
             world.addEntity(new PointLight({ pos: new Vector(500, 47), numRays: 500, monochromatic: true, wavelength: 600 }));
             world.addEntity(new GlassSphere({ pos: new Vector(500, 0), radius: 100, refractiveIndex: 2 }));
             world.addEntity(new PointLight({ pos: new Vector(0, 46), numRays: 500, monochromatic: true, wavelength: 530, intensity: 200 }));

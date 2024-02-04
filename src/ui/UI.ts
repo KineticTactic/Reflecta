@@ -1,3 +1,4 @@
+import { Color } from "polyly";
 import World from "../core/World";
 import Entity from "../core/Entity";
 import * as tp from "tweakpane";
@@ -8,6 +9,7 @@ import entities from "../entities/entityList";
 import Settings, { resetSettings } from "../core/Settings";
 import { SaveState } from "../util/SaveState";
 import { CaptureCanvas } from "../util/CaptureCanvas";
+import Surface from "../primitives/Surface";
 
 export default class UI {
     selectedEntity: Entity | null = null;
@@ -28,7 +30,8 @@ export default class UI {
         this.pane.registerPlugin(tpEssentials);
 
         this.createAddEntityFolder();
-        this.createWorldFolder();
+        this.createSimulationOptionsFolder();
+        this.createDisplayOptionsFolder();
         this.createDebugFolder();
     }
 
@@ -36,6 +39,12 @@ export default class UI {
         document.getElementById("copy-link")!.addEventListener("click", () => {
             const encoded = SaveState.encodeWorld(this.world);
             navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}?state=${encoded}`);
+            document.getElementById("copy-link")!.children[0].classList.add("copied");
+            document.getElementById("copy-link")!.children[0].innerHTML = "Copied to clipboard!";
+            setTimeout(() => {
+                document.getElementById("copy-link")!.children[0].classList.remove("copied");
+                document.getElementById("copy-link")!.children[0].innerHTML = "Share Current Scene";
+            }, 2000);
         });
 
         document.getElementById("capture")!.addEventListener("click", () => {
@@ -107,30 +116,44 @@ export default class UI {
         });
     }
 
-    createWorldFolder() {
-        const worldFolder = this.pane.addFolder({
-            title: "World settings",
+    createSimulationOptionsFolder() {
+        const simOptionsFolder = this.pane.addFolder({
+            title: "Simulation Options",
             expanded: false,
         });
 
-        worldFolder.addBinding(Settings, "calculateReflectance", { label: "calculate reflectance" }).on("change", () => this.world.setDirty());
-        worldFolder
+        simOptionsFolder.addBinding(Settings, "calculateReflectance", { label: "calculate reflectance" }).on("change", () => this.world.setDirty());
+        simOptionsFolder
             .addBinding(Settings, "reflectanceFactor", { label: "reflectance factor", min: 0.01, max: 10, step: 0.01 })
             .on("change", () => this.world.setDirty());
-        worldFolder
+        simOptionsFolder
             .addBinding(Settings, "secondaryLightIntensityLimit", { label: "secondary light intensity limit", min: 0.001, step: 0.1 })
             .on("change", () => this.world.setDirty());
-        worldFolder
+        simOptionsFolder
             .addBinding(Settings, "secondaryLightDepthLimit", { label: "secondary light depth limit", min: 1, max: 100, step: 1 })
             .on("change", () => this.world.setDirty());
-        worldFolder
+        simOptionsFolder
             .addBinding(Settings, "maxLightBounceLimit", { min: 0, max: 100, step: 1, label: "light bounce limit" })
             .on("change", () => this.world.setDirty());
-        worldFolder
+        simOptionsFolder
             .addBinding(Settings, "dispersionFactor", { min: 0, max: 1, step: 0.01, label: "dispersion factor" })
             .on("change", () => this.world.setDirty());
-        worldFolder.addBinding(Settings, "lightRayRenderWidth", { min: 1, max: 10, step: 0.1, label: "light ray width" });
-        worldFolder.addBinding(Settings, "surfaceRenderWidth", { min: 1, max: 10, step: 0.1, label: "surface width" });
+    }
+
+    createDisplayOptionsFolder() {
+        const displayOptionsFolder = this.pane.addFolder({
+            title: "Display Options",
+            expanded: false,
+        });
+
+        displayOptionsFolder.addBinding(Settings, "showGrid", { label: "show grid" });
+        displayOptionsFolder.addBinding(Settings, "gridSize", { min: 1, max: 1000, step: 10, label: "grid size" });
+        displayOptionsFolder.addBinding(Settings, "gridDivisions", { min: 1, max: 20, step: 1, label: "grid divisions" });
+        displayOptionsFolder.addBinding(Settings, "lightRayRenderWidth", { min: 1, max: 10, step: 0.1, label: "light ray width" });
+        displayOptionsFolder
+            .addBinding(Settings, "surfaceRenderWidth", { min: 1, max: 10, step: 0.1, label: "surface width" })
+            .on("change", () => (Surface.surfaceRenderWidth = Settings.surfaceRenderWidth));
+        displayOptionsFolder.addBinding(Settings, "glassOpacity", { min: 0, max: 1, step: 0.01, label: "glass opacity" });
     }
 
     createDebugFolder() {
@@ -185,7 +208,9 @@ export default class UI {
 
         this.attribFolder.addBinding(entity, "rot", { label: "rotation" }).on("change", () => entity.updateRotationUI());
 
-        this.attribFolder.addBinding(entity, "color", { label: "color" });
+        this.attribFolder
+            .addBinding(entity, "color", { label: "color" })
+            .on("change", () => (entity.color = new Color(entity.color.r, entity.color.g, entity.color.b, 255)));
 
         for (const [_, attr] of Object.entries(entity.attribs)) {
             if (attr.show && !attr.show()) {
