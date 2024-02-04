@@ -126,7 +126,7 @@ export default class Laser extends Entity {
             Color.WHITE
         );
 
-        renderer.strokePath(3, { closed: true });
+        renderer.stroke(3, { closed: true });
 
         super.render(renderer, isSelected);
     }

@@ -95,7 +95,7 @@ export default class GlassSlab extends Entity {
             ],
             this.color
         );
-        renderer.strokePath(Surface.surfaceRenderWidth, { closed: true });
+        renderer.stroke(Surface.surfaceRenderWidth, { closed: true });
 
         renderer.beginPath();
         renderer.vertices(
@@ -107,7 +107,7 @@ export default class GlassSlab extends Entity {
             ],
             new Color(this.color.r, this.color.g, this.color.b, 25)
         );
-        renderer.fillPath();
+        renderer.fill();
 
         super.render(renderer, isSelected, false);
     }

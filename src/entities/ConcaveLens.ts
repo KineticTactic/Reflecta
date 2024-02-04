@@ -1,4 +1,4 @@
-import { Vector, Renderer } from "polyly";
+import { Vector, Renderer, Color } from "polyly";
 import CurvedRefractiveSurface from "../primitives/CurvedRefractiveSurface";
 import PlaneRefractiveSurface from "../primitives/PlaneRefractiveSurface";
 import { AttributeType } from "../core/Attribute";
@@ -128,21 +128,37 @@ export default class ConcaveLens extends Entity {
     // }
 
     override render(renderer: Renderer, isSelected: boolean): void {
+        // renderer.transform.translate(new Vector(this.pos.x, this.pos.y));
+        // renderer.transform.rotate(this.rot);
+
+        // Since it is a concave shape, we need to fill the lens as a series of rectangles
+        const s1 = this.surfaces[0] as CurvedRefractiveSurface;
+        const s2 = this.surfaces[1] as CurvedRefractiveSurface;
+
+        const detail = 0.01;
+
+        for (let i = -s1.span / 2; i <= s1.span / 2; i += detail) {
+            const p1 = s1.center.copy().add(s1.facing.copy().rotate(i).mult(s1.radius));
+            const p2 = s2.center.copy().add(s2.facing.copy().rotate(-i).mult(s2.radius));
+            const p3 = s2.center.copy().add(
+                s2.facing
+                    .copy()
+                    .rotate(-i - detail)
+                    .mult(s2.radius)
+            );
+            const p4 = s1.center.copy().add(
+                s1.facing
+                    .copy()
+                    .rotate(i + detail)
+                    .mult(s1.radius)
+            );
+
+            renderer.beginPath();
+            renderer.setVertexColor(new Color(255, 255, 255, 25));
+            renderer.vertices([p1, p2, p3, p4]);
+            renderer.fill();
+        }
+
         super.render(renderer, isSelected, true);
-
-        // let angleStart = this.facing.heading() - this.attribs.span.value / 2;
-        // let angleEnd = this.facing.heading() + this.attribs.span.value / 2;
-
-        // renderer.path(
-        //     [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-        //     2,
-        //     RGBA(255, 255, 255, 255),
-        //     true
-        // );
-
-        // renderer.fillPath(
-        //     [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-        //     RGBA(255, 255, 255, 20)
-        // );
     }
 }

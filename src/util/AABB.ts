@@ -39,7 +39,7 @@ export default class AABB {
         renderer.vertex(new Vector(rectEnd.x, rectStart.y), color);
         renderer.vertex(rectEnd, color);
         renderer.vertex(new Vector(rectStart.x, rectEnd.y), color);
-        renderer.strokePath(lineWidth, { closed: true, dashed: true, dashLength: 8 / renderer.camera.zoom });
+        renderer.stroke(lineWidth, { closed: true, dashed: true, dashLength: 8 / renderer.camera.zoom });
         // ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
     }
 

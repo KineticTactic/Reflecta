@@ -114,6 +114,6 @@ export default abstract class CurvedSurface extends Surface {
         ///TODO: CHANGE
         renderer.beginPath();
         renderer.arc(this.center, this.radius, angleStart, angleEnd, color);
-        renderer.strokePath(Surface.surfaceRenderWidth);
+        renderer.stroke(Surface.surfaceRenderWidth);
     }
 }

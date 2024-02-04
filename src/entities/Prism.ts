@@ -90,14 +90,14 @@ export default class Prism extends Entity {
             new Color(this.color.r, this.color.g, this.color.b, 255)
         );
 
-        renderer.strokePath(Surface.surfaceRenderWidth, { closed: true });
+        renderer.stroke(Surface.surfaceRenderWidth, { closed: true });
 
         renderer.beginPath();
         renderer.vertices(
             [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
             new Color(this.color.r, this.color.g, this.color.b, 25)
         );
-        renderer.fillPath();
+        renderer.fill();
 
         super.render(renderer, isSelected, false);
 

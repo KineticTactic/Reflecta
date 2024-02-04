@@ -27,7 +27,7 @@ export default class EventHandler {
 
         // Mouse move event
         window.addEventListener("mousemove", (e) => {
-            world.handleMouseMove(new Vector(e.clientX, e.clientY));
+            world.handleMouseMove(new Vector(e.clientX, e.clientY), e.ctrlKey);
         });
 
         // Touch move event
@@ -44,7 +44,7 @@ export default class EventHandler {
                 EventHandler.prevTouches = newTouches;
                 return;
             }
-            world.handleMouseMove(new Vector(e.touches[0].clientX, e.touches[0].clientY));
+            world.handleMouseMove(new Vector(e.touches[0].clientX, e.touches[0].clientY), e.ctrlKey);
             e.preventDefault();
         });
 

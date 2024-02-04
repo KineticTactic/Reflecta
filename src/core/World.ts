@@ -6,6 +6,7 @@ import Surface from "../primitives/Surface";
 import UI from "../ui/UI";
 import Settings from "./Settings";
 import { Draggable } from "../util/Draggable";
+import Grid from "../util/Grid";
 
 export enum State {
     NONE,
@@ -22,6 +23,9 @@ export default class World {
 
     selectedEntityIndex: number = -1;
     selectedDraggable: Draggable | null = null;
+
+    draggingEntityPos: Vector = Vector.zero();
+    draggingEntityRot: number = 0;
 
     lastMousePos: Vector = Vector.zero();
 
@@ -163,6 +167,8 @@ export default class World {
                 this.ui.selectEntity(this.entities[i]);
 
                 this.state = button === 0 ? State.MOVE_ENTITY : State.ROTATE_ENTITY;
+                this.draggingEntityPos = this.entities[i].pos.copy();
+                this.draggingEntityRot = this.entities[i].rot;
                 return;
             }
         }
@@ -171,7 +177,7 @@ export default class World {
         this.state = State.MOVE_CAMERA;
     }
 
-    handleMouseMove(mousePos: Vector) {
+    handleMouseMove(mousePos: Vector, ctrlKey: boolean) {
         const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);
         const lastWorldMousePos = this.camera.screenSpaceToWorldSpace(this.lastMousePos);
         const worldDeltaMousePos = Vector.sub(worldMousePos, lastWorldMousePos);
@@ -189,15 +195,30 @@ export default class World {
                 break;
 
             case State.MOVE_ENTITY:
-                this.entities[this.selectedEntityIndex].translate(worldDeltaMousePos);
+                this.draggingEntityPos.add(worldDeltaMousePos);
+                if (ctrlKey) {
+                    this.entities[this.selectedEntityIndex].pos = new Vector(
+                        Math.ceil(this.draggingEntityPos.x / Grid.minorGridSize) * Grid.minorGridSize,
+                        Math.ceil(this.draggingEntityPos.y / Grid.minorGridSize) * Grid.minorGridSize
+                    );
+                } else {
+                    this.entities[this.selectedEntityIndex].translate(worldDeltaMousePos);
+                }
                 this.ui.refresh();
                 break;
 
             case State.ROTATE_ENTITY:
                 const originToLastMousePos = Vector.sub(lastWorldMousePos, this.entities[this.selectedEntityIndex].pos);
                 const originToMousePos = Vector.sub(worldMousePos, this.entities[this.selectedEntityIndex].pos);
-                const angle = Vector.angleBetween(originToLastMousePos, originToMousePos);
-                this.entities[this.selectedEntityIndex].rotate(angle);
+                let angle = Vector.angleBetween(originToLastMousePos, originToMousePos);
+
+                this.draggingEntityRot += angle;
+                if (ctrlKey) {
+                    const angleSnap = Math.PI / 24;
+                    this.entities[this.selectedEntityIndex].setRotation(Math.ceil(this.draggingEntityRot / angleSnap) * angleSnap);
+                } else {
+                    this.entities[this.selectedEntityIndex].rotate(angle);
+                }
                 this.ui.refresh();
                 break;
 
@@ -232,6 +253,8 @@ export default class World {
 
     render() {
         const timerStart = performance.now();
+
+        Grid.render(this, this.renderer);
 
         for (let lightRay of this.lightRays) lightRay.render(this.renderer);
 
