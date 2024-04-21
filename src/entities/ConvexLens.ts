@@ -14,6 +14,7 @@ export interface ConvexLensOptions extends EntityOptions {
 }
 
 export default class ConvexLens extends Entity {
+    focalLength: number = 0;
     static override entityData: EntityData = {
         name: "Convex Lens",
         desc: "A convex lens.",
@@ -48,6 +49,8 @@ export default class ConvexLens extends Entity {
             onchange: () => {
                 this.surfaces.forEach((surface) => {
                     (surface as CurvedRefractiveSurface).setRefractiveIndex(this.attribs.refractiveIndex.value);
+                    ///TODO: Remove
+                    this.init();
                 });
             },
         };
@@ -79,6 +82,16 @@ export default class ConvexLens extends Entity {
         this.rotate(this.rot);
 
         this.updateBounds();
+
+        const n = this.attribs.refractiveIndex.value;
+        const r1 = this.attribs.radiusOfCurvature.value;
+        const r2 = -this.attribs.radiusOfCurvature.value;
+        const d = this.attribs.radiusOfCurvature.value - centerOffset;
+
+        const power = (n - 1) * (1 / r1 - 1 / r2 + ((n - 1) * d) / (n * r1 * r2));
+
+        this.focalLength = 1 / power;
+        console.log(this.focalLength);
     }
 
     override render(renderer: Renderer, isSelected: boolean = false): void {
@@ -97,6 +110,10 @@ export default class ConvexLens extends Entity {
             );
         }
 
+        renderer.fill();
+
+        renderer.beginPath();
+        renderer.arc(this.pos.copy().add(new Vector(this.focalLength, 0)), 10, 0, Math.PI * 2, new Color(0, 150, 250, 255), 100);
         renderer.fill();
 
         super.render(renderer, isSelected, true);

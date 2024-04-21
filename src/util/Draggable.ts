@@ -40,7 +40,7 @@ export class Draggable {
     }
 
     setWorldPos(worldPos: Vector) {
-        this.pos = worldPos;
+        this.pos = worldPos.copy();
         this.screenPos = this.camera.worldSpaceToScreenSpace(this.pos);
         this.updateHTMLElementPos();
     }

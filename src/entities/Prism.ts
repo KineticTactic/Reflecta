@@ -33,8 +33,9 @@ export default class Prism extends Entity {
             max: 1000,
             value: options.size || 200,
             onchange: () => {
+                console.trace();
                 this.init();
-                this.draggables[0].setWorldPos(new Vector((this.attribs.size.value * Math.sqrt(3) * 2) / 6, 0).rotate(Math.PI / 6 + this.rot));
+                this.draggables[0].setWorldPos(new Vector((this.attribs.size.value * Math.sqrt(3) * 2) / 6, 0).rotate(Math.PI / 6 + this.rot).add(this.pos));
             },
         };
         this.attribs.refractiveIndex = {

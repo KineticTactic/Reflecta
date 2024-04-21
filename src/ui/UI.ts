@@ -88,6 +88,7 @@ export default class UI {
                 resetSettings();
                 example.init(this.world);
                 this.deselectEntity();
+                this.pane.refresh();
                 leftBarDiv.classList.toggle("hidden");
                 openLeftBarBtn.style.display = "block";
             });
@@ -200,6 +201,7 @@ export default class UI {
         });
 
         this.attribFolder.addButton({ title: "Delete Entity" }).on("click", () => {
+            entity.removeDraggables();
             this.world.removeEntity(entity);
             this.deselectEntity();
         });
@@ -242,6 +244,8 @@ export default class UI {
     }
 
     refresh() {
+        // console.log("Refresh");
+
         this.attribFolder?.refresh();
     }
 }

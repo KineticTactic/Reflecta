@@ -4,6 +4,8 @@ import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import PlaneReflectiveSurface from "../primitives/PlaneReflectiveSurface";
 import Entity, { EntityOptions } from "../core/Entity";
+import World from "../core/World";
+import { Draggable } from "../util/Draggable";
 
 export interface PlaneMirrorOptions extends EntityOptions {
     size?: number;
@@ -39,6 +41,16 @@ export default class PlaneMirror extends Entity {
             ),
         ];
         this.updateBounds();
+    }
+
+    override createDraggables(world: World): void {
+        this.draggables.push(
+            new Draggable(new Vector(this.attribs.size.value / 2, 0).rotate(this.rot).add(this.pos), world, (newPos: Vector) => {
+                this.attribs.size.value = Vector.sub(newPos, this.pos).mag() * 2;
+                this.setRotation(Vector.sub(newPos, this.pos).heading());
+                this.init();
+            })
+        );
     }
 
     override updateBounds(): void {
