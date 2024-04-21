@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
-    "homepage": "https://kinetictactic.github.io/light-playground/",
+    "homepage": "https://kinetictactic.github.io/Reflecta/",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
