@@ -1,10 +1,10 @@
-# Light Playground
+# Reflecta - An Optics Playground
 
-### [Check it out here!](https://kinetictactic.github.io/light-playground)
+### [Check it out here!](https://kinetictactic.github.io/reflecta)
 
-![light-playground](assets/screenshot.png)
+![reflecta](assets/screenshot.png)
 
-A simple and robust sandbox-type program written in JavaScript to simulate light rays reflecting and refracting (in 2D). You can play around with various types of light sources (Point lights, Light Beams) and various objects (Refractive/Reflective surfaces, Lenses, Prisms, Mirrors, etc.).
+Reflecta is a simple and robust sandbox-type program written in JavaScript to simulate light rays reflecting and refracting (in 2D). You can play around with various types of light sources (Point lights, Light Beams) and various objects (Refractive/Reflective surfaces, Lenses, Prisms, Mirrors, etc.).
 
 ## Features
 
@@ -24,21 +24,21 @@ A simple and robust sandbox-type program written in JavaScript to simulate light
 
 ## Screenshots
 
-![light-playground](assets/gif2.gif)
+![reflecta](assets/gif2.gif)
 
-<!-- ![light-playground](assets/dispersion.png) -->
+<!-- ![reflecta](assets/dispersion.png) -->
 
-![light-playground](assets/screenshot2.png)
+![reflecta](assets/screenshot2.png)
 
-<!-- ![light-playground](assets/screenshot.png) -->
+<!-- ![reflecta](assets/screenshot.png) -->
 
-![light-playground](assets/gif.gif)
+![reflecta](assets/gif.gif)
 
-![light-playground](assets/screenshot3.png)
+![reflecta](assets/screenshot3.png)
 
-![light-playground](assets/screenshot4.png)
+![reflecta](assets/screenshot4.png)
 
-![light-playground](assets/screenshot5.png)
+![reflecta](assets/screenshot5.png)
 
 ## Running locally / Contributing
 
@@ -46,9 +46,9 @@ To get the project up and running locally,
 
 Clone the git repository
 
-`git clone https://github.com/kinetictactic/light-playground.git`
+`git clone https://github.com/kinetictactic/reflecta.git`
 
-`cd light-playground`
+`cd reflecta`
 
 Install dependencies with pnpm (or npm / yarn)
 
