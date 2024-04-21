@@ -7,7 +7,7 @@ export class CaptureCanvas {
         const image = world.renderer.canvas.toDataURL("image/png").replace(/^data:image\/[^;]/, "data:application/octet-stream");
         const link = document.createElement("a");
         link.href = image;
-        link.download = "light-playground.png";
+        link.download = "reflecta_screenshot.png";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

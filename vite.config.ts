@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import plainText from "vite-plugin-plain-text";
 
 export default defineConfig({
-    base: "/reflecta/",
+    base: "/Reflecta/",
     plugins: [plainText([/\.glsl$/])],
     build: {
         minify: true,
