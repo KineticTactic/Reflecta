@@ -110,25 +110,20 @@ export default class ConvexLens extends Entity {
 
     override render(renderer: Renderer, isSelected: boolean = false): void {
         renderer.beginPath();
-
+        renderer.setColor(new Color(this.color.r, this.color.g, this.color.b, settings.glassOpacity * 255));
         for (const surface of this.surfaces as CurvedRefractiveSurface[]) {
             let angleStart = surface.facing.heading() - this.attribs.span.value / 2;
             let angleEnd = surface.facing.heading() + this.attribs.span.value / 2;
 
-            renderer.arc(
-                surface.center,
-                surface.radius,
-                angleEnd,
-                angleStart,
-                new Color(this.color.r, this.color.g, this.color.b, settings.glassOpacity * 255)
-            );
+            renderer.arc(surface.center, surface.radius, angleEnd, angleStart);
         }
 
         renderer.fill();
 
-        renderer.beginPath();
-        renderer.arc(this.pos.copy().add(new Vector(this.focalLength, 0)), 10, 0, Math.PI * 2, new Color(0, 150, 250, 255), 100);
-        renderer.fill();
+        // renderer.beginPath();
+        // renderer.setColor(new Color(0, 150, 250, 255));
+        // renderer.arc(this.pos.copy().add(new Vector(this.focalLength, 0)), 10, 0, Math.PI * 2);
+        // renderer.fill();
 
         super.render(renderer, isSelected, true);
 
@@ -136,8 +131,8 @@ export default class ConvexLens extends Entity {
 
         // Principal Axis
         const principalAxisSize = this.attribs.radiusOfCurvature.value * 2;
-        renderer.transform.translate(this.pos);
-        renderer.transform.rotate(this.rot + Math.PI / 2);
+        renderer.translate(this.pos);
+        renderer.rotate(this.rot + Math.PI / 2);
         renderer.beginPath();
         renderer.vertex(new Vector(0, -principalAxisSize), this.color);
         renderer.vertex(new Vector(0, principalAxisSize), this.color);
@@ -146,11 +141,12 @@ export default class ConvexLens extends Entity {
 
         // Focal Points
         renderer.beginPath();
-        renderer.arc(new Vector(0, this.focalLength), 7, 0, Math.PI * 2, this.color, 50);
+        renderer.setColor(this.color);
+        renderer.arc(new Vector(0, this.focalLength), 7, 0, Math.PI * 2);
         renderer.fill();
         renderer.beginPath();
-        renderer.arc(new Vector(0, -this.focalLength), 7, 0, Math.PI * 2, this.color, 50);
+        renderer.arc(new Vector(0, -this.focalLength), 7, 0, Math.PI * 2);
         renderer.fill();
-        renderer.transform.resetTransforms();
+        renderer.resetTransforms();
     }
 }

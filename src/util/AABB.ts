@@ -35,10 +35,11 @@ export default class AABB {
         const rectStart = Vector.sub(this.start, new Vector(2, 2));
         const rectEnd = Vector.add(this.end, new Vector(2, 2));
         renderer.beginPath();
-        renderer.vertex(rectStart, color);
-        renderer.vertex(new Vector(rectEnd.x, rectStart.y), color);
-        renderer.vertex(rectEnd, color);
-        renderer.vertex(new Vector(rectStart.x, rectEnd.y), color);
+        renderer.setColor(color);
+        renderer.vertex(rectStart);
+        renderer.vertex(new Vector(rectEnd.x, rectStart.y));
+        renderer.vertex(rectEnd);
+        renderer.vertex(new Vector(rectStart.x, rectEnd.y));
         renderer.stroke(lineWidth, { closed: true, dashed: true, dashLength: 8 / renderer.camera.zoom });
         // ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
     }

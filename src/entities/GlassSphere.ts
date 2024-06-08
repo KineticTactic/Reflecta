@@ -60,11 +60,13 @@ export default class GlassSphere extends Entity {
         const angleEnd = s.facing.heading() + s.span / 2;
 
         renderer.beginPath();
-        renderer.arc(s.center, s.radius, angleStart, angleEnd, this.color);
+        renderer.setColor(this.color);
+        renderer.arc(s.center, s.radius, angleStart, angleEnd);
         renderer.stroke(Surface.surfaceRenderWidth, { closed: true });
 
         renderer.beginPath();
-        renderer.arc(s.center, s.radius, angleStart, angleEnd, new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255));
+        renderer.setColor(new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255));
+        renderer.arc(s.center, s.radius, angleStart, angleEnd);
         renderer.fill();
 
         super.render(renderer, isSelected, false);

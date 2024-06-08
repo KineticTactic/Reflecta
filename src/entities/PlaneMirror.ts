@@ -62,12 +62,13 @@ export default class PlaneMirror extends Entity {
     override render(renderer: Renderer, isSelected: boolean, drawSurfaces?: boolean): void {
         super.render(renderer, isSelected, drawSurfaces);
 
-        renderer.transform.translate(Vector.sub(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)));
-        renderer.transform.rotate(this.rot);
+        renderer.translate(Vector.sub(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)));
+        renderer.rotate(this.rot);
         renderer.beginPath();
+        renderer.setColor(this.color);
         for (let x = 0; x < this.attribs.size.value; x += 15) {
-            renderer.vertex(new Vector(x, 0), this.color);
-            renderer.vertex(new Vector(x + 10, 10), this.color);
+            renderer.vertex(new Vector(x, 0));
+            renderer.vertex(new Vector(x + 10, 10));
             renderer.splitPath();
         }
         renderer.stroke(settings.surfaceRenderWidth);

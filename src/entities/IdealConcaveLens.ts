@@ -69,21 +69,20 @@ export default class IdealConcaveLens extends Entity {
         const markerSize = this.attribs.size.value / 20;
         renderer.transform.translate(Vector.sub(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)));
         renderer.transform.rotate(this.rot);
+        renderer.setColor(this.color);
         renderer.beginPath();
-        renderer.vertex(new Vector(-markerSize, -markerSize), this.color);
-        renderer.vertex(new Vector(0, 0), this.color);
-        renderer.vertex(new Vector(-markerSize, markerSize), this.color);
-        renderer.splitPath();
+        renderer.vertex(new Vector(-markerSize, -markerSize));
+        renderer.vertex(new Vector(0, 0));
+        renderer.vertex(new Vector(-markerSize, markerSize));
         renderer.stroke(settings.surfaceRenderWidth);
         renderer.transform.resetTransforms();
 
         renderer.transform.translate(Vector.add(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)));
         renderer.transform.rotate(this.rot);
         renderer.beginPath();
-        renderer.vertex(new Vector(markerSize, -markerSize), this.color);
-        renderer.vertex(new Vector(0, 0), this.color);
-        renderer.vertex(new Vector(markerSize, markerSize), this.color);
-        renderer.splitPath();
+        renderer.vertex(new Vector(markerSize, -markerSize));
+        renderer.vertex(new Vector(0, 0));
+        renderer.vertex(new Vector(markerSize, markerSize));
         renderer.stroke(settings.surfaceRenderWidth);
         renderer.transform.resetTransforms();
 
@@ -94,17 +93,17 @@ export default class IdealConcaveLens extends Entity {
         renderer.transform.translate(this.pos);
         renderer.transform.rotate(this.rot);
         renderer.beginPath();
-        renderer.vertex(new Vector(0, -principalAxisSize), this.color);
-        renderer.vertex(new Vector(0, principalAxisSize), this.color);
-        renderer.splitPath();
+        renderer.setColor(this.color);
+        renderer.vertex(new Vector(0, -principalAxisSize));
+        renderer.vertex(new Vector(0, principalAxisSize));
         renderer.stroke(settings.surfaceRenderWidth, { dashed: true, dashLength: 20 });
 
         // Focal Points
         renderer.beginPath();
-        renderer.arc(new Vector(0, this.attribs.focalLength.value), 7, 0, Math.PI * 2, this.color, 50);
+        renderer.arc(new Vector(0, this.attribs.focalLength.value), 7, 0, Math.PI * 2);
         renderer.fill();
         renderer.beginPath();
-        renderer.arc(new Vector(0, -this.attribs.focalLength.value), 7, 0, Math.PI * 2, this.color, 50);
+        renderer.arc(new Vector(0, -this.attribs.focalLength.value), 7, 0, Math.PI * 2);
         renderer.fill();
         renderer.transform.resetTransforms();
     }

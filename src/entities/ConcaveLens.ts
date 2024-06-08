@@ -155,7 +155,7 @@ export default class ConcaveLens extends Entity {
             );
 
             renderer.beginPath();
-            renderer.setVertexColor(new Color(255, 255, 255, settings.glassOpacity * 255));
+            renderer.setColor(new Color(this.color.r, this.color.g, this.color.b, settings.glassOpacity * 255));
             renderer.vertices([p1, p2, p3, p4]);
             renderer.fill();
         }

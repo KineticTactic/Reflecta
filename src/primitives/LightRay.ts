@@ -175,8 +175,13 @@ export default class LightRay {
     }
 
     render(renderer: Renderer) {
+        renderer.beginPath();
         for (let i = 0; i < this.path.length - 1; i++) {
-            renderer.line(this.path[i], this.path[i + 1], Settings.lightRayRenderWidth, this.pathColors[i]);
+            ///TODO: Do some testing to see performance impact
+            // renderer.vertex(this.path[i], this.pathColors[i]);
+            renderer.setColor(this.pathColors[i]);
+            renderer.line(this.path[i], this.path[i + 1]);
         }
+        renderer.stroke(Settings.lightRayRenderWidth);
     }
 }

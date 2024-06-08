@@ -111,9 +111,9 @@ export default abstract class CurvedSurface extends Surface {
         const angleStart = this.facing.heading() - this.span / 2;
         const angleEnd = this.facing.heading() + this.span / 2;
 
-        ///TODO: CHANGE
         renderer.beginPath();
-        renderer.arc(this.center, this.radius, angleStart, angleEnd, color);
+        renderer.setColor(color);
+        renderer.arc(this.center, this.radius, angleStart, angleEnd);
         renderer.stroke(Surface.surfaceRenderWidth);
     }
 }

@@ -34,7 +34,7 @@ export default class Grid {
         const end = new Vector(Math.ceil(screenBoundEnd.x / gridSize) * gridSize, Math.ceil(screenBoundEnd.y / gridSize) * gridSize);
 
         renderer.beginPath();
-        renderer.setVertexColor(color);
+        renderer.setColor(color);
         for (let x = start.x; x < end.x; x += gridSize) {
             renderer.vertex(new Vector(x, start.y));
             renderer.vertex(new Vector(x, end.y));

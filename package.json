@@ -12,16 +12,16 @@
         "preview": "vite preview"
     },
     "devDependencies": {
-        "@tweakpane/core": "^2.0.1",
+        "@tweakpane/core": "^2.0.3",
         "gh-pages": "^5.0.0",
-        "typescript": "^5.2.2",
-        "vite": "^4.5.0",
+        "typescript": "^5.4.5",
+        "vite": "^4.5.3",
         "vite-plugin-plain-text": "^1.4.2"
     },
     "dependencies": {
-        "@tweakpane/plugin-essentials": "^0.2.0",
+        "@tweakpane/plugin-essentials": "^0.2.1",
         "lz-string": "^1.5.0",
-        "polyly": "^0.2.7",
-        "tweakpane": "^4.0.1"
+        "polyly": "^0.3.0",
+        "tweakpane": "^4.0.3"
     }
 }

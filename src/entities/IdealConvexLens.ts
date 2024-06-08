@@ -94,17 +94,19 @@ export default class IdealConvexLens extends Entity {
         renderer.transform.translate(this.pos);
         renderer.transform.rotate(this.rot);
         renderer.beginPath();
-        renderer.vertex(new Vector(0, -principalAxisSize), new Color(200, 200, 200, 255));
-        renderer.vertex(new Vector(0, principalAxisSize), new Color(200, 200, 200, 255));
-        renderer.splitPath();
+        renderer.setColor(new Color(200, 200, 200, 255));
+        renderer.vertex(new Vector(0, -principalAxisSize));
+        renderer.vertex(new Vector(0, principalAxisSize));
         renderer.stroke(settings.surfaceRenderWidth, { dashed: true, dashLength: 20 });
 
         // Focal Points
         renderer.beginPath();
-        renderer.arc(new Vector(0, this.attribs.focalLength.value), 7, 0, Math.PI * 2, new Color(200, 200, 200, 255), 50);
+        renderer.setColor(new Color(200, 200, 200, 255));
+        renderer.arc(new Vector(0, this.attribs.focalLength.value), 7, 0, Math.PI * 2);
         renderer.fill();
+        ///TODO: Why does combining the two arcs not work?
         renderer.beginPath();
-        renderer.arc(new Vector(0, -this.attribs.focalLength.value), 7, 0, Math.PI * 2, new Color(200, 200, 200, 255), 50);
+        renderer.arc(new Vector(0, -this.attribs.focalLength.value), 7, 0, Math.PI * 2);
         renderer.fill();
         renderer.transform.resetTransforms();
     }

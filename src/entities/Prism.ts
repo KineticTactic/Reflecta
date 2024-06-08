@@ -87,18 +87,22 @@ export default class Prism extends Entity {
 
     override render(renderer: Renderer, isSelected: boolean): void {
         renderer.beginPath();
-        renderer.vertices(
-            [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-            new Color(this.color.r, this.color.g, this.color.b, 255)
-        );
+        renderer.setColor(new Color(this.color.r, this.color.g, this.color.b, 255));
+        renderer.vertices([
+            (this.surfaces[0] as PlaneRefractiveSurface).v1,
+            (this.surfaces[0] as PlaneRefractiveSurface).v2,
+            (this.surfaces[1] as PlaneRefractiveSurface).v1,
+        ]);
 
         renderer.stroke(Surface.surfaceRenderWidth, { closed: true });
 
         renderer.beginPath();
-        renderer.vertices(
-            [(this.surfaces[0] as PlaneRefractiveSurface).v1, (this.surfaces[0] as PlaneRefractiveSurface).v2, (this.surfaces[1] as PlaneRefractiveSurface).v1],
-            new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255)
-        );
+        renderer.setColor(new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255));
+        renderer.vertices([
+            (this.surfaces[0] as PlaneRefractiveSurface).v1,
+            (this.surfaces[0] as PlaneRefractiveSurface).v2,
+            (this.surfaces[1] as PlaneRefractiveSurface).v1,
+        ]);
         renderer.fill();
 
         super.render(renderer, isSelected, false);
