@@ -210,9 +210,12 @@ export default class UI {
 
         this.attribFolder.addBinding(entity, "rot", { label: "rotation" }).on("change", () => entity.updateRotationUI());
 
-        this.attribFolder
-            .addBinding(entity, "color", { label: "color" })
-            .on("change", () => (entity.color = new Color(entity.color.r, entity.color.g, entity.color.b, 255)));
+        // Certain entities like light sources dont need colour attribute
+        if (!(entity.constructor as typeof Entity).entityData?.disableColor) {
+            this.attribFolder
+                .addBinding(entity, "color", { label: "color" })
+                .on("change", () => (entity.color = new Color(entity.color.r, entity.color.g, entity.color.b, 255)));
+        }
 
         for (const [_, attr] of Object.entries(entity.attribs)) {
             if (attr.show && !attr.show()) {

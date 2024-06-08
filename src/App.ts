@@ -4,6 +4,7 @@ import EventHandler from "./core/EventHandler";
 import World from "./core/World";
 import { SaveState } from "./util/SaveState";
 import { CaptureCanvas } from "./util/CaptureCanvas";
+// import LightBeam from "./entities/LightBeam";
 // import ConvexLens from "./entities/ConvexLens";
 // import IdealConcaveLens from "./entities/IdealConcaveLens";
 // import IdealConvexLens from "./entities/IdealConvexLens";
@@ -19,7 +20,8 @@ export default class App {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        this.renderer = new Renderer({ webglVersion: 2, canvas });
+        this.renderer = new Renderer({ webglVersion: 2, canvas, initTextRenderer: true });
+        this.renderer.textRenderer!.canvas.style.pointerEvents = "none";
 
         this.world = new World(this.renderer);
 
@@ -31,7 +33,7 @@ export default class App {
         const state = new URLSearchParams(window.location.search).get("state");
         if (state) SaveState.restoreWorld(this.world, state);
 
-        // this.world.addEntity(new IdealConvexLens({}));
+        // this.world.addEntity(new LightBeam({}));
     }
 
     update() {
@@ -65,6 +67,10 @@ export default class App {
         if (CaptureCanvas.captureFlag === true) {
             CaptureCanvas.capture(this.world);
         }
+
+        // this.renderer.setFont("Arial");
+        // this.renderer.font
+        // this.renderer.renderText("Hello World!", new Vector(0, 0), RGB(255, 255, 255));
 
         // console.time();
         // for (let y = 0; y < 10000; y += 1) {

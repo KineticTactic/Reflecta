@@ -20,6 +20,7 @@ export default class Laser extends Entity {
         name: "Laser",
         desc: "A laser.",
         constructorFunc: Laser,
+        disableColor: true,
     };
 
     constructor(options: LaserOptions) {
@@ -108,6 +109,11 @@ export default class Laser extends Entity {
         }
 
         this.updateBounds();
+    }
+
+    override updateBounds(): void {
+        super.updateBounds();
+        this.bounds.expand(10, 10); // Expand bounds for better selection
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {

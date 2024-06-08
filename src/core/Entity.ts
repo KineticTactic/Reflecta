@@ -20,6 +20,7 @@ export default abstract class Entity {
     bounds: AABB;
     name: string;
     color: Color;
+    disableColor: boolean = false;
     displayBounds: boolean = false;
     lastPos: Vector = new Vector(0, 0);
     lastRot: number = 0;

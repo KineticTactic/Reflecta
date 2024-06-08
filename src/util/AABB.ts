@@ -28,6 +28,13 @@ export default class AABB {
         }
     }
 
+    expand(dx: number, dy: number) {
+        this.start.x -= dx;
+        this.start.y -= dy;
+        this.end.x += dx;
+        this.end.y += dy;
+    }
+
     render(renderer: Renderer, _color: Color, _lineWidth: number = 1) {
         ///TODO: Change this to rect
         const color = new Color(180, 100, 180);

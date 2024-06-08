@@ -10,7 +10,7 @@ let settings = {
     gridDivisions: 5,
     lightRayRenderWidth: 3,
     surfaceRenderWidth: 2,
-    glassOpacity: 0.05,
+    glassOpacity: 0.1,
 };
 
 export function resetSettings() {

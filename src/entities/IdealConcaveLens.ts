@@ -16,6 +16,7 @@ export default class IdealConcaveLens extends Entity {
         name: "Ideal Concave Lens",
         desc: "An ideal concave lens.",
         constructorFunc: IdealConcaveLens,
+        disableColor: false,
     };
 
     constructor(options: IdealConvexLensOptions) {

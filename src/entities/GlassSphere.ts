@@ -61,8 +61,8 @@ export default class GlassSphere extends Entity {
 
         renderer.beginPath();
         renderer.setColor(this.color);
-        renderer.arc(s.center, s.radius, angleStart, angleEnd);
-        renderer.stroke(Surface.surfaceRenderWidth, { closed: true });
+        renderer.arc(s.center, s.radius, angleStart, angleEnd, 5);
+        renderer.stroke(Surface.surfaceRenderWidth);
 
         renderer.beginPath();
         renderer.setColor(new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255));

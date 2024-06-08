@@ -18,6 +18,7 @@ export default class PointLight extends Entity {
         name: "Point Light",
         desc: "A point light.",
         constructorFunc: PointLight,
+        disableColor: true,
     };
 
     constructor(options: PointLightOptions) {

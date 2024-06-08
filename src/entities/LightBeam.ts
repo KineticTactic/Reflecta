@@ -1,9 +1,12 @@
-import { Vector } from "polyly";
+import { RGBA, Renderer, Vector } from "polyly";
 
 import Entity, { EntityOptions } from "../core/Entity";
 import LightRay from "../primitives/LightRay";
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
+import settings from "../core/Settings";
+import { Draggable } from "../util/Draggable";
+import World from "../core/World";
 
 export interface LightBeamOptions extends EntityOptions {
     size?: number;
@@ -18,6 +21,7 @@ export default class LightBeam extends Entity {
         name: "Light Beam",
         desc: "A light beam.",
         constructorFunc: LightBeam,
+        disableColor: true,
     };
 
     constructor(options: LightBeamOptions) {
@@ -80,6 +84,9 @@ export default class LightBeam extends Entity {
             show: () => this.attribs.monochromatic.value,
         };
 
+        delete this.attribs["color"];
+        console.log(this.attribs);
+
         this.init();
     }
 
@@ -99,8 +106,43 @@ export default class LightBeam extends Entity {
         this.updateBounds();
     }
 
+    override createDraggables(world: World): void {
+        this.draggables.push(
+            new Draggable(new Vector(-this.attribs.size.value / 5, 0).rotate(this.rot).add(this.pos), world, (newPos: Vector) => {
+                this.attribs.size.value = Vector.sub(newPos, this.pos).mag() * 5;
+                this.setRotation(Vector.sub(this.pos, newPos).heading());
+                this.init();
+            })
+        );
+    }
+
+    override updateBounds(): void {
+        super.updateBounds();
+        this.bounds.expand(0, 10);
+    }
+
     getEachRayIntensity() {
         const density = this.attribs.size.value / this.attribs.numRays.value;
         return this.attribs.intensity.value / density;
+    }
+
+    override render(renderer: Renderer, isSelected: boolean, drawSurfaces?: boolean): void {
+        renderer.translate(this.pos);
+        renderer.rotate(this.rot);
+        renderer.beginPath();
+        renderer.setColor(RGBA(255, 255, 255, 255));
+        const buffer = (5 * this.attribs.size.value) / 150;
+        renderer.line(new Vector(-buffer, -this.attribs.size.value / 2 - buffer), new Vector(-buffer, this.attribs.size.value / 2 + buffer));
+        renderer.line(new Vector(-buffer, -this.attribs.size.value / 2 - buffer), new Vector(buffer, -this.attribs.size.value / 2 - buffer));
+        renderer.line(new Vector(-buffer, this.attribs.size.value / 2 + buffer), new Vector(buffer, this.attribs.size.value / 2 + buffer));
+        renderer.stroke(settings.surfaceRenderWidth);
+
+        renderer.beginPath();
+        renderer.line(new Vector(-buffer, -this.attribs.size.value / 2 - buffer), new Vector(-this.attribs.size.value / 5, 0));
+        renderer.line(new Vector(-buffer, this.attribs.size.value / 2 + buffer), new Vector(-this.attribs.size.value / 5, 0));
+        renderer.stroke(settings.surfaceRenderWidth / 1.5);
+
+        renderer.resetTransforms();
+        super.render(renderer, isSelected, drawSurfaces);
     }
 }
