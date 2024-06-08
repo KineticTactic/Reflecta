@@ -15,6 +15,7 @@ export interface ConvexLensOptions extends EntityOptions {
 
 export default class ConvexLens extends Entity {
     focalLength: number = 0;
+
     static override entityData: EntityData = {
         name: "Convex Lens",
         desc: "A convex lens.",
@@ -49,10 +50,14 @@ export default class ConvexLens extends Entity {
             onchange: () => {
                 this.surfaces.forEach((surface) => {
                     (surface as CurvedRefractiveSurface).setRefractiveIndex(this.attribs.refractiveIndex.value);
-                    ///TODO: Remove
-                    this.init();
                 });
+                this.calculateFocalLength();
             },
+        };
+        this.attribs.showLensMarkings = {
+            name: "show lens markings",
+            value: false,
+            type: AttributeType.Boolean,
         };
 
         this.init();
@@ -83,12 +88,21 @@ export default class ConvexLens extends Entity {
 
         this.updateBounds();
 
+        this.calculateFocalLength();
+    }
+
+    calculateFocalLength() {
         const n = this.attribs.refractiveIndex.value;
         const r1 = this.attribs.radiusOfCurvature.value;
-        const r2 = -this.attribs.radiusOfCurvature.value;
-        const d = this.attribs.radiusOfCurvature.value - centerOffset;
+        const r2 = this.attribs.radiusOfCurvature.value;
+        const d =
+            (this.attribs.radiusOfCurvature.value -
+                Math.sqrt(this.attribs.radiusOfCurvature.value ** 2 - (this.attribs.radiusOfCurvature.value * Math.sin(this.attribs.span.value / 2)) ** 2)) *
+            2;
+        console.log(d);
 
         const power = (n - 1) * (1 / r1 - 1 / r2 + ((n - 1) * d) / (n * r1 * r2));
+        console.log(d, power);
 
         this.focalLength = 1 / power;
         console.log(this.focalLength);
@@ -117,5 +131,26 @@ export default class ConvexLens extends Entity {
         renderer.fill();
 
         super.render(renderer, isSelected, true);
+
+        if (!this.attribs.showLensMarkings.value) return;
+
+        // Principal Axis
+        const principalAxisSize = this.attribs.radiusOfCurvature.value * 2;
+        renderer.transform.translate(this.pos);
+        renderer.transform.rotate(this.rot + Math.PI / 2);
+        renderer.beginPath();
+        renderer.vertex(new Vector(0, -principalAxisSize), this.color);
+        renderer.vertex(new Vector(0, principalAxisSize), this.color);
+        renderer.splitPath();
+        renderer.stroke(settings.surfaceRenderWidth, { dashed: true, dashLength: 20 });
+
+        // Focal Points
+        renderer.beginPath();
+        renderer.arc(new Vector(0, this.focalLength), 7, 0, Math.PI * 2, this.color, 50);
+        renderer.fill();
+        renderer.beginPath();
+        renderer.arc(new Vector(0, -this.focalLength), 7, 0, Math.PI * 2, this.color, 50);
+        renderer.fill();
+        renderer.transform.resetTransforms();
     }
 }

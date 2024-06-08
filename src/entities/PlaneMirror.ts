@@ -1,4 +1,4 @@
-import { Vector } from "polyly";
+import { Color, Renderer, Vector } from "polyly";
 
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
@@ -6,6 +6,7 @@ import PlaneReflectiveSurface from "../primitives/PlaneReflectiveSurface";
 import Entity, { EntityOptions } from "../core/Entity";
 import World from "../core/World";
 import { Draggable } from "../util/Draggable";
+import settings from "../core/Settings";
 
 export interface PlaneMirrorOptions extends EntityOptions {
     size?: number;
@@ -56,5 +57,20 @@ export default class PlaneMirror extends Entity {
     override updateBounds(): void {
         super.updateBounds();
         this.bounds.setMinSize(30);
+    }
+
+    override render(renderer: Renderer, isSelected: boolean, drawSurfaces?: boolean): void {
+        super.render(renderer, isSelected, drawSurfaces);
+
+        renderer.transform.translate(Vector.sub(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)));
+        renderer.transform.rotate(this.rot);
+        renderer.beginPath();
+        for (let x = 0; x < this.attribs.size.value; x += 15) {
+            renderer.vertex(new Vector(x, 0), this.color);
+            renderer.vertex(new Vector(x + 10, 10), this.color);
+            renderer.splitPath();
+        }
+        renderer.stroke(settings.surfaceRenderWidth);
+        renderer.transform.resetTransforms();
     }
 }

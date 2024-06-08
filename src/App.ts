@@ -4,6 +4,9 @@ import EventHandler from "./core/EventHandler";
 import World from "./core/World";
 import { SaveState } from "./util/SaveState";
 import { CaptureCanvas } from "./util/CaptureCanvas";
+// import ConvexLens from "./entities/ConvexLens";
+// import IdealConcaveLens from "./entities/IdealConcaveLens";
+// import IdealConvexLens from "./entities/IdealConvexLens";
 
 export default class App {
     world: World;
@@ -27,6 +30,8 @@ export default class App {
         // Check if we have a state query param in the URL
         const state = new URLSearchParams(window.location.search).get("state");
         if (state) SaveState.restoreWorld(this.world, state);
+
+        // this.world.addEntity(new IdealConvexLens({}));
     }
 
     update() {
