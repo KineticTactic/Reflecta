@@ -1,4 +1,4 @@
-import { Color, Renderer, Vector } from "polyly";
+import { Renderer, Vector } from "polyly";
 
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
