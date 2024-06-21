@@ -23,7 +23,7 @@ export default class IdealConvexLens extends Entity {
 
         this.attribs.size = {
             name: "size",
-            value: options.size || 200,
+            value: options.size || 100,
             type: AttributeType.Number,
             min: 0,
             max: 1000,
@@ -31,7 +31,7 @@ export default class IdealConvexLens extends Entity {
         };
         this.attribs.focalLength = {
             name: "focalLength",
-            value: options.focalLength || 200,
+            value: options.focalLength || 100,
             type: AttributeType.Number,
             min: 0.01,
             onchange: () => this.init(),
@@ -59,7 +59,7 @@ export default class IdealConvexLens extends Entity {
 
     override updateBounds(): void {
         super.updateBounds();
-        this.bounds.setMinSize(30);
+        this.bounds.setMinSize(15);
     }
 
     override render(renderer: Renderer, isSelected: boolean, drawSurfaces?: boolean): void {

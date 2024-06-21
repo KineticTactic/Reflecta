@@ -29,7 +29,7 @@ export default class LightBeam extends Entity {
 
         this.attribs.size = {
             name: "size",
-            value: options.size || 150,
+            value: options.size || 75,
             type: AttributeType.Number,
             min: 1,
             onchange: () => this.init(),

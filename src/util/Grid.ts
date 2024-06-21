@@ -18,7 +18,7 @@ export default class Grid {
         renderer.vertex(new Vector(0, screenBoundStart.y), axesColor);
         renderer.vertex(new Vector(0, screenBoundEnd.y), axesColor);
         renderer.splitPath();
-        renderer.stroke(2 / renderer.camera.zoom);
+        renderer.stroke(1 / renderer.camera.zoom);
 
         // Github Copilot wrote this line of code
         Grid.majorGridSize = gridSize * Math.pow(10, Math.floor(Math.log10(2 / renderer.camera.zoom)));
@@ -46,6 +46,6 @@ export default class Grid {
             renderer.splitPath();
         }
 
-        renderer.stroke(1 / renderer.camera.zoom);
+        renderer.stroke(0.5 / renderer.camera.zoom);
     }
 }

@@ -11,6 +11,7 @@ import PlaneMirror from "./PlaneMirror";
 import PointLight from "./PointLight";
 import Prism from "./Prism";
 import SphericalMirror from "./SphericalMirror";
+import TextEntity from "./TextEntity";
 
 const entityList = [
     Laser.entityData,
@@ -26,6 +27,7 @@ const entityList = [
     Prism.entityData,
     PlaneMirror.entityData,
     Blocker.entityData,
+    TextEntity.entityData,
 ];
 
 export default entityList;

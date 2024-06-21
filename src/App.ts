@@ -4,6 +4,7 @@ import EventHandler from "./core/EventHandler";
 import World from "./core/World";
 import { SaveState } from "./util/SaveState";
 import { CaptureCanvas } from "./util/CaptureCanvas";
+// import TextEntity from "./entities/TextEntity";
 // import LightBeam from "./entities/LightBeam";
 // import ConvexLens from "./entities/ConvexLens";
 // import IdealConcaveLens from "./entities/IdealConcaveLens";
@@ -24,6 +25,7 @@ export default class App {
         this.renderer.textRenderer!.canvas.style.pointerEvents = "none";
 
         this.world = new World(this.renderer);
+        // this.renderer.transform.setScale(Vec(0.5, 0.5));
 
         EventHandler.attachEventListeners(this.renderer.canvas, this.world);
     }
@@ -33,7 +35,7 @@ export default class App {
         const state = new URLSearchParams(window.location.search).get("state");
         if (state) SaveState.restoreWorld(this.world, state);
 
-        // this.world.addEntity(new LightBeam({}));
+        // this.world.addEntity(new TextEntity({}));
     }
 
     update() {
@@ -60,6 +62,10 @@ export default class App {
         // this.renderer.stroke(30);
 
         // this.renderer.line(V(-200, -200), V(300, 300), 100, RGBA(0, 255, 255, 255));
+        // this.renderer.setColor(RGB(255, 255, 255));
+        // // this.renderer.setFont("40px Nunito");
+        // this.renderer.fillText("Hello World!", new Vector(0, 0));
+        // console.log(this.renderer.camera.zoom);
 
         this.world.render();
         this.renderer.render();

@@ -35,7 +35,7 @@ export default class ConvexLens extends Entity {
         };
         this.attribs.radiusOfCurvature = {
             name: "radiusOfCurvature",
-            value: options.radiusOfCurvature || 200,
+            value: options.radiusOfCurvature || 100,
             type: AttributeType.Number,
             min: 0,
             max: 1000,

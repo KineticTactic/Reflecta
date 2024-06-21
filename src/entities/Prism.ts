@@ -31,7 +31,7 @@ export default class Prism extends Entity {
             type: AttributeType.Number,
             min: 0,
             max: 1000,
-            value: options.size || 200,
+            value: options.size || 100,
             onchange: () => {
                 console.trace();
                 this.init();
@@ -93,8 +93,7 @@ export default class Prism extends Entity {
             (this.surfaces[0] as PlaneRefractiveSurface).v2,
             (this.surfaces[1] as PlaneRefractiveSurface).v1,
         ]);
-
-        renderer.stroke(Surface.surfaceRenderWidth, { closed: true });
+        renderer.stroke(Surface.surfaceRenderWidth, { closed: true, miterLimit: 20 });
 
         renderer.beginPath();
         renderer.setColor(new Color(this.color.r, this.color.g, this.color.b, Settings.glassOpacity * 255));

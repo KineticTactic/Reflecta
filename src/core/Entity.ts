@@ -168,7 +168,7 @@ export default abstract class Entity {
         }
 
         this.bounds = AABB.fromAABBs(aabbs);
-        this.bounds.setMinSize(50);
+        this.bounds.setMinSize(25);
     }
 
     render(renderer: Renderer, isSelected: boolean, drawSurfaces: boolean = true): void {

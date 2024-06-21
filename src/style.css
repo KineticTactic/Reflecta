@@ -63,6 +63,7 @@
     margin: 1rem;
     max-height: calc(100vh - 4rem);
     overflow-y: auto;
+    z-index: 5;
 }
 
 #tweakpane-container::-webkit-scrollbar {
@@ -178,6 +179,7 @@ canvas {
     border-left: solid 1px #666;
 
     font-family: "Nunito";
+    z-index: 5;
 }
 
 .attribute {
@@ -278,6 +280,7 @@ input {
 
     transition: transform 0.2s ease-in-out;
     overflow-y: auto;
+    z-index: 5;
     /* display: none; */
 }
 

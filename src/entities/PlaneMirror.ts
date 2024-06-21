@@ -24,7 +24,7 @@ export default class PlaneMirror extends Entity {
 
         this.attribs.size = {
             name: "size",
-            value: options.size || 200,
+            value: options.size || 100,
             type: AttributeType.Number,
             min: 0,
             max: 1000,
@@ -56,7 +56,7 @@ export default class PlaneMirror extends Entity {
 
     override updateBounds(): void {
         super.updateBounds();
-        this.bounds.setMinSize(30);
+        this.bounds.setMinSize(15);
     }
 
     override render(renderer: Renderer, isSelected: boolean, drawSurfaces?: boolean): void {

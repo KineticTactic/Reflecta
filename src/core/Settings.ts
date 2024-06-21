@@ -24,8 +24,8 @@ export function resetSettings() {
     settings.showGrid = false;
     settings.gridSize = 500;
     settings.gridDivisions = 5;
-    settings.lightRayRenderWidth = 3;
-    settings.surfaceRenderWidth = 2;
+    settings.lightRayRenderWidth = 1.5;
+    settings.surfaceRenderWidth = 1;
     settings.glassOpacity = 0.05;
 }
 

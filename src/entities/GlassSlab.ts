@@ -27,7 +27,7 @@ export default class GlassSlab extends Entity {
         this.attribs.size = {
             name: "size",
             type: AttributeType.Number,
-            value: options.size || new Vector(200, 100),
+            value: options.size || new Vector(100, 50),
             onchange: () => {
                 this.attribs.size.value.x = Math.abs(this.attribs.size.value.x);
                 this.attribs.size.value.y = Math.abs(this.attribs.size.value.y);

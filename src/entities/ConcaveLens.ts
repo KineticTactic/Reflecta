@@ -33,7 +33,7 @@ export default class ConcaveLens extends Entity {
         };
         this.attribs.radiusOfCurvature = {
             name: "radiusOfCurvature",
-            value: options.radiusOfCurvature || 500,
+            value: options.radiusOfCurvature || 250,
             type: AttributeType.Number,
             min: 0,
             max: 1000,
@@ -41,7 +41,7 @@ export default class ConcaveLens extends Entity {
         };
         this.attribs.thickness = {
             name: "thickness",
-            value: options.thickness || 4,
+            value: options.thickness || 2,
             type: AttributeType.Number,
             min: 0,
             max: 1000,

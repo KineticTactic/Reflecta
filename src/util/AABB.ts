@@ -36,19 +36,14 @@ export default class AABB {
     }
 
     render(renderer: Renderer, _color: Color, _lineWidth: number = 1) {
-        ///TODO: Change this to rect
-        const color = new Color(180, 100, 180);
+        const color = new Color(255, 64, 0);
         const lineWidth = 2 / renderer.camera.zoom;
         const rectStart = Vector.sub(this.start, new Vector(2, 2));
         const rectEnd = Vector.add(this.end, new Vector(2, 2));
         renderer.beginPath();
         renderer.setColor(color);
-        renderer.vertex(rectStart);
-        renderer.vertex(new Vector(rectEnd.x, rectStart.y));
-        renderer.vertex(rectEnd);
-        renderer.vertex(new Vector(rectStart.x, rectEnd.y));
-        renderer.stroke(lineWidth, { closed: true, dashed: true, dashLength: 8 / renderer.camera.zoom });
-        // ctx.strokeRect(this.start.x, this.start.y, this.end.x - this.start.x, this.end.y - this.start.y);
+        renderer.rect(rectStart, Vector.sub(rectEnd, rectStart));
+        renderer.stroke(lineWidth, { closed: true, dashed: true, dashLength: 4 / renderer.camera.zoom });
     }
 
     static fromPoints(points: Vector[]): AABB {

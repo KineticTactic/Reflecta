@@ -137,6 +137,11 @@ export default class World {
     }
 
     handleMouseDown(mousePos: Vector, button: MouseEvent["button"]) {
+        if (button === 1) {
+            this.state = State.MOVE_CAMERA;
+            return;
+        }
+
         this.lastMousePos = mousePos.copy();
 
         const worldMousePos = this.camera.screenSpaceToWorldSpace(mousePos);

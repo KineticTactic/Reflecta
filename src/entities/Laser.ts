@@ -117,7 +117,7 @@ export default class Laser extends Entity {
     }
 
     override render(renderer: Renderer, isSelected: boolean): void {
-        const displaySize = new Vector(30, 8);
+        const displaySize = new Vector(15, 4);
 
         const pos = this.pos;
 

@@ -21,7 +21,7 @@
     "dependencies": {
         "@tweakpane/plugin-essentials": "^0.2.1",
         "lz-string": "^1.5.0",
-        "polyly": "^0.3.0",
+        "polyly": "^0.3.5",
         "tweakpane": "^4.0.3"
     }
 }

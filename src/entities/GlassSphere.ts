@@ -28,7 +28,7 @@ export default class GlassSphere extends Entity {
             type: AttributeType.Number,
             min: 0,
             max: 1000,
-            value: options.radius || 100,
+            value: options.radius || 50,
             onchange: () => this.init(),
         };
         this.attribs.refractiveIndex = {
