@@ -65,8 +65,9 @@ export default class TextEntity extends Entity {
         renderer.setFontFace("Nunito");
         renderer.setFontSize(this.attribs.size.value);
         renderer.setColor(this.color);
+        renderer.resetTransforms();
         renderer.translate(this.pos);
-        renderer.transform.rotate(this.rot);
+        renderer.rotate(this.rot);
         renderer.fillText(this.attribs.text.value, Vector.zero());
         renderer.resetTransforms();
 

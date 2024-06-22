@@ -15,8 +15,8 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0
       polyly:
-        specifier: ^0.3.5
-        version: 0.3.5
+        specifier: ^0.3.6
+        version: 0.3.6
       tweakpane:
         specifier: ^4.0.3
         version: 4.0.3
@@ -481,8 +481,8 @@ packages:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
 
-  polyly@0.3.5:
-    resolution: {integrity: sha512-QtYciayibz53w9p4sKvi7skIdW9JdWyRiSsxN5xzjmYsTHHWF0KtHgVFNapa192QgaDquNhdg/vKQ0rOOWe5CA==}
+  polyly@0.3.6:
+    resolution: {integrity: sha512-mZVjBVBYhCtEOoabcqPVo30ONU/WU9s1QKt2PCH+qfup5KjFpbSlr+NmifomALko6HAy0+MdclYwDMasaM5yIw==}
 
   postcss@8.4.38:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
@@ -932,7 +932,7 @@ snapshots:
     dependencies:
       find-up: 4.1.0
 
-  polyly@0.3.5:
+  polyly@0.3.6:
     dependencies:
       twgl.js: 5.5.4
 
