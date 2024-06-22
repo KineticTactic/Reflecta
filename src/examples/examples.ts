@@ -76,6 +76,18 @@ const examples: Example[] = [
     },
 
     {
+        name: "Chromatic Aberration",
+        desc: "Showcasing chromatic aberration",
+        img: "chromaticaberration.png",
+        init: (world: World) => {
+            world.addEntity(new ConvexLens({ radiusOfCurvature: 400, refractiveIndex: 1.5 }));
+            world.addEntity(new Laser({ pos: new Vector(-300, -150), polychromatic: true, intensity: 500 }));
+            world.addEntity(new Laser({ pos: new Vector(-300, 150), polychromatic: true, intensity: 500 }));
+            Settings.calculateReflectance = true;
+        },
+    },
+
+    {
         name: "Spherical Mirrors",
         desc: "Spherical mirrors demo",
         img: "sphericalmirrors.png",
