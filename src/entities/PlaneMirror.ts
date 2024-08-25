@@ -31,6 +31,15 @@ export default class PlaneMirror extends Entity {
             onchange: () => this.init(),
         };
 
+        this.attribs.oneSided = {
+            name: "one sided",
+            value: true,
+            type: AttributeType.Boolean,
+            onchange: () => {
+                (this.surfaces[0] as PlaneReflectiveSurface).oneSided = this.attribs.oneSided.value;
+            },
+        };
+
         this.init();
     }
 
@@ -38,7 +47,8 @@ export default class PlaneMirror extends Entity {
         this.surfaces = [
             new PlaneReflectiveSurface(
                 Vector.add(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)),
-                Vector.sub(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot))
+                Vector.sub(this.pos, new Vector(this.attribs.size.value / 2, 0).rotate(this.rot)),
+                this.attribs.oneSided.value // One sided
             ),
         ];
         this.updateBounds();
