@@ -131,7 +131,7 @@ export default class LightRay {
                     if (newRayIntensity > Settings.secondaryLightIntensityLimit) {
                         newRays.push(
                             new LightRay({
-                                origin: r.newRayOrigin.add(r.newRayDir.copy().mult(0.1)),
+                                origin: r.newRayOrigin.add(r.newRayDir.copy().mult(0.001)),
                                 dir: r.newRayDir,
                                 wavelength: this.wavelength,
                                 intensity: newRayIntensity,

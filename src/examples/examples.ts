@@ -28,7 +28,7 @@ const examples: Example[] = [
         init: (world: World) => {
             world.addEntity(new Laser({ pos: new Vector(-300, -150), rot: 0.8, intensity: 500 }));
             world.addEntity(new GlassSlab({ size: new Vector(500, 150) }));
-            world.addEntity(new PlaneMirror({ pos: new Vector(0, 75), size: 500 }));
+            world.addEntity(new PlaneMirror({ pos: new Vector(0, 74.5), size: 500 }));
             world.addEntity(
                 new TextEntity({
                     pos: new Vector(-280, 140),
