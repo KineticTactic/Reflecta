@@ -78,6 +78,6 @@ Other than that, I also like the idea of this being used for educational purpose
 
 -   [polyly](https://github.com/KineticTactic/polyly/), a WebGL 2D primitives renderer that i built specifically for this project.
 
--   [Tweakpane](https://cocopon.github.io/tweakpane/), a data-driven UI library.
+-   [Tweakpane](https://tweakpane.github.io/docs/), a data-driven UI library.
 
 -   [Tweakpane Essentials](https://github.com/tweakpane/plugin-essentials), plugin for graphs in Tweakpane.

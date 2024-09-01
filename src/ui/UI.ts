@@ -95,6 +95,22 @@ export default class UI {
 
             exampleListDiv.appendChild(exampleDiv);
         }
+
+        const entityButtons = document.querySelectorAll(".entity-list-container button");
+        for (const button of entityButtons) {
+            button.addEventListener("click", () => {
+                const entityData = entities.find((dat) => dat.name === (button as HTMLElement).dataset.name);
+
+                if (!entityData) {
+                    console.error("Entity not found");
+                    alert("Entity not found");
+                    return;
+                }
+
+                const entity = new entityData.constructorFunc({});
+                this.world.addEntity(entity);
+            });
+        }
     }
 
     createAddEntityFolder() {
@@ -123,7 +139,9 @@ export default class UI {
             expanded: false,
         });
 
-        simOptionsFolder.addBinding(Settings, "calculateReflectance", { label: "calculate reflectance" }).on("change", () => this.world.setDirty());
+        simOptionsFolder
+            .addBinding(Settings, "calculateReflectance", { label: "calculate reflectance" })
+            .on("change", () => this.world.setDirty());
         simOptionsFolder
             .addBinding(Settings, "reflectanceFactor", { label: "reflectance factor", min: 0.01, max: 10, step: 0.01 })
             .on("change", () => this.world.setDirty());

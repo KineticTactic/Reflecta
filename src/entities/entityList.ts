@@ -10,6 +10,7 @@ import LightBeam from "./LightBeam";
 import PlaneMirror from "./PlaneMirror";
 import PointLight from "./PointLight";
 import Prism from "./Prism";
+import Ruler from "./Ruler";
 import SphericalMirror from "./SphericalMirror";
 import TextEntity from "./TextEntity";
 
@@ -28,6 +29,7 @@ const entityList = [
     PlaneMirror.entityData,
     Blocker.entityData,
     TextEntity.entityData,
+    Ruler.entityData,
 ];
 
 export default entityList;
