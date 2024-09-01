@@ -5,13 +5,92 @@
         <link rel="icon" type="icon" href="/Reflecta/reflecta.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Reflecta</title>
-      <script type="module" crossorigin src="/Reflecta/assets/index-a4aa7884.js"></script>
-      <link rel="stylesheet" href="/Reflecta/assets/index-668b6f9e.css">
+      <script type="module" crossorigin src="/Reflecta/assets/index-5a875674.js"></script>
+      <link rel="stylesheet" href="/Reflecta/assets/index-9dc990f0.css">
     </head>
     <body oncontextmenu="return false;">
         <div id="app">
             <canvas id="display"></canvas>
             <div id="draggables"></div>
+
+            <div class="entity-list-container">
+                <div class="section">
+                    <h1 class="section-header">Lights</h1>
+                    <ul class="section-list">
+                        <li>
+                            <button data-name="Light Beam"><img src="svg/beam.svg" alt="light beam" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Point Light"><img src="svg/point-light.svg" alt="point light" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Laser"><img src="svg/laser.svg" alt="laser" /></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h1 class="section-header">Lenses</h1>
+                    <ul class="section-list">
+                        <li>
+                            <button data-name="Convex Lens"><img src="svg/convex-lens.svg" alt="convex lens" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Concave Lens"><img src="svg/concave-lens.svg" alt="concave lens" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Ideal Convex Lens"><img src="svg/ideal-convex-lens.svg" alt="ideal convex lens" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Ideal Concave Lens">
+                                <img src="svg/ideal-concave-lens.svg" alt="ideal concave lens" />
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h1 class="section-header">Mirrors</h1>
+                    <ul class="section-list">
+                        <li>
+                            <button data-name="Plane Mirror"><img src="svg/plane-mirror.svg" alt="plane mirror" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Concave Mirror"><img src="svg/concave-mirror.svg" alt="concave mirror" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Convex Mirror"><img src="svg/convex-mirror.svg" alt="convex mirror" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Blocker"><img src="svg/blocker.svg" alt="blocker" /></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h1 class="section-header">Shapes</h1>
+                    <ul class="section-list">
+                        <li>
+                            <button data-name="Prism"><img src="svg/prism.svg" alt="prism" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Glass Sphere"><img src="svg/glass-sphere.svg" alt="glass sphere" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Glass Slab"><img src="svg/glass-slab.svg" alt="glass slab" /></button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h1 class="section-header">Misc</h1>
+                    <ul class="section-list">
+                        <li>
+                            <button data-name="Text"><img src="svg/text.svg" alt="Text" /></button>
+                        </li>
+                        <li>
+                            <button data-name="Ruler"><img src="svg/ruler.svg" alt="ruler" /></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <div class="left-bar-container">
                 <button id="open-left-bar-btn">
@@ -25,7 +104,9 @@
                         <h3>Examples</h3>
                         <button id="close-left-bar-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 -960 960 960" width="100%">
-                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                                <path
+                                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+                                />
                             </svg>
                         </button>
                     </div>
