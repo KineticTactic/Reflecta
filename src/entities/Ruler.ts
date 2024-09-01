@@ -1,6 +1,6 @@
 import { Renderer, TextMeasurements, Vector } from "polyly";
 
-import { AttributeType } from "../core/Attribute";
+// import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
 import Entity, { EntityOptions } from "../core/Entity";
 import AABB from "../util/AABB";
