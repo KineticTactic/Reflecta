@@ -51,20 +51,27 @@ export default class UI {
             CaptureCanvas.captureFlag = true;
         });
 
-        const openLeftBarBtn = document.getElementById("open-left-bar-btn") as HTMLButtonElement;
-        const closeLeftBarBtn = document.getElementById("close-left-bar-btn") as HTMLButtonElement;
-        const leftBarDiv = document.getElementById("left-bar") as HTMLDivElement;
+        const openModalBtn = document.getElementById("open-modal-btn") as HTMLButtonElement;
+        const closeModalBtn = document.getElementById("close-modal-btn") as HTMLButtonElement;
+        const modalDiv = document.getElementById("modal") as HTMLDivElement;
+        const modalContainerDiv = document.getElementById("modal-container") as HTMLDivElement;
 
-        openLeftBarBtn.addEventListener("click", () => {
+        openModalBtn.addEventListener("click", () => {
             // leftBarDiv.style.display = "block";
-            leftBarDiv.classList.toggle("hidden");
-            openLeftBarBtn.style.display = "none";
+            modalDiv.classList.toggle("hidden");
+            // openModalBtn.style.display = "none";
         });
 
-        closeLeftBarBtn.addEventListener("click", () => {
-            leftBarDiv.classList.toggle("hidden");
+        closeModalBtn.addEventListener("click", () => {
+            modalDiv.classList.toggle("hidden");
             // leftBarDiv.style.display = "none";
-            openLeftBarBtn.style.display = "block";
+            // openModalBtn.style.display = "block";
+        });
+
+        modalContainerDiv.addEventListener("click", (e) => {
+            if (e.target === modalContainerDiv) {
+                modalDiv.classList.toggle("hidden");
+            }
         });
 
         const exampleListDiv = document.getElementById("example-list") as HTMLDivElement;
@@ -82,6 +89,11 @@ export default class UI {
             exampleName.innerText = example.name;
             exampleDiv.appendChild(exampleName);
 
+            const exampleDesc = document.createElement("div");
+            exampleDesc.classList.add("desc");
+            exampleDesc.innerText = example.desc;
+            exampleDiv.appendChild(exampleDesc);
+
             exampleDiv.addEventListener("click", () => {
                 this.world.reset();
                 this.world.entities = [];
@@ -89,14 +101,14 @@ export default class UI {
                 example.init(this.world);
                 this.deselectEntity();
                 this.pane.refresh();
-                leftBarDiv.classList.toggle("hidden");
-                openLeftBarBtn.style.display = "block";
+                modalDiv.classList.toggle("hidden");
+                openModalBtn.style.display = "block";
             });
 
             exampleListDiv.appendChild(exampleDiv);
         }
 
-        const entityButtons = document.querySelectorAll(".entity-list-container button");
+        const entityButtons = document.querySelectorAll(".entity-section button");
         for (const button of entityButtons) {
             button.addEventListener("click", () => {
                 const entityData = entities.find((dat) => dat.name === (button as HTMLElement).dataset.name);

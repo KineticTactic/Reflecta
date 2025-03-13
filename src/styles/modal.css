@@ -1,0 +1,80 @@
+#modal-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+/* TODO: Maybe dont use has */
+#modal-container:has(div.hidden) {
+	display: none;
+}
+
+#modal {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50rem;
+	height: 80vh;
+	/* margin: 2.5vh 2.5vh; */
+	border: solid 2px #141414;
+	border-radius: 5px;
+	/* background-color: #ddd; */
+	background: rgba(0, 0, 0, 0.8);
+	padding: 0 !important;
+
+	z-index: 10;
+
+	box-shadow: 0 0 30px 5px rgba(0, 0, 0, 1);
+}
+
+.hidden {
+	display: none !important;
+}
+
+#close-modal-btn {
+	width: 2.5rem;
+	margin: 0.2rem;
+
+	cursor: pointer;
+	background: none;
+	border: none;
+	fill: #aaa;
+}
+
+.modal-content {
+	overflow-y: scroll;
+	height: 100%;
+}
+
+.modal-content::-webkit-scrollbar {
+	width: 0.5em;
+}
+
+.modal-content::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+	background-color: var(--tp-container-background-color);
+	border-radius: 20px;
+}
+
+.modal-heading {
+	display: flex;
+	justify-content: space-between;
+	background-color: #141414;
+	align-items: center;
+}
+
+#modal h3 {
+	display: inline-block;
+	font-family: "Nunito";
+	color: #aaa;
+	font-weight: 400;
+	margin: 0 1rem;
+}

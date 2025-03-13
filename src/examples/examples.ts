@@ -23,7 +23,7 @@ interface Example {
 const examples: Example[] = [
     {
         name: "Thick Plane Mirror",
-        desc: "A thick plane mirror with a light source.",
+        desc: "Second image from a thick plane mirror is the brightest.",
         img: "thickmirror.png",
         init: (world: World) => {
             world.addEntity(new Laser({ pos: new Vector(-300, -150), rot: 0.8, intensity: 500 }));
@@ -54,7 +54,7 @@ const examples: Example[] = [
 
     {
         name: "Prism Dispersion",
-        desc: "A prism with a light source.",
+        desc: "Dispersion of white light through a prism.",
         img: "prismdispersion.png",
         init: (world: World) => {
             Settings.calculateReflectance = true;
@@ -65,7 +65,7 @@ const examples: Example[] = [
 
     {
         name: "Rainbow formation",
-        desc: "Formation of rainbow",
+        desc: "Formation of rainbow through raindrops.",
         img: "raindropdispersion.png",
         init: (world: World) => {
             world.addEntity(new GlassSphere({ radius: 100, refractiveIndex: 1.333 }));
@@ -77,7 +77,7 @@ const examples: Example[] = [
 
     {
         name: "Chromatic Aberration",
-        desc: "Showcasing chromatic aberration",
+        desc: "Showcasing chromatic aberration due to thick lenses.",
         img: "chromaticaberration.png",
         init: (world: World) => {
             world.addEntity(new ConvexLens({ radiusOfCurvature: 400, refractiveIndex: 1.5 }));
@@ -101,7 +101,7 @@ const examples: Example[] = [
 
     {
         name: "Bunch of Lasers",
-        desc: "Bunch of lasers",
+        desc: "A bunch of lasers.",
         img: "bunchoflasers.png",
         init: (world: World) => {
             Settings.calculateReflectance = true;
@@ -137,7 +137,9 @@ const examples: Example[] = [
             world.addEntity(new GlassSphere({ pos: new Vector(250, 0), radius: 50, refractiveIndex: 2 }));
             world.addEntity(new PointLight({ pos: new Vector(0, 23), numRays: 500, monochromatic: true, wavelength: 530, intensity: 200 }));
             world.addEntity(new GlassSphere({ pos: new Vector(0, 0), radius: 50, refractiveIndex: 2 }));
-            world.addEntity(new PointLight({ pos: new Vector(-250, 23), numRays: 500, monochromatic: true, wavelength: 450, intensity: 500 }));
+            world.addEntity(
+                new PointLight({ pos: new Vector(-250, 23), numRays: 500, monochromatic: true, wavelength: 450, intensity: 500 })
+            );
             world.addEntity(new GlassSphere({ pos: new Vector(-250, 0), radius: 50, refractiveIndex: 2 }));
         },
     },
