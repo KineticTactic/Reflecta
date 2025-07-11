@@ -28,6 +28,7 @@ export default class Ruler extends Entity {
 
     override init() {
         this.updateBounds();
+        alert("Not implemented yet");
     }
 
     override updateBounds(): void {

@@ -62,6 +62,14 @@ export class SaveState {
         for (const [key, value] of Object.entries(data.world)) {
             (Settings as any)[key] = value;
         }
+
+        // Set this separately to ensure the color is a Color object
+        Settings.markingColor = new Color(
+            Settings.markingColor.r,
+            Settings.markingColor.g,
+            Settings.markingColor.b,
+            Settings.markingColor.a
+        );
     }
 
     static getCurrentSceneCode(world: World) {

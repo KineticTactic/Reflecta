@@ -5,7 +5,6 @@ import "./styles/leftbar.css";
 import "./styles/bottomright.css";
 import "./styles/modal.css";
 import "./styles/demos.css";
-import "./style.css";
 
 const app = new App();
 

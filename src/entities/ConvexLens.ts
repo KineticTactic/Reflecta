@@ -11,6 +11,7 @@ export interface ConvexLensOptions extends EntityOptions {
     span?: number;
     radiusOfCurvature?: number;
     refractiveIndex?: number;
+    showMarkings?: boolean;
 }
 
 export default class ConvexLens extends Entity {
@@ -54,9 +55,9 @@ export default class ConvexLens extends Entity {
                 this.calculateFocalLength();
             },
         };
-        this.attribs.showLensMarkings = {
-            name: "show lens markings",
-            value: false,
+        this.attribs.showMarkings = {
+            name: "show markings",
+            value: options.showMarkings || false,
             type: AttributeType.Boolean,
         };
 
@@ -97,11 +98,14 @@ export default class ConvexLens extends Entity {
         const r2 = this.attribs.radiusOfCurvature.value;
         const d =
             (this.attribs.radiusOfCurvature.value -
-                Math.sqrt(this.attribs.radiusOfCurvature.value ** 2 - (this.attribs.radiusOfCurvature.value * Math.sin(this.attribs.span.value / 2)) ** 2)) *
+                Math.sqrt(
+                    this.attribs.radiusOfCurvature.value ** 2 -
+                        (this.attribs.radiusOfCurvature.value * Math.sin(this.attribs.span.value / 2)) ** 2
+                )) *
             2;
         console.log(d);
 
-        const power = (n - 1) * (1 / r1 - 1 / r2 + ((n - 1) * d) / (n * r1 * r2));
+        const power = (n - 1) * (1 / r1 + 1 / r2 - ((n - 1) * d) / (n * r1 * r2));
         console.log(d, power);
 
         this.focalLength = 1 / power;
@@ -126,26 +130,28 @@ export default class ConvexLens extends Entity {
         // renderer.fill();
 
         super.render(renderer, isSelected, true);
+        console.log(settings.markingColor);
 
-        if (!this.attribs.showLensMarkings.value) return;
+        if (!this.attribs.showMarkings.value) return;
 
         // Principal Axis
         const principalAxisSize = this.attribs.radiusOfCurvature.value * 2;
         renderer.translate(this.pos);
         renderer.rotate(this.rot + Math.PI / 2);
+        renderer.setColor(settings.markingColor);
         renderer.beginPath();
-        renderer.vertex(new Vector(0, -principalAxisSize), this.color);
-        renderer.vertex(new Vector(0, principalAxisSize), this.color);
+        renderer.vertex(new Vector(0, -principalAxisSize));
+        renderer.vertex(new Vector(0, principalAxisSize));
         renderer.splitPath();
-        renderer.stroke(settings.surfaceRenderWidth, { dashed: true, dashLength: 20 });
+        renderer.stroke(settings.surfaceRenderWidth, { dashed: true, dashLength: 13 });
 
         // Focal Points
+        console.log(this.focalLength);
         renderer.beginPath();
-        renderer.setColor(this.color);
-        renderer.arc(new Vector(0, this.focalLength), 7, 0, Math.PI * 2);
+        renderer.arc(new Vector(0, this.focalLength), 5, 0, Math.PI * 2);
         renderer.fill();
         renderer.beginPath();
-        renderer.arc(new Vector(0, -this.focalLength), 7, 0, Math.PI * 2);
+        renderer.arc(new Vector(0, -this.focalLength), 5, 0, Math.PI * 2);
         renderer.fill();
         renderer.resetTransforms();
     }

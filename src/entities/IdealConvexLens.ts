@@ -1,4 +1,4 @@
-import { Color, Renderer, Vector } from "polyly";
+import { Renderer, Vector } from "polyly";
 
 import { AttributeType } from "../core/Attribute";
 import EntityData from "../core/EntityData";
@@ -9,6 +9,7 @@ import settings from "../core/Settings";
 export interface IdealConvexLensOptions extends EntityOptions {
     size?: number;
     focalLength?: number;
+    showMarkings?: boolean;
 }
 
 export default class IdealConvexLens extends Entity {
@@ -36,9 +37,9 @@ export default class IdealConvexLens extends Entity {
             min: 0.01,
             onchange: () => this.init(),
         };
-        this.attribs.showLensMarkings = {
-            name: "show lens markings",
-            value: false,
+        this.attribs.showMarkings = {
+            name: "show markings",
+            value: options.showMarkings || false,
             type: AttributeType.Boolean,
         };
 
@@ -87,26 +88,25 @@ export default class IdealConvexLens extends Entity {
         renderer.stroke(settings.surfaceRenderWidth);
         renderer.transform.resetTransforms();
 
-        if (!this.attribs.showLensMarkings.value) return;
+        if (!this.attribs.showMarkings.value) return;
 
         // Principal Axis
         const principalAxisSize = Math.max(this.attribs.size.value * 2, this.attribs.focalLength.value);
         renderer.transform.translate(this.pos);
         renderer.transform.rotate(this.rot);
         renderer.beginPath();
-        renderer.setColor(new Color(200, 200, 200, 255));
+        renderer.setColor(settings.markingColor);
         renderer.vertex(new Vector(0, -principalAxisSize));
         renderer.vertex(new Vector(0, principalAxisSize));
-        renderer.stroke(settings.surfaceRenderWidth, { dashed: true, dashLength: 20 });
+        renderer.stroke(settings.surfaceRenderWidth, { dashed: true, dashLength: 13 });
 
         // Focal Points
         renderer.beginPath();
-        renderer.setColor(new Color(200, 200, 200, 255));
-        renderer.arc(new Vector(0, this.attribs.focalLength.value), 7, 0, Math.PI * 2);
+        renderer.arc(new Vector(0, this.attribs.focalLength.value), 5, 0, Math.PI * 2);
         renderer.fill();
         ///TODO: Why does combining the two arcs not work?
         renderer.beginPath();
-        renderer.arc(new Vector(0, -this.attribs.focalLength.value), 7, 0, Math.PI * 2);
+        renderer.arc(new Vector(0, -this.attribs.focalLength.value), 5, 0, Math.PI * 2);
         renderer.fill();
         renderer.transform.resetTransforms();
     }

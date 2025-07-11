@@ -28,7 +28,7 @@ export default class TextEntity extends Entity {
             value: options.size || 100,
             type: AttributeType.Number,
             min: 1,
-            max: 2000,
+            max: 500,
             onchange: () => {
                 this.changed = true;
             },

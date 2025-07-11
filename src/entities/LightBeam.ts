@@ -92,13 +92,18 @@ export default class LightBeam extends Entity {
 
     override init() {
         this.lightRays = [];
-        for (let i = -this.attribs.size.value / 2; i < this.attribs.size.value / 2; i += this.attribs.size.value / this.attribs.numRays.value) {
+        const eachRayIntensity = this.getEachRayIntensity();
+        for (
+            let i = -this.attribs.size.value / 2;
+            i <= this.attribs.size.value / 2;
+            i += this.attribs.size.value / (this.attribs.numRays.value - 1)
+        ) {
             this.lightRays.push(
                 new LightRay({
                     origin: Vector.add(this.pos, new Vector(0, i).rotate(this.rot)),
                     dir: Vector.right().rotate(this.rot),
                     monochromatic: false,
-                    intensity: this.attribs.intensity.value,
+                    intensity: eachRayIntensity,
                 })
             );
         }
@@ -132,8 +137,14 @@ export default class LightBeam extends Entity {
         renderer.beginPath();
         renderer.setColor(RGBA(255, 255, 255, 255));
         const buffer = (5 * this.attribs.size.value) / 150;
-        renderer.line(new Vector(-buffer, -this.attribs.size.value / 2 - buffer), new Vector(-buffer, this.attribs.size.value / 2 + buffer));
-        renderer.line(new Vector(-buffer, -this.attribs.size.value / 2 - buffer), new Vector(buffer, -this.attribs.size.value / 2 - buffer));
+        renderer.line(
+            new Vector(-buffer, -this.attribs.size.value / 2 - buffer),
+            new Vector(-buffer, this.attribs.size.value / 2 + buffer)
+        );
+        renderer.line(
+            new Vector(-buffer, -this.attribs.size.value / 2 - buffer),
+            new Vector(buffer, -this.attribs.size.value / 2 - buffer)
+        );
         renderer.line(new Vector(-buffer, this.attribs.size.value / 2 + buffer), new Vector(buffer, this.attribs.size.value / 2 + buffer));
         renderer.stroke(settings.surfaceRenderWidth);
 

@@ -185,6 +185,10 @@ export default class UI {
             .addBinding(Settings, "surfaceRenderWidth", { min: 1, max: 10, step: 0.1, label: "surface width" })
             .on("change", () => (Surface.surfaceRenderWidth = Settings.surfaceRenderWidth));
         displayOptionsFolder.addBinding(Settings, "glassOpacity", { min: 0, max: 1, step: 0.01, label: "glass opacity" });
+        displayOptionsFolder.addBinding(Settings, "markingColor", { label: "marking color" }).on("change", () => {
+            // Update the marking color in all surfaces
+            Settings.markingColor = new Color(Settings.markingColor.r, Settings.markingColor.g, Settings.markingColor.b, 255);
+        });
     }
 
     createDebugFolder() {

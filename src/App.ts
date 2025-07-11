@@ -35,7 +35,7 @@ export default class App {
         const state = new URLSearchParams(window.location.search).get("state");
         if (state) SaveState.restoreWorld(this.world, state);
 
-        // this.world.addEntity(new TextEntity({}));
+        // this.world.addEntity(new ConcaveMirror({}));
     }
 
     update() {
