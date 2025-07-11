@@ -59,28 +59,8 @@ export default class UI {
             CaptureCanvas.captureFlag = true;
         });
 
-        const openModalBtn = document.getElementById("open-modal-btn") as HTMLButtonElement;
-        const closeModalBtn = document.getElementById("close-modal-btn") as HTMLButtonElement;
-        const modalDiv = document.getElementById("modal") as HTMLDivElement;
-        const modalContainerDiv = document.getElementById("modal-container") as HTMLDivElement;
-
-        openModalBtn.addEventListener("click", () => {
-            // leftBarDiv.style.display = "block";
-            modalDiv.classList.toggle("hidden");
-            // openModalBtn.style.display = "none";
-        });
-
-        closeModalBtn.addEventListener("click", () => {
-            modalDiv.classList.toggle("hidden");
-            // leftBarDiv.style.display = "none";
-            // openModalBtn.style.display = "block";
-        });
-
-        modalContainerDiv.addEventListener("click", (e) => {
-            if (e.target === modalContainerDiv) {
-                modalDiv.classList.toggle("hidden");
-            }
-        });
+        this.setupModal("demos");
+        this.setupModal("about");
 
         const exampleListDiv = document.getElementById("example-list") as HTMLDivElement;
         for (const example of examples) {
@@ -109,6 +89,8 @@ export default class UI {
                 example.init(this.world);
                 this.deselectEntity();
                 this.pane.refresh();
+                const modalDiv = document.getElementById("demos-modal") as HTMLDivElement;
+                const openModalBtn = document.getElementById("demos-open-modal-btn") as HTMLButtonElement;
                 modalDiv.classList.toggle("hidden");
                 openModalBtn.style.display = "block";
             });
@@ -131,6 +113,31 @@ export default class UI {
                 this.world.addEntity(entity);
             });
         }
+    }
+
+    setupModal(modalName: string) {
+        const openModalBtn = document.getElementById(`${modalName}-open-modal-btn`) as HTMLButtonElement;
+        const closeModalBtn = document.getElementById(`${modalName}-close-modal-btn`) as HTMLButtonElement;
+        const modalDiv = document.getElementById(`${modalName}-modal`) as HTMLDivElement;
+        const modalContainerDiv = document.getElementById(`${modalName}-modal-container`) as HTMLDivElement;
+
+        openModalBtn.addEventListener("click", () => {
+            // leftBarDiv.style.display = "block";
+            modalDiv.classList.toggle("hidden");
+            // openModalBtn.style.display = "none";
+        });
+
+        closeModalBtn.addEventListener("click", () => {
+            modalDiv.classList.toggle("hidden");
+            // leftBarDiv.style.display = "none";
+            // openModalBtn.style.display = "block";
+        });
+
+        modalContainerDiv.addEventListener("click", (e) => {
+            if (e.target === modalContainerDiv) {
+                modalDiv.classList.toggle("hidden");
+            }
+        });
     }
 
     createAddEntityFolder() {

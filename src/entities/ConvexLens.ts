@@ -86,9 +86,7 @@ export default class ConvexLens extends Entity {
         ];
 
         this.rotate(this.rot);
-
         this.updateBounds();
-
         this.calculateFocalLength();
     }
 
@@ -124,13 +122,7 @@ export default class ConvexLens extends Entity {
 
         renderer.fill();
 
-        // renderer.beginPath();
-        // renderer.setColor(new Color(0, 150, 250, 255));
-        // renderer.arc(this.pos.copy().add(new Vector(this.focalLength, 0)), 10, 0, Math.PI * 2);
-        // renderer.fill();
-
         super.render(renderer, isSelected, true);
-        console.log(settings.markingColor);
 
         if (!this.attribs.showMarkings.value) return;
 
