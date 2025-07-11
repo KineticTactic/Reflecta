@@ -35,7 +35,7 @@ export default class ConvexLens extends Entity {
             onchange: () => this.init(),
         };
         this.attribs.radiusOfCurvature = {
-            name: "radiusOfCurvature",
+            name: "radius of curvature",
             value: options.radiusOfCurvature || 100,
             type: AttributeType.Number,
             min: 0,
@@ -43,7 +43,7 @@ export default class ConvexLens extends Entity {
             onchange: () => this.init(),
         };
         this.attribs.refractiveIndex = {
-            name: "refractiveIndex",
+            name: "refractive index",
             value: options.refractiveIndex || 1.666,
             type: AttributeType.Number,
             min: 0.1,

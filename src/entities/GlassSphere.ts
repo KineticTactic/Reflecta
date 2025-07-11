@@ -32,7 +32,7 @@ export default class GlassSphere extends Entity {
             onchange: () => this.init(),
         };
         this.attribs.refractiveIndex = {
-            name: "refractiveIndex",
+            name: "refractive index",
             type: AttributeType.Number,
             min: 0.1,
             max: 10,
@@ -49,7 +49,13 @@ export default class GlassSphere extends Entity {
 
     override init() {
         this.surfaces = [
-            new CurvedRefractiveSurface(this.pos.copy(), this.attribs.radius.value, Vector.right(), Math.PI * 2, this.attribs.refractiveIndex.value),
+            new CurvedRefractiveSurface(
+                this.pos.copy(),
+                this.attribs.radius.value,
+                Vector.right(),
+                Math.PI * 2,
+                this.attribs.refractiveIndex.value
+            ),
         ];
         this.updateBounds();
     }

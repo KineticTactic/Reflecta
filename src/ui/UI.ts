@@ -16,7 +16,7 @@ export default class UI {
     world: World;
 
     pane: tp.Pane;
-    attribFolder: tp.FolderApi | null = null;
+    tab: tp.TabApi;
 
     constructor(world: World) {
         this.world = world;
@@ -29,10 +29,18 @@ export default class UI {
         });
         this.pane.registerPlugin(tpEssentials);
 
-        this.createAddEntityFolder();
-        this.createSimulationOptionsFolder();
-        this.createDisplayOptionsFolder();
-        this.createDebugFolder();
+        // this.createAddEntityFolder();
+        this.tab = this.pane.addTab({
+            pages: [{ title: "Selected Entity" }, { title: "World Options" }],
+        });
+
+        // tab.pages[0].addBlade({
+        //     view:
+        // })
+
+        this.createSimulationOptionsFolder(this.tab.pages[1]);
+        this.createDisplayOptionsFolder(this.tab.pages[1]);
+        this.createDebugFolder(this.tab.pages[1]);
     }
 
     initHTMLElements() {
@@ -145,8 +153,8 @@ export default class UI {
         });
     }
 
-    createSimulationOptionsFolder() {
-        const simOptionsFolder = this.pane.addFolder({
+    createSimulationOptionsFolder(page: tp.TabPageApi) {
+        const simOptionsFolder = page.addFolder({
             title: "Simulation Options",
             expanded: false,
         });
@@ -171,8 +179,8 @@ export default class UI {
             .on("change", () => this.world.setDirty());
     }
 
-    createDisplayOptionsFolder() {
-        const displayOptionsFolder = this.pane.addFolder({
+    createDisplayOptionsFolder(page: tp.TabPageApi) {
+        const displayOptionsFolder = page.addFolder({
             title: "Display Options",
             expanded: false,
         });
@@ -191,8 +199,8 @@ export default class UI {
         });
     }
 
-    createDebugFolder() {
-        const debugFolder = this.pane.addFolder({
+    createDebugFolder(page: tp.TabPageApi) {
+        const debugFolder = page.addFolder({
             title: "Debug stats",
             expanded: false,
         });
@@ -221,32 +229,34 @@ export default class UI {
 
     deselectEntity() {
         this.selectedEntity = null;
-        console.log("YAS");
 
-        if (this.attribFolder) this.attribFolder.dispose();
+        this.tab.pages[0].children.forEach((child) => {
+            child.dispose();
+        });
+
+        this.tab.pages[0].title = "Selected Entity";
     }
 
     createEntityAttributesFolder(entity: Entity) {
-        if (this.attribFolder) this.pane.remove(this.attribFolder);
-
-        this.attribFolder = this.pane.addFolder({
-            title: entity.name,
-            expanded: window.innerWidth > 800,
+        this.tab.pages[0].children.forEach((child) => {
+            child.dispose();
         });
 
-        this.attribFolder.addButton({ title: "Delete Entity" }).on("click", () => {
+        this.tab.pages[0].title = entity.name;
+
+        this.tab.pages[0].addButton({ title: "Delete Entity" }).on("click", () => {
             entity.removeDraggables();
             this.world.removeEntity(entity);
             this.deselectEntity();
         });
 
-        this.attribFolder.addBinding(entity, "pos", { label: "position" }).on("change", () => entity.updatePositionUI());
+        this.tab.pages[0].addBinding(entity, "pos", { label: "position" }).on("change", () => entity.updatePositionUI());
 
-        this.attribFolder.addBinding(entity, "rot", { label: "rotation" }).on("change", () => entity.updateRotationUI());
+        this.tab.pages[0].addBinding(entity, "rot", { label: "rotation" }).on("change", () => entity.updateRotationUI());
 
         // Certain entities like light sources dont need colour attribute
         if (!(entity.constructor as typeof Entity).entityData?.disableColor) {
-            this.attribFolder
+            this.tab.pages[0]
                 .addBinding(entity, "color", { label: "color" })
                 .on("change", () => (entity.color = new Color(entity.color.r, entity.color.g, entity.color.b, 255)));
         }
@@ -256,7 +266,7 @@ export default class UI {
                 continue;
             }
 
-            this.attribFolder
+            this.tab.pages[0]
                 .addBinding(attr, "value", {
                     label: attr.name,
                     min: attr.min,
@@ -283,6 +293,6 @@ export default class UI {
     refresh() {
         // console.log("Refresh");
 
-        this.attribFolder?.refresh();
+        this.tab?.pages[0].refresh();
     }
 }

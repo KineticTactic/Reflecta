@@ -32,7 +32,7 @@ export default class ConcaveMirror extends Entity {
         };
 
         this.attribs.radiusOfCurvature = {
-            name: "radiusOfCurvature",
+            name: "radius of curvature",
             value: options.radiusOfCurvature || 100,
             type: AttributeType.Number,
             min: 0,

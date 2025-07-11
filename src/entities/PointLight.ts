@@ -25,7 +25,7 @@ export default class PointLight extends Entity {
         super("Point Light", options);
 
         this.attribs.numRays = {
-            name: "numRays",
+            name: "rays",
             value: options.numRays || 500,
             type: AttributeType.Number,
             min: 0,

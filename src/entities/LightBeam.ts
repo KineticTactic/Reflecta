@@ -36,7 +36,7 @@ export default class LightBeam extends Entity {
         };
 
         this.attribs.numRays = {
-            name: "numRays",
+            name: "rays",
             value: options.numRays || 100,
             type: AttributeType.Number,
             min: 1,

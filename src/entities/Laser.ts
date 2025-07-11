@@ -26,10 +26,11 @@ export default class Laser extends Entity {
     constructor(options: LaserOptions) {
         super("Laser", options);
 
-        const isPolychromatic = options.polychromatic !== undefined ? options.polychromatic : options.white !== undefined ? !options.white : false;
+        const isPolychromatic =
+            options.polychromatic !== undefined ? options.polychromatic : options.white !== undefined ? !options.white : false;
 
         this.attribs.numRays = {
-            name: "numRays",
+            name: "rays",
             value: options.numRays ? options.numRays : isPolychromatic ? 100 : 1,
             type: AttributeType.Number,
             min: 0,
@@ -125,8 +126,14 @@ export default class Laser extends Entity {
         renderer.vertices(
             [
                 Vector.add(pos, new Vector(-displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
-                Vector.add(pos, new Vector(-displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
-                Vector.add(pos, new Vector(displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())),
+                Vector.add(
+                    pos,
+                    new Vector(-displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())
+                ),
+                Vector.add(
+                    pos,
+                    new Vector(displaySize.x, displaySize.y + Settings.lightRayRenderWidth).rotate(this.lightRays[0].dir.heading())
+                ),
                 Vector.add(pos, new Vector(displaySize.x, -displaySize.y).rotate(this.lightRays[0].dir.heading())),
             ],
             Color.WHITE

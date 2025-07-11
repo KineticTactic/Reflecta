@@ -32,7 +32,7 @@ export default class IdealConcaveLens extends Entity {
             onchange: () => this.init(),
         };
         this.attribs.focalLength = {
-            name: "focalLength",
+            name: "focal length",
             value: options.focalLength || 100,
             type: AttributeType.Number,
             min: 0.01,

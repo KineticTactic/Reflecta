@@ -9,7 +9,11 @@ import World from "../core/World";
 import { Draggable } from "../util/Draggable";
 import Settings from "../core/Settings";
 
-const EQUILATERAL_PRISM_VERTICES = [new Vector(0, -Math.sqrt(3) / 3), new Vector(0.5, Math.sqrt(3) / 6), new Vector(-0.5, Math.sqrt(3) / 6)];
+const EQUILATERAL_PRISM_VERTICES = [
+    new Vector(0, -Math.sqrt(3) / 3),
+    new Vector(0.5, Math.sqrt(3) / 6),
+    new Vector(-0.5, Math.sqrt(3) / 6),
+];
 
 export interface PrismOptions extends EntityOptions {
     size?: number;
@@ -35,11 +39,13 @@ export default class Prism extends Entity {
             onchange: () => {
                 console.trace();
                 this.init();
-                this.draggables[0].setWorldPos(new Vector((this.attribs.size.value * Math.sqrt(3) * 2) / 6, 0).rotate(Math.PI / 6 + this.rot).add(this.pos));
+                this.draggables[0].setWorldPos(
+                    new Vector((this.attribs.size.value * Math.sqrt(3) * 2) / 6, 0).rotate(Math.PI / 6 + this.rot).add(this.pos)
+                );
             },
         };
         this.attribs.refractiveIndex = {
-            name: "refractiveIndex",
+            name: "refractive index",
             type: AttributeType.Number,
             min: 0.1,
             max: 10,

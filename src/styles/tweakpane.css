@@ -5,8 +5,19 @@
 	width: 300px;
 	margin: 1rem;
 	max-height: calc(100vh - 4rem);
+	height: auto;
+	overflow-x: hidden;
 	overflow-y: auto;
 	z-index: 5;
+	padding-bottom: 10px;
+	border: 1px solid #222;
+	border-radius: 5px;
+
+	background: rgba(30, 30, 30, 0.39);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(9.2px);
+	-webkit-backdrop-filter: blur(9.2px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #tweakpane-container::-webkit-scrollbar {
@@ -25,6 +36,7 @@
 .tp-rotv {
 	--bs-ff: "Nunito" !important;
 	font-size: 0.9rem !important;
+	background: none !important;
 }
 
 /* Tweakpane attributes */
@@ -73,4 +85,35 @@ input {
 
 .vector-y::before {
 	content: "y"
+}
+
+.tp-fldv {
+	margin-left: 0 !important;
+	background: none !important;
+}
+
+.tp-fldv_i::before {
+	width: 0 !important;
+	background: none !important;
+}
+
+.tp-fldv_c {
+	padding-left: 0 !important;
+	background: none !important;
+}
+
+.tp-tabv_i,
+tp-tabv_i::before {
+	display: none !important;
+	background: none !important;
+}
+
+.tp-tabv_c {
+	height: 100% !important;
+	background: none !important;
+}
+
+.tp-tbpv_c {
+	padding: 5px 0 10px 0 !important;
+	background: none !important;
 }

@@ -36,7 +36,7 @@ export default class GlassSlab extends Entity {
             },
         };
         this.attribs.refractiveIndex = {
-            name: "refractiveIndex",
+            name: "refractive index",
             type: AttributeType.Number,
             min: 0.1,
             max: 10,
